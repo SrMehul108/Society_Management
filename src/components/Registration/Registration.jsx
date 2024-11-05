@@ -101,7 +101,7 @@ export default function RegistrationForm() {
       <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
         {/* Left side */}
         <div className="hidden lg:flex flex-1 flex-col justify-center px-4 sm:px-6 lg:flex-none lg:w-1/2 lg:px-20 xl:px-24 bg-gray-200 z-index">
-          <h1 className="text-3xl font-bold block text-gray-900 fixed" style={{ top: '55px', left: '95px', fontSize: '50px' }}><span className='dash'>Dash</span>Stack</h1>
+          <h1 className="text-3xl font-bold block text-gray-900" style={{ top: '55px', left: '95px', fontSize: '50px' }}><span className='dash'>Dash</span>Stack</h1>
           <div className="flex justify-center mt-14">
             <img src={regImg} alt="Isometric illustration" className="image1" />
           </div>
