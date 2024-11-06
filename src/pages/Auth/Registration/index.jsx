@@ -363,7 +363,7 @@ export const RegistrationForm = () => {
         >
           Register
         </button>
-        <p className="mt-6 text-center text-center text-sm text-gray-600">
+        <p className="mt-6 text-center  text-sm text-gray-600">
           Already have an account ?
           <Link to="/login" className="dash">
             Login

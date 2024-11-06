@@ -2,7 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
 import { AdminSidbar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
-import { Login, Registration } from "../pages";
+import { Login, Registration, ResidentManagement } from "@/pages";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -34,7 +34,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "residents",
-                //   element: <AdminDashBoard />,
+                  element: <ResidentManagement />,
                 },
                 {
                   path: "financial",

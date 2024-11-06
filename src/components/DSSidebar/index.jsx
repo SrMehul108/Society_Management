@@ -38,7 +38,7 @@ export const DSSidebar = ({ items }) => {
                     <NavLink
                       to={item.url}
                       className={({ isActive }) =>
-                        `block py-2 px-4 rounded-lg text-black hover:bg-orange-700 flex items-center ${
+                        ` py-2 px-4 rounded-lg text-black hover:bg-orange-700 flex items-center ${
                           isActive ? "bg-orange-500" : "text-white"
                         }`
                       }
