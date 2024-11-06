@@ -141,7 +141,7 @@ export const  Login = () => {
       <p className="mt-4 text-center text-sm text-gray-600">
         Don't have an account?{" "}
         <Link
-          to="/registration"
+          to="/admin/register"
           className="font-medium text-orange-600 hover:text-orange-500"
         >
           Registration
