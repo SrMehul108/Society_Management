@@ -3,6 +3,7 @@ import { AuthLayout, DashboardLayout } from "@/layouts";
 import { AdminSidbar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
+import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -38,10 +39,11 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "financial",
+                  element: <FinancialManagement />,
                   children: [
                     {
                       path: "income",
-                    //   element: <AdminDashBoard />,
+                      element: <FinancialManagement />,
                     },
                     {
                       path: "expense",
