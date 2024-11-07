@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal } from '../../../../components/Financial/SetManitenance';
 import OtherIncome from '../../../../components/Financial/OtherIncome';
+import MaintenanceDetailsPopup from '../../../../components/Financial/ViewPopup';
+import ViewPopup from '../../../../components/Financial/ViewPopup';
 
 function FinancialManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +18,28 @@ function FinancialManagement() {
   const handleMaintenance = () => {
     setShowOtherIncome(false); // Show the Maintenance Details table
   };
+
+  //View maintenance
+  const [isViewOpen, setIsViewOpen] = useState(false);
+  const [itemDetails, setItemDetails] = useState({
+    title: "Ganesh Chaturthi",
+    amount: "₹ 1,500",
+    date: "2024-07-01",
+    dueDate: "2024-07-10",
+    description:
+      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesha in Resident."
+  });
+
+  const openViewPopup = () => {
+    setIsViewOpen(true);
+  };
+
+  const closeViewPopup = () => {
+    setIsViewOpen(false);
+  };
+
+
+
 
   const data = [
     {
@@ -124,7 +148,7 @@ function FinancialManagement() {
           <>
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Maintenance Details</h2>
             {/* Maintenance details table goes here */}
-            
+
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -178,9 +202,18 @@ function FinancialManagement() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-blue-500 cursor-pointer hover:text-blue-700">
-                        <i className="fas fa-eye"></i>
+                        <button onClick={openViewPopup}>
+                          <i className="fas fa-eye"></i>
+                        </button>
+                        {isViewOpen && (
+                          <ViewPopup
+                            itemDetails={itemDetails}
+                            onClose={closeViewPopup}
+                          />
+                        )}
                       </td>
                     </tr>
+
                   ))}
                 </tbody>
               </table>
