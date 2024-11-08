@@ -5,6 +5,9 @@ import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 import { FacilityManagement } from "../pages";
+import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
+import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
+
 
 
 const DashStackRoute = createBrowserRouter(
@@ -61,11 +64,13 @@ const DashStackRoute = createBrowserRouter(
                    element: <FacilityManagement />,
                 },
                 {
-                  path: "complaint",
+                  path: "complaint-tracking",
+                  element: <CreactComplaint />,
+                                         
                   children: [
                     {
                       path: "create",
-                    //   element: <AdminDashBoard />,
+                      // element: <CreactComplaint />,
                     },
                     {
                       path: "request",
@@ -75,6 +80,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "security",
+                  element :<SecurityManagement/>,
                   children: [
                     {
                       path: "visitors",
