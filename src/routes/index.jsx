@@ -4,6 +4,7 @@ import { AdminSidbar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
+import { FacilityManagement } from "../pages";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -57,7 +58,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "facility",
-                //   element: <AdminDashBoard />,
+                   element: <FacilityManagement />,
                 },
                 {
                   path: "complaint",
