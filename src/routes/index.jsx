@@ -88,12 +88,12 @@ const DashStackRoute = createBrowserRouter(
                   ],
                 },
                 {
-                  path: "guard",
-                  //   element: <AdminDashBoard />,
+                  path: "security-guard",
+                   element: "security-guard",
                 },
                 {
                   path: "announcement",
-                  //   element: <AdminDashBoard />,
+                   element: "announcement",
                 },
               ],
             },
