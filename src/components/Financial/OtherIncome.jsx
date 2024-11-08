@@ -67,9 +67,9 @@ function OtherIncomeCard({ data, onEdit, onDelete, onView }) {
     return (
         <>
 
-            <div className="bg-white border rounded-lg shadow-md  flex flex-col space-y-2  lg:w-1/4 m-2">
-                <div className="flex justify-between border rounded-t-lg rounded-r-lg items-center p-1 bg-blue-500">
-                    <h3 className="text-lg font-semibold text-gray-700">{data.title}</h3>
+            <div className="bg-white border rounded-lg overflow-hidden shadow-md  flex flex-col space-y-2  m-2">
+                <div className="flex justify-between border rounded-t-lg  items-center py-3 px-4 bg-blue-500">
+                    <h3 className="text-lg font-semibold text-white">{data.title}</h3>
                     <div className="relative mr-2" ref={menuRef}>
                         <i
                             className="fas fa-ellipsis-h text-gray-600 bg-white p-2 rounded-xl cursor-pointer"
@@ -107,46 +107,49 @@ function OtherIncomeCard({ data, onEdit, onDelete, onView }) {
                         )}
                     </div>
                 </div>
-                <div className="bg-white   p-4 flex flex-col  m-2">
-                    <div className='flex'>
+                <div className="bg-white   p-1 flex flex-col  m-1">
+                    <div className='flex pt-1'>
                         <div className='w-3/4'>
                             <p className="text-gray-500">Amount Per Member: </p>
                         </div>
                         <div className='flex  border rounded-full bg-gray-300 w-1/4 '>
-                            <p className="text-blue-500 font-bold mx-auto ">₹ {data.amountPerMember}</p>
+                            <p className="text-blue-500 font-bold mx-auto font-semibold">₹ {data.amountPerMember}</p>
                         </div>
                     </div>
-                    <div className='flex'>
+                    <div className='flex pt-1'>
                         <div className='w-3/4'>
                             <p className="text-gray-500">Total Members: </p>
                         </div>
                         <div className='w-1/4 flex'>
-                            <p className='mx-auto'>
+                            <p className='mx-auto font-semibold'>
                                 {data.totalMembers}
                             </p>
                         </div>
                     </div>
-                    <div className='flex'>
+                    <div className='flex pt-1'>
                         <div className='w-3/4'>
                             <p className="text-gray-500">Date: </p>
                         </div>
                         <div className='w-1/4 flex'>
-                            <p className='mx-auto'>
+                            <p className='mx-auto font-semibold'>
                                 {data.date}
                             </p>
                         </div>
                     </div>
-                    <div className='flex'>
+                    <div className='flex pt-1'>
                         <div className='w-3/4'>
                             <p className="text-gray-500">Due Date: </p>
                         </div>
                         <div className='w-1/4 flex'>
-                            <p className='mx-auto'>
+                            <p className='mx-auto font-semibold'>
                                 {data.dueDate}
                             </p>
                         </div>
                     </div>
-                    <p className="text-gray-500">Description: {data.description}</p>
+                    <div className='pt-1 pb-4'>
+                    <p className="text-gray-500">Description: </p>
+                    <p className='font-semibold'>{data.description}</p>
+                    </div>
                 </div>
             </div>
         </>
@@ -255,7 +258,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
         setIsOpen(!isOpen);
     };
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="p-6 bg-white min-h-screen">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-700">Other Income</h2>
                 <button
@@ -267,7 +270,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
                 {isOpen && <OtherIncomePopup onClose={togglePopup} />}
             </div>
 
-            <div className="flex flex-wrap justify-center">
+            <div className="grid grid-cols-4">
                 {incomeData.map((item, index) => (
                     <OtherIncomeCard
                         key={index}
@@ -286,7 +289,7 @@ export default function OtherIncomeContainer() {
     const [incomeData, setIncomeData] = useState([
         {
             title: 'Ganesh Chaturthi',
-            amountPerMember: 1500,
+            amountPerMember: `1,500`,
             totalMembers: 12,
             date: '2024-07-01',
             dueDate: '2024-07-10',
@@ -294,7 +297,7 @@ export default function OtherIncomeContainer() {
         },
         {
             title: 'Navratri',
-            amountPerMember: 1500,
+            amountPerMember: `1,500`,
             totalMembers: 12,
             date: '2024-07-01',
             dueDate: '2024-07-10',
@@ -302,7 +305,7 @@ export default function OtherIncomeContainer() {
         },
         {
             title: 'Diwali',
-            amountPerMember: 1500,
+            amountPerMember: `1,500`,
             totalMembers: 12,
             date: '2024-07-01',
             dueDate: '2024-07-10',
