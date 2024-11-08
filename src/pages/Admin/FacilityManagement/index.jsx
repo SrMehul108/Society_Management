@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+import FacilityPopup from '../../../components/Facility/CreactFacility';
+import EditPopup from '../../../components/Facility/EditFacility';
 
 const facilities = [
   {
@@ -51,15 +53,42 @@ export const FacilityManagement = () => {
   const toggleMenu = (id) => {
     setMenuVisible((prev) => (prev === id ? null : id));
   };
+// create facility popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    console.log("creact");
+    
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  // Edit facility popup
+  const [isPopupEdit, setIsPopupEdit] = useState(false);
+
+  const editPopup = () => {
+    console.log("edit");
+    
+
+    setIsPopupEdit(true);
+  };
+
+  const EditclosePopup = () => {
+    setIsPopupEdit(false);
+  };
 
   return (
     <div className="p-4 sm:p-6">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h1 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-0">Facility Management</h1>
-        <button className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-all">
+        <button className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-all" onClick={openPopup}>
           Create Facility
         </button>
+        {isPopupOpen && <FacilityPopup onClose={closePopup} />}
       </div>
 
       {/* Facility Cards */}
@@ -77,15 +106,11 @@ export const FacilityManagement = () => {
               ></i>
               {menuVisible === facility.id && (
                 <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
-                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    View
-                  </button>
-                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  
+                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={editPopup}>
                     Edit
                   </button>
-                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Delete
-                  </button>
+                  {isPopupEdit && <EditPopup onClose={EditclosePopup} />}
                 </div>
               )}
             </div>
