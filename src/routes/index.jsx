@@ -63,8 +63,6 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "complaint-tracking",
-                  element: <CreactComplaint />,
-                                         
                   children: [
                     {
                       path: "create",
@@ -78,7 +76,6 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "security",
-                  element :<SecurityManagement/>,
                   children: [
                     {
                       path: "visitors",

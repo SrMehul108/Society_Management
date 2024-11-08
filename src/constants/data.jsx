@@ -31,8 +31,8 @@ export const AdminSidbar = [
     icon: Icons.SmsTracking,
     dricons: Icons.DropDown,
     items: [
-      { title: "Create Complaint", url: "/admin/complaint/create" },
-      { title: "Request Tracking", url: "/admin/complaint/request" },
+      { title: "Create Complaint", url: "/admin/complaint-tracking/create" },
+      { title: "Request Tracking", url: "/admin/complaint-tracking/request" },
     ],
   },
   {
