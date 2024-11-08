@@ -6,7 +6,6 @@ import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 import { FacilityManagement } from "../pages";
 
-
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
   [
@@ -40,7 +39,6 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "financial",
-                  element: <FinancialManagement />,
                   children: [
                     {
                       path: "income",
@@ -48,28 +46,28 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "expense",
-                    //   element: <AdminDashBoard />,
+                      element: "expense",
                     },
                     {
                       path: "note",
-                    //   element: <AdminDashBoard />,
+                      element: "note",
                     },
                   ],
                 },
                 {
                   path: "facility",
-                   element: <FacilityManagement />,
+                  element: <FacilityManagement />,
                 },
                 {
                   path: "complaint",
                   children: [
                     {
                       path: "create",
-                    //   element: <AdminDashBoard />,
+                      element: "Create Complain",
                     },
                     {
                       path: "request",
-                    //   element: <AdminDashBoard />,
+                      element: "Request",
                     },
                   ],
                 },
@@ -78,21 +76,21 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "visitors",
-                    //   element: <AdminDashBoard />,
+                      element: "visitors",
                     },
                     {
                       path: "protocols",
-                    //   element: <AdminDashBoard />,
+                      element: "protocols",
                     },
                   ],
                 },
                 {
                   path: "guard",
-                //   element: <AdminDashBoard />,
+                  //   element: <AdminDashBoard />,
                 },
                 {
                   path: "announcement",
-                //   element: <AdminDashBoard />,
+                  //   element: <AdminDashBoard />,
                 },
               ],
             },
@@ -102,14 +100,14 @@ const DashStackRoute = createBrowserRouter(
             },
           ],
         },
-        // Security 
+        // Security
         {
           path: "security",
           element: <DashboardLayout />,
           children: [
             {
               index: true,
-            //   element: "<AdminDashBoard />",
+              //   element: "<AdminDashBoard />",
             },
           ],
         },
@@ -137,7 +135,7 @@ const DashStackRoute = createBrowserRouter(
         },
       ],
     },
-    // Error 
+    // Error
     {
       /* Default Route (404) */
       path: "*",
