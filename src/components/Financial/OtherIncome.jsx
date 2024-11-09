@@ -258,7 +258,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
         setIsOpen(!isOpen);
     };
     return (
-        <div className="p-6 bg-white min-h-screen">
+        <div className="p-6 bg-white ">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-700">Other Income</h2>
                 <button
@@ -305,6 +305,20 @@ export default function OtherIncomeContainer() {
         },
         {
             title: 'Diwali',
+            amountPerMember: `1,500`,
+            totalMembers: 12,
+            date: '2024-07-01',
+            dueDate: '2024-07-10',
+            description: 'The celebration of Diwali involves various festivities...',
+        },{
+            title: 'Guru nanak jayanti',
+            amountPerMember: `1,500`,
+            totalMembers: 12,
+            date: '2024-07-01',
+            dueDate: '2024-07-10',
+            description: 'The celebration of Diwali involves various festivities...',
+        },{
+            title: 'Holi',
             amountPerMember: `1,500`,
             totalMembers: 12,
             date: '2024-07-01',

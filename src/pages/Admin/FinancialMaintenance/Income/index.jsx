@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Modal } from '../../../../components/Financial/SetManitenance';
-import OtherIncome from '../../../../components/Financial/OtherIncome';
-import MaintenanceDetailsPopup from '../../../../components/Financial/ViewPopup';
-import ViewPopup from '../../../../components/Financial/ViewPopup';
+import React, { useState } from "react";
+import { Modal } from "../../../../components/Financial/SetManitenance";
+import OtherIncome from "../../../../components/Financial/OtherIncome";
+import MaintenanceDetailsPopup from "../../../../components/Financial/ViewPopup";
+import ViewPopup from "../../../../components/Financial/ViewPopup";
 
 function FinancialManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +27,7 @@ function FinancialManagement() {
     date: "2024-07-01",
     dueDate: "2024-07-10",
     description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesha in Resident."
+      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesha in Resident.",
   });
 
   const openViewPopup = () => {
@@ -37,9 +37,6 @@ function FinancialManagement() {
   const closeViewPopup = () => {
     setIsViewOpen(false);
   };
-
-
-
 
   const data = [
     {
@@ -53,7 +50,7 @@ function FinancialManagement() {
       amount: 1000,
       penalty: null,
       paymentStatus: "Pending",
-      paymentMethod: "Online"
+      paymentMethod: "Online",
     },
     {
       profilePicture: "https://via.placeholder.com/32",
@@ -66,7 +63,7 @@ function FinancialManagement() {
       amount: 1000,
       penalty: 250,
       paymentStatus: "Done",
-      paymentMethod: "Cash"
+      paymentMethod: "Cash",
     },
     {
       profilePicture: "https://via.placeholder.com/32",
@@ -79,9 +76,203 @@ function FinancialManagement() {
       amount: 1000,
       penalty: null,
       paymentStatus: "Pending",
-      paymentMethod: "Online"
+      paymentMethod: "Online",
     },
-    // Add more sample data as needed
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "Online",
+    },
+    {
+      profilePicture: "https://via.placeholder.com/32",
+      name: "Jenny Wilson",
+      unit: "C",
+      unitNumber: "1003",
+      date: "12/02/2024",
+      status: "Tenant",
+      phoneNumber: "92589 34522",
+      amount: 1000,
+      penalty: null,
+      paymentStatus: "Pending",
+      paymentMethod: "cash",
+    },
   ];
 
   const [maintenanceAmount, setMaintenanceAmount] = useState(0);
@@ -94,134 +285,211 @@ function FinancialManagement() {
   };
 
   return (
-    <div className="p-4 bg-gray-100">
-      {!showOtherIncome && (
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-          <div className="flex space-x-4">
-            <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-green-500 rounded-lg shadow-sm">
-              <div>
-                <p className="text-sm text-gray-600">Maintenance Amount</p>
-                <p className="text-lg font-bold text-green-500">₹ {maintenanceAmount}</p>
+    <>
+      <div className="p-4 bg-gray-100">
+        {!showOtherIncome && (
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <div className="flex">
+              <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-green-500 rounded-lg shadow-sm">
+                <div>
+                  <p className="text-sm text-gray-600 ">Maintenance Amount</p>
+                  <p className="text-lg font-bold text-green-500">
+                    ₹ {maintenanceAmount}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-red-500 rounded-lg shadow-sm">
+                <div>
+                  <p className="text-sm text-gray-600  w-36">Penalty Amount</p>
+                  <p className="text-lg font-bold text-red-500">
+                    ₹ {penaltyAmount}
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-red-500 rounded-lg shadow-sm">
-              <div>
-                <p className="text-sm text-gray-600">Penalty Amount</p>
-                <p className="text-lg font-bold text-red-500">₹ {penaltyAmount}</p>
-              </div>
-            </div>
+
+            <button
+              onClick={openModal}
+              className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
+            >
+              Set Maintenance
+            </button>
+
+            {/* Modal */}
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
+          </div>
+        )}
+
+        <div
+          role="tablist"
+          className="mt-4 tabs tabs-lifted tabs-lg  rounded-lg"
+        >
+          <div className="w-72 flex">
+            <a
+              role="tab"
+              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${
+                !showOtherIncome
+                  ? "bg-orange-500 text-white"
+                  : "bg-white hover:bg-gray-200"
+              }`}
+              onClick={handleMaintenanceClick}
+            >
+              Maintenance
+            </a>
+            <a
+              role="tab"
+              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${
+                showOtherIncome
+                  ? "bg-orange-500 text-white"
+                  : "bg-white hover:bg-gray-200"
+              }`}
+              onClick={handleOtherIncomeClick}
+            >
+              Other Income
+            </a>
           </div>
 
-          <button
-            onClick={openModal}
-            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
-          >
-            Set Maintenance
-          </button>
+          {showOtherIncome ? (
+            <OtherIncome />
+          ) : (
+            <>
+              <div
+                className="bg-white p-4 overflow-hidden"
+                style={{ height: "680px" }}
+              >
+                <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                  Maintenance Details
+                </h2>
 
-          {/* Modal */}
-          <Modal isOpen={isModalOpen} onClose={closeModal} />
+                <div
+                  className="overflow-x-auto rounded-lg h-full"
+                  style={{ maxHeight: "600px" }}
+                >
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-royalgray sticky top-0 w-full">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Name
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Unit Number
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Date
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Status
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Phone Number
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Amount
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Penalty
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Status
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Payment
+                        </th>
+                        <th className="px-4 py-2 text-left text-black font-semibold">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
+                      {data.map((item, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 flex items-center space-x-2">
+                            <img
+                              src={item.profilePicture}
+                              alt="Profile"
+                              className="rounded-full w-8 h-8"
+                            />
+                            <span className="text-gray-700 font-medium">
+                              {item.name}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="bg-blue-100 text-blue-600 px-2 p-1 rounded-full">
+                              {item.unit}
+                            </span>
+                            <span className="text-black px-2 py-1">
+                              {item.unitNumber}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">{item.date}</td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`px-2 py-1 rounded-full ${
+                                item.status === "Tenant"
+                                  ? "bg-pink-100 text-pink-600"
+                                  : "bg-purple-100 text-purple-600"
+                              }`}
+                            >
+                              {item.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">{item.phoneNumber}</td>
+                          <td className="px-4 py-3 text-green-500 font-bold">
+                            ₹{item.amount}
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            {item.penalty ? (
+                              <span className="text-red-500 font-medium">
+                                {item.penalty}
+                              </span>
+                            ) : (
+                              <span className="text-gray-500">--</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`px-2 py-1 rounded-full ${
+                                item.paymentStatus === "Pending"
+                                  ? "bg-yellow-100 text-yellow-600"
+                                  : "bg-green-100 text-green-600"
+                              }`}
+                            >
+                              {item.paymentStatus}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`px-2 py-1 rounded-full ${
+                                item.paymentMethod === "Online"
+                                  ? "bg-blue-100 text-blue-600"
+                                  : "bg-gray-300 text-gray-600"
+                              }`}
+                            >
+                              {item.paymentMethod}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-blue-500 cursor-pointer hover:text-blue-700">
+                            <button
+                              onClick={openViewPopup}
+                              className="bg-gray-300 p-1 rounded-lg"
+                            >
+                              <i className="fas fa-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          )}
         </div>
+      </div>
+      {isViewOpen && (
+        <ViewPopup itemDetails={itemDetails} onClose={closeViewPopup} />
       )}
-
-      <div className="mt-6">
-        <div className="bg-gray-100 p-2 rounded-lg flex">
-          <button
-            className={`px-4 py-2 rounded-lg ${!showOtherIncome ? 'bg-orange-500 text-white' : 'bg-white hover:bg-gray-200'}`}
-            onClick={handleMaintenanceClick}
-          >
-            Maintenance
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg ${showOtherIncome ? 'bg-orange-500 text-white' : 'bg-white hover:bg-gray-200'}`}
-            onClick={handleOtherIncomeClick}
-          >
-            Other Income
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
-        {showOtherIncome ? (
-          <OtherIncome />
-        ) : (
-          <>
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Maintenance Details</h2>
-            {/* Maintenance details table goes here */}
-
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-gray-600">Name</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Unit Number</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Date</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Status</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Phone Number</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Amount</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Penalty</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Status</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Payment</th>
-                    <th className="px-4 py-2 text-left text-gray-600">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 ">
-                  {data.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 flex items-center space-x-2">
-                        <img src={item.profilePicture} alt="Profile" className="rounded-full w-8 h-8" />
-                        <span className="text-gray-700 font-medium">{item.name}</span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="bg-blue-100 text-blue-600 px-2 p-1 rounded-full">{item.unit}</span>
-                        <span className="text-black px-2 py-1 ">{item.unitNumber}</span>
-                      </td>
-                      <td className="px-4 py-3">{item.date}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full ${item.status === 'Tenant' ? 'bg-pink-100 text-pink-600' : 'bg-purple-100 text-purple-600'}`}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">{item.phoneNumber}</td>
-                      <td className="px-4 py-3 text-green-500 font-bold">₹{item.amount}</td>
-                      <td className="px-4 py-3 text-center">
-                        {item.penalty ? (
-                          <span className="text-red-500 font-medium">{item.penalty}</span>
-                        ) : (
-                          <span className="text-gray-500">--</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full ${item.paymentStatus === 'Pending' ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'}`}>
-                          {item.paymentStatus}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full ${item.paymentMethod === 'Online' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'}`}>
-                          {item.paymentMethod}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-blue-500 cursor-pointer hover:text-blue-700">
-                        <button onClick={openViewPopup}>
-                          <i className="fas fa-eye"></i>
-                        </button>
-                        {isViewOpen && (
-                          <ViewPopup
-                            itemDetails={itemDetails}
-                            onClose={closeViewPopup}
-                          />
-                        )}
-                      </td>
-                    </tr>
-
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 
