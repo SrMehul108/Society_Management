@@ -1,51 +1,72 @@
 const mongoose = require('mongoose');
-const UserSchema = mongoose.Schema({
-    name: {
+
+const userSchema = new mongoose.Schema({
+    fullName: {
         type: String,
+        required: true
+    },
+    phoneNo: {
+        type: String,
+        unique: true,
         required: true
     },
     email: {
         type: String,
+        unique: true,
+        required: true
+    },
+    age: {
+        type: Number,
+        required: true
+    },
+    gender: {
+        type: String,
+        enum: ['male', 'female', 'other'],
+        required: true
+    },
+    wing: {
+        type: String,
+        require: true
+    },
+    unit: {
+        type: String,
         required: true,
         unique: true
     },
-    number: {
-        type: Number,
-        required: true,
-        unique: true,
-        minlength: 10,
-        maxlength: 10
-    },
-    country: {
+    aadharImage_front: {
         type: String,
-        required: true
+        required: false
     },
-    state: {
+    aadharImage_back: {
         type: String,
-        required: true
+        required: false
     },
-    city: {
+    addressProofImage: {
         type: String,
-        required: true
+        required: false
     },
+    rentalAgreementImage: {
+        type: String,
+        required: false
+    },
+    members: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Member'
+    }],
+    vehicles: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vehicle'
+    }],
     societyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Society',
         required: true
     },
-    password: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        required: true,
-        enum: ['admin', 'user']
-    },
     isActive: {
         type: Boolean,
+        enum: ['True', 'False'],
+        default: true,
         required: true,
-        default: true
     },
     createdDate: {
         type: String,
@@ -57,6 +78,21 @@ const UserSchema = mongoose.Schema({
         required: true,
         default: new Date().toLocaleDateString()
     },
+    role:{
+        type: String,
+        required: true,
+        default: 'user'
+    },
+    password:{
+        type: String, 
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ['owner', 'tenant'],
+        required: true
+    }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);
+

@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword } = require('../controllers/authController');
+const Passport = require("passport");
+const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword } = require('../controllers/adminController');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/verify-otp', verifyOtp);
 router.post('/reset-password', resetPassword);
+router.use('/user', Passport.authenticate('jwt', { failureMessage: 'You are not logged in' }), require('./user'));
 module.exports = router;
