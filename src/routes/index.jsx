@@ -4,7 +4,7 @@ import { AdminSidbar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
-import { FacilityManagement } from "../pages";
+import { Announcement, FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
 import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
 import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
@@ -98,7 +98,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "announcement",
-                   element: "announcement",
+                   element:<Announcement />,
                 },
               ],
             },
