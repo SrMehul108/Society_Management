@@ -117,8 +117,8 @@ export default function SecurityGuard() {
                         </span>
                       </td>
 
-                      <td className="px-4 py-3 text-green-500 font-bold">{item.date}</td>
-                      <td className="px-4 py-3 text-green-500 font-bold">{item.time}</td>
+                      <td className="px-4 py-3 ">{item.date}</td>
+                      <td className="px-4 py-3  ">{item.time}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`px-2 py-1 rounded-full ${
