@@ -87,7 +87,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "protocols",
-                      element: "protocols",
+                      element: <SecurityManagement />,
                     },
                   ],
                 },
