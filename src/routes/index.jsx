@@ -9,6 +9,7 @@ import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplain
 import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
 import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
 import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
+import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -72,7 +73,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "request",
-                      element: "Request",
+                      element: <RequestComplaint/>,
                     },
                   ],
                 },
