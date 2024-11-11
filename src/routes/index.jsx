@@ -11,6 +11,7 @@ import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
 import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
+import SecurityGuard from "../pages/Admin/SecurityGuard";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -93,7 +94,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "security-guard",
-                   element: "security-guard",
+                   element: <SecurityGuard/>,
                 },
                 {
                   path: "announcement",
