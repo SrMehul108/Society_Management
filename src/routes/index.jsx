@@ -10,6 +10,7 @@ import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtoc
 import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
 import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
+import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -82,7 +83,7 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "visitors",
-                      element: "visitors",
+                      element: <VisitorLog/>,
                     },
                     {
                       path: "protocols",
