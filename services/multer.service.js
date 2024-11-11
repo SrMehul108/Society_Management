@@ -2,7 +2,7 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinaryConfig');
 const path = require('path');
-const allowedFileTypes = ['.jpg', '.png', '.gif'];
+const allowedFileTypes = ['.jpg', '.png', '.gif', 'pdf'];
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
@@ -31,7 +31,6 @@ const storage = new CloudinaryStorage({
   }
 });
 
-// File filter to validate file types
 const fileFilter = (req, file, cb) => {
   const extname = path.extname(file.originalname).toLowerCase();
   if (allowedFileTypes.includes(extname)) {

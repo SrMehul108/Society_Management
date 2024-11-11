@@ -26,12 +26,11 @@ const userSchema = new mongoose.Schema({
     },
     wing: {
         type: String,
-        require: true
+        required: true
     },
     unit: {
         type: String,
         required: true,
-        unique: true
     },
     aadharImage_front: {
         type: String,
@@ -64,33 +63,52 @@ const userSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
-        enum: ['True', 'False'],
         default: true,
         required: true,
     },
     createdDate: {
-        type: String,
+        type: Date,
         required: true,
-        default: new Date().toLocaleDateString()
+        default: Date.now
     },
     updatedDate: {
-        type: String,
+        type: Date,
         required: true,
-        default: new Date().toLocaleDateString()
+        default: Date.now
     },
-    role:{
+    role: {
         type: String,
         required: true,
         default: 'user'
     },
-    password:{
-        type: String, 
+    password: {
+        type: String,
         required: true
     },
     type: {
         type: String,
         enum: ['owner', 'tenant'],
         required: true
+    },
+    owner: {
+        fullname: {
+            type: String,
+            required: function() {
+                return this.type === 'tenant';
+            }
+        },
+        phoneNo: {
+            type: String,
+            required: function() {
+                return this.type === 'tenant';
+            }
+        },
+        address: {
+            type: String,
+            required: function() {
+                return this.type === 'tenant';
+            }
+        }
     }
 });
 
