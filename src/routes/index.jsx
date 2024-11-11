@@ -8,6 +8,7 @@ import { FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
 import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
 import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
+import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 
 
 const DashStackRoute = createBrowserRouter(
@@ -54,7 +55,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "note",
-                      element: "note",
+                      element: <AddNote />,
                     },
                   ],
                 },
