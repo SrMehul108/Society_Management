@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router";
 import { DSSidebar } from "@/components";
+import { Icons } from "../../constants";
 
 export const DashboardLayout = ({ items }) => {
   return (
@@ -28,8 +29,8 @@ export const DashboardLayout = ({ items }) => {
               />
             </svg>
           </button>
-          <div className="flex-1 px-4">
-            <label className="input input-bordered flex items-center gap-2">
+          <div className="flex-1 px-4 ">
+            <label className="input bg-gray-300 w-80 input-bordered flex items-center gap-4 rounded-lg p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -42,20 +43,25 @@ export const DashboardLayout = ({ items }) => {
                   clipRule="evenodd"
                 />
               </svg>
-              <input type="text" className="grow" placeholder="Search" />
+              <input
+                type="text"
+                className="grow bg-gray-300"
+                placeholder="Search"
+              />
             </label>
           </div>
-          <div>
-            
+          <div className="flex items-center gap-4">
+            <div className="border p-2 rounded-lg">{Icons.Bell}</div>
+            <div className="flex">
+              <img
+                src="/placeholder.svg"
+                alt="User"
+                className="w-8 h-8 rounded-full mr-2"
+              />
+              <span>Moni Roy</span>
+            </div>
           </div>
-          <div className="flex items-center">
-            <img
-              src="/placeholder.svg"
-              alt="User"
-              className="w-8 h-8 rounded-full mr-2"
-            />
-            <span>Moni Roy</span>
-          </div>
+          
         </header>
 
         {/* Main content area for the Outlet */}
