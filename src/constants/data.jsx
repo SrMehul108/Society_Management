@@ -40,10 +40,10 @@ export const AdminSidbar = [
     url: "/admin/security",
     icon: Icons.ShieldSecurity,
     dricons: Icons.DropDown,
-    items:[
-      {title: "visitors", url:"/admin/security/visitors"},
-      {title: "protocols", url:"/admin/security/protocols"}
-    ]
+    items: [
+      { title: "visitors", url: "/admin/security/visitors" },
+      { title: "protocols", url: "/admin/security/protocols" },
+    ],
   },
   {
     title: "Security Guard",
@@ -54,5 +54,48 @@ export const AdminSidbar = [
     title: "Announcement",
     url: "/admin/announcement",
     icon: Icons.Announcement,
+  },
+];
+
+export const UserSidebar = [
+  {
+    title: "Dashboard",
+    url: "/user",
+    icon: Icons.Dashboard,
+  },
+  {
+    title: "Personal Detail",
+    url: "/user/PersonalDetail",
+    icon: Icons.PersonalDetail,
+  },
+  {
+    title: "Service And Complaint",
+    url: "/user/ServiceAndComplaint",
+    icon: Icons.ServiceAndComplaint,
+  },
+  {
+    title: "Events Participation",
+    url: "/user/EventsParticipation",
+    icon: Icons.Calender,
+  },
+  {
+    title: "Payment Portal",
+    icon: Icons.Payment,
+    dricons: Icons.DropDown,
+    items: [
+      {
+        title: "Maintenance Invoices",
+        url: "/user/PaymentPortal/MaintenanceInvoices",
+      },
+      {
+        title: "Other Income Invoice",
+        url: "/user/PaymentPortal/OtherIncomeInvoice",
+      },
+    ],
+  },
+  {
+    title:"Security Protocols",
+    url:"/user/SecurityProtocols",
+    icon:Icons.SecurityProtocols
   },
 ];

@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
-import { AdminSidbar } from "@/constants";
+import { AdminSidbar, UserSidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
@@ -12,7 +12,6 @@ import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
-
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -54,7 +53,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "expense",
-                      element: <Expanse/>,
+                      element: <Expanse />,
                     },
                     {
                       path: "note",
@@ -75,7 +74,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "request",
-                      element: <RequestComplaint/>,
+                      element: <RequestComplaint />,
                     },
                   ],
                 },
@@ -84,7 +83,7 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "visitors",
-                      element: <VisitorLog/>,
+                      element: <VisitorLog />,
                     },
                     {
                       path: "protocols",
@@ -94,17 +93,62 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "security-guard",
-                   element: <SecurityGuard/>,
+                  element: <SecurityGuard />,
                 },
                 {
                   path: "announcement",
-                   element:<Announcement />,
+                  element: <Announcement />,
                 },
               ],
             },
             {
               element: <AuthLayout />,
               children: [{ path: "register", element: <Registration /> }],
+            },
+          ],
+        },
+        // User
+        {
+          path: "user",
+          children: [
+            {
+              element: <DashboardLayout items={UserSidebar} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashBoard />,
+                },
+                {
+                  path: "PersonalDetail",
+                  element: "Personal Detail",
+                },
+                {
+                  path: "ServiceAndComplaint",
+                  element: "Service And Complaint",
+                },
+                {
+                  path: "EventsParticipation",
+                  element: "Events Participation",
+                },
+
+                {
+                  path: "PaymentPortal",
+                  children: [
+                    {
+                      path: "MaintenanceInvoices",
+                      element: "Maintenance Invoices",
+                    },
+                    {
+                      path: "OtherIncomeInvoice",
+                      element: "Other Income Invoice",
+                    },
+                  ],
+                },
+                {
+                  path: "SecurityProtocols",
+                  element: "Security Protocols",
+                },
+              ],
             },
           ],
         },

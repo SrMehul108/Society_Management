@@ -23,6 +23,10 @@ export const DSSidebar = ({ items }) => {
     }));
   };
 
+  const handleToggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <SidebarProvider
       className={`w-64 ${
