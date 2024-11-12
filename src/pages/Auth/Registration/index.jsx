@@ -40,7 +40,7 @@ export const RegistrationForm = () => {
       setSociety(society);
     };
     fetchSociety();
-  }, []);
+  }, [isOpenDrop]);
 
   const handleChange = (e) => {
     setFormData({
