@@ -1,21 +1,21 @@
- import { useState } from "react";
-
+import { useState } from "react";
+import { CreateSociety } from "@/apis/api";
 const popupStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000
-  };
-  const popupContentStyle = {
-    padding: '20px',
-    borderRadius: '5px',
-  };
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000
+};
+const popupContentStyle = {
+  padding: '20px',
+  borderRadius: '5px',
+};
 
 
 
@@ -27,7 +27,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
     country: '',
     state: '',
     city: '',
-    zipCode: ''
+    zipcode: ''
   });
 
   const handleChange = (e) => {
@@ -37,16 +37,19 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
-    togglePopup();
-  };
+    let data = await CreateSociety(formData)
+    console.log();
     
-    return(
-        <>
-         {isOpenDrop && (
+    if(data.data.status == 1){
+      togglePopup();
+    }
+  };
+
+  return (
+    <>
+      {isOpenDrop && (
         <div style={popupStyle}>
           <div className='rounded-2xl'>
             <div className="flex items-center bg-gray-100 rounded-2xl">
@@ -135,14 +138,14 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                       />
                     </div>
                     <div>
-                      <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="zipcode" className="block text-sm font-medium text-gray-700">
                         Zip Code<span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
-                        id="zipCode"
-                        name="zipCode"
-                        value={formData.zipCode}
+                        id="zipcode"
+                        name="zipcode"
+                        value={formData.zipcode}
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -152,10 +155,10 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                   </div>
 
                   <div className="flex justify-between my-5">
-                    <button type="button" onClick={togglePopup} className="bg-transparent border border-zinc-400 text-gray-700 py-2 px-4 rounded-md" style={{width: '170px', height: '51px'}}>
+                    <button type="button" onClick={togglePopup} className="bg-transparent border border-zinc-400 text-gray-700 py-2 px-4 rounded-md" style={{ width: '170px', height: '51px' }}>
                       Cancel
                     </button>
-                    <button type="submit" className="bg-slate-200 text-black py-2 px-4 rounded-md " style={{width: '170px', height: '51px'}}>
+                    <button type="submit" className="bg-slate-200 text-black py-2 px-4 rounded-md " style={{ width: '170px', height: '51px' }}>
                       Save
                     </button>
                   </div>
@@ -167,8 +170,8 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
         </div>
       )}
 
-        </>
-    )
+    </>
+  )
 }
 
 export default Societypopup;

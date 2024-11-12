@@ -28,7 +28,7 @@ export const Society = async() => {
 export const CreateSociety = async (societyData) => {
     try {
         const response = await axios.post(`${API_URL}/society/insertSociety`, societyData);
-        return response.data;
+        return response
     } catch (error) {
         throw error.response ? error.response.data : new Error('Network Error');
     }
