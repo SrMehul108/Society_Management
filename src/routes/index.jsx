@@ -13,6 +13,9 @@ import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracki
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
+import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
+
+
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -125,7 +128,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "ServiceAndComplaint",
-                  element: "Service And Complaint",
+                  element: <UserComplaintSubmission />,
                 },
                 {
                   path: "EventsParticipation",
