@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
 const User = require('../models/User');
 const Member = require('../models/Member');
 const Vehicle = require('../models/Vehicle');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const cloudinaryConfig = require('../config/cloudinaryConfig');
+
 module.exports.insertUser = async (req, res) => {
     try {
         if (req.body !== '') {
@@ -128,7 +128,8 @@ module.exports.viewUser = async (req, res) => {
     try {
         const { id } = req.query;
         if (id) {
-            const userdata = await User.findById({ id: id, societyId: req.user.societyId }).populate(['members', 'vehicles']).exec();
+            console.log(req.user.societyId);
+            const userdata = await User.findOne({ _id: id, societyId: req.user.societyId }).populate(['members', 'vehicles']).exec();
             if (userdata) {
                 return res.status(200).json({ message: "User fetched Succesfully", status: 1, data: userdata });
             } else {
@@ -216,28 +217,28 @@ module.exports.editUser = async (req, res) => {
                         if (req.files?.aadharImage_front?.[0]?.path) {
                             if (existingData.aadharImage_front) {
                                 const publicId = existingData.aadharImage_front.split('/').pop().split('.')[0];
-                                await cloudinary.uploader.destroy(`aadharImages/${publicId}`);
+                                await cloudinaryConfig.uploader.destroy(`aadharImages/${publicId}`);
                             }
                             data.aadharImage_front = req.files.aadharImage_front[0].path;
                         }
                         if (req.files?.aadharImage_back?.[0]?.path) {
                             if (existingData.aadharImage_back) {
                                 const publicId = existingData.aadharImage_back.split('/').pop().split('.')[0];
-                                await cloudinary.uploader.destroy(`aadharImages/${publicId}`);
+                                await cloudinaryConfig.uploader.destroy(`aadharImages/${publicId}`);
                             }
                             data.aadharImage_back = req.files.aadharImage_back[0].path;
                         }
                         if (req.files?.addressProofImage?.[0]?.path) {
                             if (existingData.addressProofImage) {
                                 const publicId = existingData.addressProofImage.split('/').pop().split('.')[0];
-                                await cloudinary.uploader.destroy(`addressProofImages/${publicId}`);
+                                await cloudinaryConfig.uploader.destroy(`addressProofImages/${publicId}`);
                             }
                             data.addressProofImage = req.files.addressProofImage[0].path;
                         }
                         if (req.files?.rentalAgreementImage?.[0]?.path) {
                             if (existingData.rentalAgreementImage) {
                                 const publicId = existingData.rentalAgreementImage.split('/').pop().split('.')[0];
-                                await cloudinary.uploader.destroy(`rentalAgreementImages/${publicId}`);
+                                await cloudinaryConfig.uploader.destroy(`rentalAgreementImages/${publicId}`);
                             }
                             data.rentalAgreementImage = req.files.rentalAgreementImage[0].path;
                         }
@@ -263,17 +264,16 @@ module.exports.editUser = async (req, res) => {
     }
 };
 
-
 module.exports.deleteUser = async (req, res) => {
     try {
         var { Id } = req.params;
         if (Id) {
-            const userData = await User.findOne({ id: Id, societyId: req.user.societyId });
+            const userData = await User.findOne({ _id: Id, societyId: req.user.societyId });
             if (userData) {
                 userData.isActive = false;
                 const updateData = await User.findByIdAndUpdate(Id, userData, { new: true });
                 if (updateData) {
-                    return res.status(200).json({ message: "user Vacate Successfully", status: 1 });
+                    return res.status(200).json({ message: "User Vacate Successfully", status: 1 });
                 }
                 return res.status(400).json({ message: "data Not Updated Successfully", status: 0 });
             }
