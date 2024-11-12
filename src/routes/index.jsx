@@ -12,6 +12,7 @@ import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
+import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -120,7 +121,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "PersonalDetail",
-                  element: "Personal Detail",
+                  element: <UserPersonalDetail />,
                 },
                 {
                   path: "ServiceAndComplaint",
