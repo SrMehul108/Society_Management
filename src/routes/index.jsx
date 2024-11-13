@@ -18,6 +18,8 @@ import ParticipationTabs from "../pages/User/EventsParticipate";
 import MaintenanceInvoices from "../pages/User/PaymentPortal/MaintenanceInvoices";
 import OtherIncome from "../pages/User/PaymentPortal/OtherIncome";
 import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
+import VisitorTracking from "../pages/Security/VisitorTracking";
+import EmergencyManagement from "../pages/Security/EmergencyManagement";
 
 
 
@@ -206,11 +208,11 @@ const DashStackRoute = createBrowserRouter(
             },
             {
               path: "VisitorTracking",
-              element: "Visitor Tracking",
+              element: <VisitorTracking />,
             },
             {
               path: "EmergencyManagement",
-              element: "Emergency Management",
+              element: <EmergencyManagement />,
             },
           ],
         },
