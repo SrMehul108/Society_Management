@@ -61,12 +61,12 @@ const ParticipationTabs = () => {
         <h2 className="text-sm font-bold mb-2">{activeTab === 'events' ? 'Events Participation' : 'Activity Participation'}</h2>
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="px-4 py-2">Participator Name</th>
-              <th className="px-4 py-2">Description</th>
-              <th className="px-4 py-2">Event Time</th>
-              <th className="px-4 py-2">Event Date</th>
-              <th className="px-4 py-2">{activeTab === 'events' ? 'Event Name' : 'Activity Name'}</th>
+            <tr className="bg-gray-100 ">
+              <th className="px-4 py-2 text-start">Participator Name</th>
+              <th className="px-4 py-2 text-start">Description</th>
+              <th className="px-4 py-2 text-start">Event Time</th>
+              <th className="px-4 py-2 text-start">Event Date</th>
+              <th className="px-4 py-2 text-start">{activeTab === 'events' ? 'Event Name' : 'Activity Name'}</th>
             </tr>
           </thead>
           <tbody>

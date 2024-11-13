@@ -14,6 +14,10 @@ import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
+import ParticipationTabs from "../pages/User/EventsParticipate";
+import MaintenanceInvoices from "../pages/User/PaymentPortal/MaintenanceInvoices";
+import OtherIncome from "../pages/User/PaymentPortal/OtherIncome";
+import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
 
 
 
@@ -44,7 +48,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "EventsParticipation",
-                  element: "Events Participation",
+                  element: <ParticipationTabs />,
                 },
 
                 {
@@ -52,17 +56,17 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "MaintenanceInvoices",
-                      element: "Maintenance Invoices",
+                      element:<MaintenanceInvoices />,
                     },
                     {
                       path: "OtherIncomeInvoice",
-                      element: "Other Income Invoice",
+                      element: <OtherIncome/>,
                     },
                   ],
                 },
                 {
                   path: "SecurityProtocols",
-                  element: "Security Protocols",
+                  element: <SecurityProtocolsTable/>,
                 },
               ],
             },
@@ -167,7 +171,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "EventsParticipation",
-                  element: "Events Participation",
+                  element: <ParticipationTabs />,
                 },
 
                 {

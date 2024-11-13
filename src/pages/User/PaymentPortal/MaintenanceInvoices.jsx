@@ -2,7 +2,7 @@ import React from 'react';
 
 import PaymentMaintenance from '../../../components/User/PaymentPortal/Maintenance/PaymentMaintenance';
 import PaymentPending from '../../../components/User/PaymentPortal/Maintenance/PaymentPending';
-import PaymentDue from '../../../components/User/PaymentPortal/Maintenance/PaymentDue';
+//  import PaymentDue from '../../../components/User/PaymentPortal/Maintenance/PaymentDue';
 
 const MaintenanceInvoices = () => {
  
@@ -14,7 +14,7 @@ const MaintenanceInvoices = () => {
             
             <PaymentMaintenance maintenanceAmount={maintenanceAmount} penaltyAmount={penaltyAmount} />
             <PaymentPending />
-            <PaymentDue />
+            {/* <PaymentDue /> */}
             
         </div>
     );
