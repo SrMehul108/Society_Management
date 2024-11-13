@@ -1,6 +1,21 @@
 
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 var API_URL = import.meta.env.VITE_API_URL;
+var admintoken;
+
+
+export const AdminToken=()=>{
+    return admintoken
+}
+
+export const LoginData=()=>{
+    if (admintoken !== "") {
+        const decodedToken = jwtDecode(admintoken);
+        console.log(decodedToken); 
+        
+    }
+}
 
 export const Registration = async(data) => {
     try {
@@ -38,6 +53,8 @@ export const CreateSociety = async (societyData) => {
 export const login = async (credentials) => {
     try {
         const response = await axios.post(`${API_URL}/auth/login`, credentials);
+        admintoken=response.data;
+        LoginData()
         return response.data;
     } catch (error) {
         throw error.response ? error.response.data : new Error('Network Error');
