@@ -15,8 +15,6 @@ import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
 
-
-
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
   [
@@ -28,8 +26,43 @@ const DashStackRoute = createBrowserRouter(
           element: <Outlet />,
           children: [
             {
-              index: true,
-              // element: <Dashboard />,
+              element: <DashboardLayout items={UserSidebar} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashBoard />,
+                },
+                {
+                  path: "PersonalDetail",
+                  element: <UserPersonalDetail />,
+                },
+                {
+                  path: "ServiceAndComplaint",
+                  element: <UserComplaintSubmission />,
+                },
+                {
+                  path: "EventsParticipation",
+                  element: "Events Participation",
+                },
+
+                {
+                  path: "PaymentPortal",
+                  children: [
+                    {
+                      path: "MaintenanceInvoices",
+                      element: "Maintenance Invoices",
+                    },
+                    {
+                      path: "OtherIncomeInvoice",
+                      element: "Other Income Invoice",
+                    },
+                  ],
+                },
+                {
+                  path: "SecurityProtocols",
+                  element: "Security Protocols",
+                },
+              ],
             },
           ],
         },
@@ -111,51 +144,7 @@ const DashStackRoute = createBrowserRouter(
             },
           ],
         },
-        // User
-        {
-          path: "user",
-          children: [
-            {
-              element: <DashboardLayout items={UserSidebar} />,
-              children: [
-                {
-                  index: true,
-                  element: <AdminDashBoard />,
-                },
-                {
-                  path: "PersonalDetail",
-                  element: <UserPersonalDetail />,
-                },
-                {
-                  path: "ServiceAndComplaint",
-                  element: <UserComplaintSubmission />,
-                },
-                {
-                  path: "EventsParticipation",
-                  element: "Events Participation",
-                },
-
-                {
-                  path: "PaymentPortal",
-                  children: [
-                    {
-                      path: "MaintenanceInvoices",
-                      element: "Maintenance Invoices",
-                    },
-                    {
-                      path: "OtherIncomeInvoice",
-                      element: "Other Income Invoice",
-                    },
-                  ],
-                },
-                {
-                  path: "SecurityProtocols",
-                  element: "Security Protocols",
-                },
-              ],
-            },
-          ],
-        },
+        
         // Security
         {
           path: "security",

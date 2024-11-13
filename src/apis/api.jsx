@@ -12,6 +12,7 @@ export const AdminToken = () => {
 export const LoginData = () => {
     if (admintoken !== "") {
         const decodedToken = jwtDecode(admintoken);
+        console.log("DecodeToken:",decodedToken.userData)
         return decodedToken.userData;
     }
 }
