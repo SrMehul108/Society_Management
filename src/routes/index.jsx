@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
-import { AdminSidbar, UserSidebar } from "@/constants";
+import { AdminSidbar, UserSidebar,SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
@@ -14,8 +14,6 @@ import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
-import ParticipationTabs from "../pages/User/EventsParticipate";
-import MaintenanceInvoices from "../pages/User/PaymentPortal/MaintenanceInvoices";
 
 
 
@@ -30,8 +28,43 @@ const DashStackRoute = createBrowserRouter(
           element: <Outlet />,
           children: [
             {
-              index: true,
-              // element: <Dashboard />,
+              element: <DashboardLayout items={UserSidebar} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashBoard />,
+                },
+                {
+                  path: "PersonalDetail",
+                  element: <UserPersonalDetail />,
+                },
+                {
+                  path: "ServiceAndComplaint",
+                  element: <UserComplaintSubmission />,
+                },
+                {
+                  path: "EventsParticipation",
+                  element: "Events Participation",
+                },
+
+                {
+                  path: "PaymentPortal",
+                  children: [
+                    {
+                      path: "MaintenanceInvoices",
+                      element: "Maintenance Invoices",
+                    },
+                    {
+                      path: "OtherIncomeInvoice",
+                      element: "Other Income Invoice",
+                    },
+                  ],
+                },
+                {
+                  path: "SecurityProtocols",
+                  element: "Security Protocols",
+                },
+              ],
             },
           ],
         },
@@ -134,7 +167,7 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "EventsParticipation",
-                  element: <ParticipationTabs />,
+                  element: "Events Participation",
                 },
 
                 {
@@ -142,7 +175,7 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "MaintenanceInvoices",
-                      element: <MaintenanceInvoices />,
+                      element: "Maintenance Invoices",
                     },
                     {
                       path: "OtherIncomeInvoice",
@@ -161,11 +194,19 @@ const DashStackRoute = createBrowserRouter(
         // Security
         {
           path: "security",
-          element: <DashboardLayout />,
+          element: <DashboardLayout items={SecuritySidebar} />,
           children: [
             {
               index: true,
               //   element: "<AdminDashBoard />",
+            },
+            {
+              path: "VisitorTracking",
+              element: "Visitor Tracking",
+            },
+            {
+              path: "EmergencyManagement",
+              element: "Emergency Management",
             },
           ],
         },

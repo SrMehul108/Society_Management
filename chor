@@ -1,0 +1,45 @@
+// User
+        {
+          path: "user",
+          children: [
+            {
+              element: <DashboardLayout items={UserSidebar} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashBoard />,
+                },
+                {
+                  path: "PersonalDetail",
+                  element: <UserPersonalDetail />,
+                },
+                {
+                  path: "ServiceAndComplaint",
+                  element: <UserComplaintSubmission />,
+                },
+                {
+                  path: "EventsParticipation",
+                  element: "Events Participation",
+                },
+
+                {
+                  path: "PaymentPortal",
+                  children: [
+                    {
+                      path: "MaintenanceInvoices",
+                      element: "Maintenance Invoices",
+                    },
+                    {
+                      path: "OtherIncomeInvoice",
+                      element: "Other Income Invoice",
+                    },
+                  ],
+                },
+                {
+                  path: "SecurityProtocols",
+                  element: "Security Protocols",
+                },
+              ],
+            },
+          ],
+        },

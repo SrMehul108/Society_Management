@@ -60,22 +60,22 @@ export const AdminSidbar = [
 export const UserSidebar = [
   {
     title: "Dashboard",
-    url: "/user",
+    url: "/",
     icon: Icons.Dashboard,
   },
   {
     title: "Personal Detail",
-    url: "/user/PersonalDetail",
+    url: "/PersonalDetail",
     icon: Icons.PersonalDetail,
   },
   {
     title: "Service And Complaint",
-    url: "/user/ServiceAndComplaint",
+    url: "/ServiceAndComplaint",
     icon: Icons.ServiceAndComplaint,
   },
   {
     title: "Events Participation",
-    url: "/user/EventsParticipation",
+    url: "/EventsParticipation",
     icon: Icons.Calender,
   },
   {
@@ -85,17 +85,35 @@ export const UserSidebar = [
     items: [
       {
         title: "Maintenance Invoices",
-        url: "/user/PaymentPortal/MaintenanceInvoices",
+        url: "/PaymentPortal/MaintenanceInvoices",
       },
       {
         title: "Other Income Invoice",
-        url: "/user/PaymentPortal/OtherIncomeInvoice",
+        url: "/PaymentPortal/OtherIncomeInvoice",
       },
     ],
   },
   {
     title:"Security Protocols",
-    url:"/user/SecurityProtocols",
+    url:"/SecurityProtocols",
     icon:Icons.SecurityProtocols
   },
 ];
+
+export const SecuritySidebar=[
+  {
+    title:"Security",
+    icon:Icons.Security,
+    dricons:Icons.DropDown,
+    items:[
+      {
+        title:"Visitor Tracking",
+        url:"/security/VisitorTracking"
+      },
+      {
+        title:"Emergency Management",
+        url:"/security/EmergencyManagement"
+      }
+    ]
+  }
+]
