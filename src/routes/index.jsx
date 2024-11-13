@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
-import { AdminSidbar, UserSidebar } from "@/constants";
+import { AdminSidbar, UserSidebar,SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import { Login, Registration, ResidentManagement } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
@@ -14,6 +14,7 @@ import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
+
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -148,11 +149,19 @@ const DashStackRoute = createBrowserRouter(
         // Security
         {
           path: "security",
-          element: <DashboardLayout />,
+          element: <DashboardLayout items={SecuritySidebar} />,
           children: [
             {
               index: true,
               //   element: "<AdminDashBoard />",
+            },
+            {
+              path: "VisitorTracking",
+              element: "Visitor Tracking",
+            },
+            {
+              path: "EmergencyManagement",
+              element: "Emergency Management",
             },
           ],
         },

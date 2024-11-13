@@ -99,3 +99,21 @@ export const UserSidebar = [
     icon:Icons.SecurityProtocols
   },
 ];
+
+export const SecuritySidebar=[
+  {
+    title:"Security",
+    icon:Icons.Security,
+    dricons:Icons.DropDown,
+    items:[
+      {
+        title:"Visitor Tracking",
+        url:"/security/VisitorTracking"
+      },
+      {
+        title:"Emergency Management",
+        url:"/security/EmergencyManagement"
+      }
+    ]
+  }
+]
