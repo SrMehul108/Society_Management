@@ -1,8 +1,15 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
-import { AdminSidbar, UserSidebar,SecuritySidebar } from "@/constants";
+import { AdminSidbar, UserSidebar, SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
-import { Login, Registration, ResidentManagement,ForgetPassword ,OtpPage,Resetpassword} from "@/pages";
+import {
+  Login,
+  Registration,
+  ResidentManagement,
+  ForgetPassword,
+  OtpPage,
+  Resetpassword,
+} from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 import { Announcement, FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
@@ -21,9 +28,6 @@ import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
 import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
-
-
-
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -60,17 +64,17 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "MaintenanceInvoices",
-                      element:<MaintenanceInvoices />,
+                      element: <MaintenanceInvoices />,
                     },
                     {
                       path: "OtherIncomeInvoice",
-                      element: <OtherIncome/>,
+                      element: <OtherIncome />,
                     },
                   ],
                 },
                 {
                   path: "SecurityProtocols",
-                  element: <SecurityProtocolsTable/>,
+                  element: <SecurityProtocolsTable />,
                 },
               ],
             },
@@ -84,22 +88,21 @@ const DashStackRoute = createBrowserRouter(
               element: <DashboardLayout items={AdminSidbar} />,
               children: [
                 {
-                  index: true,
+                  path: "dashbaord",
                   element: <AdminDashBoard />,
                 },
                 {
                   path: "residents",
-                  
-                  children:[
+                  children: [
                     {
-                      index:true,
+                      index: true,
                       element: <ResidentManagement />,
                     },
                     {
-                      path:"OwnerForm",
-                      element:<Owner/>,
-                    }
-                  ]
+                      path: "OwnerForm",
+                      element: <Owner />,
+                    },
+                  ],
                 },
                 {
                   path: "financial",
@@ -238,15 +241,15 @@ const DashStackRoute = createBrowserRouter(
             },
             {
               path: "forgot-password",
-              element: <ForgetPassword/>,
+              element: <ForgetPassword />,
             },
             {
               path: "otp",
-              element: <OtpPage/>,
+              element: <OtpPage />,
             },
             {
               path: "reset-password",
-              element: <Resetpassword/>,
+              element: <Resetpassword />,
             },
           ],
         },
