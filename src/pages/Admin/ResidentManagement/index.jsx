@@ -1,5 +1,6 @@
 import React from "react";
 import { ViewOwner } from "../../../components/Resident_management/ViewOwner";
+import { EmptyButton, OccupiedButton, OwnerButton, TenantButton, VacateButton } from "../../../components/Button/Button";
 
 export const ResidentManagement = () => {
     const residents = [
@@ -19,8 +20,19 @@ export const ResidentManagement = () => {
             name: '-',
             wing: 'B',
             unitNumber: '1002',
-            unitStatus: 'Occupied',
-            residentStatus: 'TenantF',
+            unitStatus: 'Vacate',
+            residentStatus: 'Tenant',
+            phoneNumber: '--',
+            members: '-',
+            vehicles: '-',
+        },
+        {
+            id: 3,
+            name: '-',
+            wing: 'B',
+            unitNumber: '1003',
+            unitStatus: 'Vacate',
+            residentStatus: '',
             phoneNumber: '--',
             members: '-',
             vehicles: '-',
@@ -69,23 +81,22 @@ export const ResidentManagement = () => {
                                     <span>{resident.name}</span>
                                 </td>
                                 <td className="py-3 px-4 border-b text-blue-500">{resident.wing}{resident.unitNumber}</td>
-                                <td className="py-3 px-4 border-b">
-                                    <button
-                                        className={`px-2 py-1 rounded-full text-white ${
-                                            resident.unitStatus === 'Occupied' ? 'bg-pink-200 text-pink-800' : 'bg-gray-200 text-gray-800'
-                                        }`}
-                                    >
-                                        {resident.unitStatus}
-                                    </button>
+                               
+                                 <td className="py-3 px-4 border-b">
+                                 {resident.unitStatus === 'Occupied' ? (
+                                        <OccupiedButton />
+                                    ) : (
+                                        <VacateButton />
+                                    )}
                                 </td>
                                 <td className="py-3 px-4 border-b">
-                                    <button
-                                        className={`px-2 py-1 rounded-full text-white ${
-                                            resident.residentStatus === 'Tenant' ? 'bg-pink-200 text-pink-800' : 'bg-indigo-200 text-indigo-800'
-                                        }`}
-                                    >
-                                        {resident.residentStatus}
-                                    </button>
+                                    {resident.residentStatus === 'Owner' ? (
+                                        <OwnerButton />
+                                    ) : resident.residentStatus === 'Tenant' ? (
+                                        <TenantButton />
+                                    ) : (
+                                        <EmptyButton />
+                                    )}
                                 </td>
                                 <td className="py-3 px-4 border-b">{resident.phoneNumber}</td>
                                 <td className="py-3 px-4 border-b text-center">{resident.members}</td>
@@ -127,9 +138,8 @@ export const ResidentManagement = () => {
                                 <div>
                                     <span className="font-semibold">Status:</span>
                                     <span
-                                        className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
-                                            resident.unitStatus === 'Occupied' ? 'bg-teal-200 text-teal-800' : 'bg-purple-200 text-purple-800'
-                                        }`}
+                                        className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.unitStatus === 'Occupied' ? 'bg-teal-200 text-teal-800' : 'bg-purple-200 text-purple-800'
+                                            }`}
                                     >
                                         {resident.unitStatus}
                                     </span>
@@ -137,9 +147,8 @@ export const ResidentManagement = () => {
                                 <div>
                                     <span className="font-semibold">Resident:</span>
                                     <span
-                                        className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
-                                            resident.residentStatus === 'Tenant' ? 'bg-pink-200 text-pink-800' : 'bg-indigo-200 text-indigo-800'
-                                        }`}
+                                        className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.residentStatus === 'Tenant' ? 'bg-pink-200 text-pink-800' : 'bg-indigo-200 text-indigo-800'
+                                            }`}
                                     >
                                         {resident.residentStatus}
                                     </span>
