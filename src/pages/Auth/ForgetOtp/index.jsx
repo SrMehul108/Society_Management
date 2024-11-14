@@ -46,7 +46,7 @@ export const OtpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await otpPage(formData);
+      const response = await otpPage(otp);
     alert(`OTP Submitted: ${otp.join("")}`);
     }
     catch (error) {

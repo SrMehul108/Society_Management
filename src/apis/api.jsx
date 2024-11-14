@@ -76,7 +76,7 @@ export const forgotPassword = async (passdata) => {
 
 export const otpPage = async (otp) => {
     try {
-        console.log(passdata)
+        console.log(otp)
         const response = await axios.post(`${API_URL}/auth/verify-otp`, otp);
         admintoken = response.data.data;
         return response.data;
