@@ -25,7 +25,7 @@ export const ForgetPassword = () => {
     e.preventDefault();
     try {
       const response = await forgotPassword(formData);
-      navigate("/otppage");
+      navigate("/otp");
     }
     catch (error) {
       console.error("Otp failed:", error);

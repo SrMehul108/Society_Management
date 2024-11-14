@@ -2,7 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
 import { AdminSidbar, UserSidebar,SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
-import { Login, Registration, ResidentManagement,ForgetPassword ,OtpPage} from "@/pages";
+import { Login, Registration, ResidentManagement,ForgetPassword ,OtpPage,Resetpassword} from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 import { Announcement, FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
@@ -234,7 +234,7 @@ const DashStackRoute = createBrowserRouter(
             },
             {
               path: "reset-password",
-              element: "reset-password",
+              element: <Resetpassword/>,
             },
           ],
         },
