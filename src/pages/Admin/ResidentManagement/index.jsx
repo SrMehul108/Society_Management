@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { ViewOwner } from "../../../components/Resident_management/ViewOwner";
 import { EmptyButton, OccupiedButton, OwnerButton, TenantButton, VacateButton } from "../../../components/Button/Button";
+import { Statuspopup } from "../../../components/Resident_management/Status_popup";
 
 export const ResidentManagement = () => {
     const residents = [
@@ -44,14 +45,28 @@ export const ResidentManagement = () => {
         console.log("Viewing details");
         <ViewOwner />;
     };
+    //status popup
+    const [isPopupStatus, setIsPopupStatus] = useState(false);
+
+    const statusPopup = () => {
+
+
+        setIsPopupStatus(true);
+    };
+
+    const StatusclosePopup = () => {
+        setIsPopupStatus(false);
+    };
 
     return (
         <div className="p-4 md:p-8 bg-white shadow-sm">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-xl md:text-2xl font-semibold">Resident Tenant and Owner Details</h1>
-                <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 text-sm md:text-base">
+                <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 text-sm md:text-base"
+                    onClick={statusPopup}>
                     <i className="fas fa-plus mr-2"></i> Add New Resident Details
                 </button>
+                {isPopupStatus && <Statuspopup onClose={StatusclosePopup} />}
             </div>
 
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -81,9 +96,9 @@ export const ResidentManagement = () => {
                                     <span>{resident.name}</span>
                                 </td>
                                 <td className="py-3 px-4 border-b text-blue-500">{resident.wing}{resident.unitNumber}</td>
-                               
-                                 <td className="py-3 px-4 border-b">
-                                 {resident.unitStatus === 'Occupied' ? (
+
+                                <td className="py-3 px-4 border-b">
+                                    {resident.unitStatus === 'Occupied' ? (
                                         <OccupiedButton />
                                     ) : (
                                         <VacateButton />
