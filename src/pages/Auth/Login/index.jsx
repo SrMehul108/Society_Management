@@ -115,7 +115,7 @@ export const  Login = () => {
 
           <div className="text-sm">
             <Link
-              to="/forget-password"
+              to="/forgot-password"
               className="font-medium text-orange-600 hover:text-orange-500"
             >
               Forgot Password?
