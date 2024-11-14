@@ -89,8 +89,12 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "residents",
-                  element: <ResidentManagement />,
+                  
                   children:[
+                    {
+                      index:true,
+                      element: <ResidentManagement />,
+                    },
                     {
                       path:"OwnerForm",
                       element:<Owner/>,
