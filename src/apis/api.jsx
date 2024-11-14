@@ -72,3 +72,15 @@ export const forgotPassword = async (passdata) => {
         throw error.response ? error.response.data : new Error('Network Error');
     }
 };
+
+
+export const otpPage = async (otp) => {
+    try {
+        console.log(passdata)
+        const response = await axios.post(`${API_URL}/auth/verify-otp`, otp);
+        admintoken = response.data.data;
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : new Error('Network Error');
+    }
+};
