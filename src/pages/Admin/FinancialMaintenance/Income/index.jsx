@@ -3,6 +3,7 @@ import { Modal } from "../../../../components/Financial/SetManitenance";
 import OtherIncome from "../../../../components/Financial/OtherIncome";
 import MaintenanceDetailsPopup from "../../../../components/Financial/ViewPopup";
 import ViewPopup from "../../../../components/Financial/ViewPopup";
+import { CashButton, DoneButton, EmptyButton, OnlineButton, OwnerButton, PenalityButton, PendingButton, TenantButton } from "../../../../components/Button/Button";
 
 function FinancialManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,7 +62,7 @@ function FinancialManagement() {
       status: "Owner",
       phoneNumber: "92524 12365",
       amount: 1000,
-      penalty: 250,
+      penalty: "250",
       paymentStatus: "Done",
       paymentMethod: "Cash",
     },
@@ -201,7 +202,7 @@ function FinancialManagement() {
       unit: "C",
       unitNumber: "1003",
       date: "12/02/2024",
-      status: "Tenant",
+      status: "Owner",
       phoneNumber: "92589 34522",
       amount: 1000,
       penalty: null,
@@ -327,22 +328,20 @@ function FinancialManagement() {
           <div className="w-72 flex">
             <a
               role="tab"
-              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${
-                !showOtherIncome
+              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${!showOtherIncome
                   ? "bg-orange-500 text-white"
                   : "bg-white hover:bg-gray-200"
-              }`}
+                }`}
               onClick={handleMaintenanceClick}
             >
               Maintenance
             </a>
             <a
               role="tab"
-              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${
-                showOtherIncome
+              className={` py-2 px-4 tab rounded-t border-b-2 border-b-orange-500  ${showOtherIncome
                   ? "bg-orange-500 text-white"
                   : "bg-white hover:bg-gray-200"
-              }`}
+                }`}
               onClick={handleOtherIncomeClick}
             >
               Other Income
@@ -422,52 +421,52 @@ function FinancialManagement() {
                             </span>
                           </td>
                           <td className="px-4 py-3">{item.date}</td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`px-2 py-1 rounded-full ${
-                                item.status === "Tenant"
-                                  ? "bg-pink-100 text-pink-600"
-                                  : "bg-purple-100 text-purple-600"
-                              }`}
-                            >
-                              {item.status}
-                            </span>
-                          </td>
+                          {<td className="px-4 py-3">
+
+                            {item.status === "Owner" ? (
+                              <OwnerButton />
+                            ) : item.status === "Tenant" ? (
+                              <TenantButton />
+                            ) : (
+                              <EmptyButton />
+                            )}
+                          </td>}
+
                           <td className="px-4 py-3">{item.phoneNumber}</td>
                           <td className="px-4 py-3 text-green-500 font-bold">
                             ₹{item.amount}
                           </td>
-                          <td className="px-4 py-3 text-center">
-                            {item.penalty ? (
-                              <span className="text-red-500 font-medium">
-                                {item.penalty}
-                              </span>
+                          {<td className="px-4 py-3 text-center">
+                            {item.penalty === "250" ? (
+                              <PenalityButton />
                             ) : (
-                              <span className="text-gray-500">--</span>
+                              <EmptyButton />
                             )}
-                          </td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`px-2 py-1 rounded-full ${
-                                item.paymentStatus === "Pending"
-                                  ? "bg-yellow-100 text-yellow-600"
-                                  : "bg-green-100 text-green-600"
-                              }`}
-                            >
-                              {item.paymentStatus}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3">
+                          </td>}
+
+                          {<td className="px-4 py-3">
+
+                            {item.paymentStatus === "Pending" ? (
+                              <PendingButton />
+                            ) : <DoneButton />}
+                          </td>}
+                          {/* <td className="px-4 py-3">
                             <span
                               className={`px-2 py-1 rounded-full ${
                                 item.paymentMethod === "Online"
-                                  ? "bg-blue-100 text-blue-600"
-                                  : "bg-gray-300 text-gray-600"
+                                  ? <OnlineButton/>
+                                  : <CashButton />
                               }`}
                             >
-                              {item.paymentMethod}
+                              
                             </span>
-                          </td>
+                          </td> */}
+                          {<td className="px-4 py-3">
+
+                            {item.paymentMethod === "Online" ? (
+                              <OnlineButton />
+                            ) : <CashButton />}
+                          </td>}
                           <td className="px-4 py-3 text-blue-500 cursor-pointer hover:text-blue-700">
                             <button
                               onClick={openViewPopup}
