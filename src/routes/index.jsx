@@ -20,6 +20,8 @@ import OtherIncome from "../pages/User/PaymentPortal/OtherIncome";
 import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
 import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
+import { Owner } from "../components/Resident_management/Owner";
+
 
 
 
@@ -87,7 +89,17 @@ const DashStackRoute = createBrowserRouter(
                 },
                 {
                   path: "residents",
-                  element: <ResidentManagement />,
+                  
+                  children:[
+                    {
+                      index:true,
+                      element: <ResidentManagement />,
+                    },
+                    {
+                      path:"OwnerForm",
+                      element:<Owner/>,
+                    }
+                  ]
                 },
                 {
                   path: "financial",

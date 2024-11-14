@@ -6,7 +6,7 @@ import { X, Trash2 } from 'lucide-react'
 
 
 
-const Owner = () => {
+export const Owner = () => {
     const [fileNames, setFileNames] = useState(Array(4).fill(""));
     const [files, setFiles] = useState([
         { id: 1, name: 'Syncfusion Essential Adhocard.JPG', size: '3.5 MB', progress: 40 },
@@ -402,5 +402,3 @@ const Owner = () => {
         </>
     )
 }
-
-export default Owner;
