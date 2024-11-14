@@ -3,6 +3,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import login from "../../../assets/image/forget.png";
 import "../../../assets/css/login/login.css";
 import { Link, useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../../apis/api";
 
 export const ForgetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +21,19 @@ export const ForgetPassword = () => {
     setIsFormValid(value.trim() !== "");
   };
 
-  const handleClick = () => {
-    navigate("/otppage");
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await forgotPassword(formData);
+      navigate("/otppage");
+    }
+    catch (error) {
+      console.error("Otp failed:", error);
+      setShowError(true);
+    }
   };
+
+  
 
   return (
     <>
@@ -62,11 +73,10 @@ export const ForgetPassword = () => {
         <div>
           <button
             onClick={handleClick}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
-              isFormValid
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${isFormValid
                 ? "bg-orange-500 hover:bg-orange-600"
                 : "bg-gray-400 cursor-not-allowed"
-            }`}
+              }`}
             disabled={!isFormValid}
           >
             Get OTP
