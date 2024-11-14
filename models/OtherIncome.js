@@ -37,7 +37,6 @@ const otherincomeSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     }
-    
 });
 
 module.exports = mongoose.model('OtherIncome', otherincomeSchema);

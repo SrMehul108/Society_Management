@@ -128,7 +128,6 @@ module.exports.viewUser = async (req, res) => {
     try {
         const { id } = req.query;
         if (id) {
-            console.log(req.user.societyId);
             const userdata = await User.findOne({ _id: id, societyId: req.user.societyId }).populate(['members', 'vehicles']).exec();
             if (userdata) {
                 return res.status(200).json({ message: "User fetched Succesfully", status: 1, data: userdata });
@@ -136,7 +135,6 @@ module.exports.viewUser = async (req, res) => {
                 return res.status(400).json({ message: "User not found", status: 0, data: [] });
             }
         }
-
         const userData = await User.find({ societyId: req.user.societyId });
         if (userData && userData.length > 0) {
             const formattedData = userData.map(user => ({

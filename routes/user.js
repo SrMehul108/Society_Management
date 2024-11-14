@@ -14,4 +14,5 @@ router.post('/editUser/:id', upload.fields([
 router.delete('/vacateUser/:id', deleteUser);
 
 router.use('/maintanace', require('./maintanace'));
+router.use('/otheincome', require('./otherIncome'));
 module.exports = router;
