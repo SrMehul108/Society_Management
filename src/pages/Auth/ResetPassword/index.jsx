@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { resetPassword } from "@/apis/api";
 
 export const Resetpassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +18,18 @@ export const Resetpassword = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await resetPassword(formData);
+      navigate("/dashboard");
+    }
+    catch (error) {
+      console.error("Password Reset Failed:", error);
+      setShowError(true);
+    }
   };
 
   return (

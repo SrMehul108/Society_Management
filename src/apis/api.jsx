@@ -84,3 +84,14 @@ export const otpPage = async (otp) => {
         throw error.response ? error.response.data : new Error('Network Error');
     }
 };
+
+export const resetPassword = async (rpass) => {
+    try {
+        console.log(rpass)
+        const response = await axios.post(`${API_URL}/auth/reset-password`, rpass);
+        admintoken = response.data.data;
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : new Error('Network Error');
+    }
+};
