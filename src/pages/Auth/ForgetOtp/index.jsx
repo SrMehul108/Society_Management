@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CiClock2 } from "react-icons/ci";
+import { otpPage } from "../../../apis/api";
 
 export const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -42,8 +43,16 @@ export const OtpPage = () => {
     setOtp(Array(6).fill(""));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await otpPage(otp);
     alert(`OTP Submitted: ${otp.join("")}`);
+    }
+    catch (error) {
+      console.error("Otp failed:", error);
+      setShowError(true);
+    }
   };
 
   return (
