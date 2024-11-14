@@ -3,6 +3,7 @@ import { Bell, ChevronDown, Container, LogOut, Upload } from 'lucide-react'
 import owner from '../../assets/image/owner.jpg'
 import { UploadIcon } from './UploadIcon';
 import { X, Trash2 } from 'lucide-react'
+import { Link } from 'react-router-dom';
 
 
 
@@ -107,7 +108,7 @@ export const Owner = () => {
                     <main className="flex-1 p-8">
                         <div className="flex mb-4">
                             <button className="bg-orange-500 text-white px-4 py-2 rounded-tl-md rounded-bl-md">Owner</button>
-                            <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-tr-md rounded-br-md">Tenant</button>
+                            <Link to={"/admin/residents/TenateForm"} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-tr-md rounded-br-md">Tenant</Link>
                         </div>
                        
                         <div className="bg-white shadow-md rounded-lg p-6">
@@ -253,7 +254,7 @@ export const Owner = () => {
                                         </div>
                                     </div>
                                     {members.map((member, index) => (
-                                        <div key={index} className="flex flex-wrap mb-4 p-4 bg-white rounded-lg shadow-md space-y-4 sm:space-y-0">
+                                        <div key={index} className="flex flex-wrap mb-4 p-4 bg-white rounded-lg  space-y-4 sm:space-y-0">
                                             <div className="flex flex-col w-full  sm:w-1/2 lg:w-1/6 px-2">
                                                 <label className="text-gray-600 font-semibold">Full Name*</label>
                                                 <input
@@ -345,7 +346,7 @@ export const Owner = () => {
 
                                     <div className="flex flex-wrap gap-4 justify-center">
                                         {vehicles.map((vehicle, index) => (
-                                            <div key={index} className="flex flex-col p-4 bg-white rounded-lg shadow-md w-full md:w-1/2 lg:w-5/12">
+                                            <div key={index} className="flex flex-col p-4 bg-white rounded-lg  w-full md:w-1/2 lg:w-5/12">
                                                 <div className='flex'>
                                                     <div className="flex flex-col mb-4 w-1/3 ms-1">
                                                         <label className="text-gray-600 font-semibold">Vehicle Type*</label>

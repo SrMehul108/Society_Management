@@ -28,6 +28,7 @@ import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
 import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
+import Tenant from "../components/Resident_management/Tenant";
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -102,6 +103,10 @@ const DashStackRoute = createBrowserRouter(
                       path: "OwnerForm",
                       element: <Owner />,
                     },
+                    {
+                      path:"TenateForm",
+                      element:<Tenant/>
+                    }
                   ],
                 },
                 {
