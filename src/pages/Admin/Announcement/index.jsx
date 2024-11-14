@@ -132,7 +132,7 @@ const closeViewModal = () => setIsViewOpen(false);
         {note.map((note) => (
           <div key={note.id} className="rounded-lg border relative">
             <div className="bg-blue-500 rounded-t-lg flex justify-between items-center p-3">
-              <h2 className="font-semibold text-2xl text-white">
+              <h2 className="font-semibold text-xl text-white">
                 {note.title}
               </h2>
               <div className="relative">
@@ -166,16 +166,16 @@ const closeViewModal = () => setIsViewOpen(false);
                 )}
               </div>
             </div>
-            <div className="p-4 flex justify-between">
+            <div className="p-1 flex justify-between">
               <h2 className="font-normal text-gray-500">Announcement Date</h2>
               <p>{note.date}</p>
             </div>
-            <div className="p-4 flex justify-between">
+            <div className="p-1 flex justify-between">
               <h2 className="font-normal text-gray-500">Announcement Time</h2>
               <p>{note.hours}</p>
             </div>
             
-            <div className="p-4">
+            <div className="p-1">
               <h2 className="font-normal text-gray-500">Description</h2>
               <p>{note.description}</p>
             </div>
