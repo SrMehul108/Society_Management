@@ -3,6 +3,7 @@ import { Bell, ChevronDown, Container, LogOut, Upload } from 'lucide-react'
 import tenant from '../../assets/image/tenant.jpg'
 import { UploadIcon } from './UploadIcon';
 import { X, Trash2 } from 'lucide-react'
+import { Link } from 'react-router-dom';
 
 
 
@@ -115,11 +116,12 @@ const Tenant = () => {
                 <div className="flex  bg-gray-100">
                     {/* Main content */}
                     <main className="flex-1 p-8">
+                        
                         <div className="flex mb-4">
-                            <button className=" bg-gray-200 text-gray-700 px-4 py-2 rounded-tl-md rounded-bl-md">Owner</button>
+                            <Link to={"/admin/residents/OwnerForm"} className=" bg-gray-200 text-gray-700 px-4 py-2 rounded-tl-md rounded-bl-md">Owner</Link>
                             <button className="bg-orange-500 text-white px-4 py-2 rounded-tr-md rounded-br-md">Tenant</button>
                         </div>
-                        <div className="bg-white shadow-md rounded-lg p-6 mt-3">
+                        <div className="bg-white shadow-md rounded-lg p-6 mt-3 mb-3">
                             <h2 className="text-xl font-semibold text-gray-800 mb-4">Owner Information</h2>
                             <div className="flex gap-4">
                                 <div className="flex flex-col w-1/3">
@@ -162,7 +164,7 @@ const Tenant = () => {
                         <div className="bg-white shadow-md rounded-lg p-6">
                             <div className='flex w-full m-0'>
                                 <div>
-                                    <img src={tenant} alt="" />
+                                <img src={tenant} alt="" />
                                 </div>
                                 <div className="w-full">
                                     <form className="w-full">
@@ -214,7 +216,7 @@ const Tenant = () => {
                                 </div>
 
                             </div>
-                            <div>
+                            <div className='mt-4'>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                     {[
                                         "Upload Aadhar Card (Front Side)",
@@ -302,7 +304,7 @@ const Tenant = () => {
                                         </div>
                                     </div>
                                     {members.map((member, index) => (
-                                        <div key={index} className="flex flex-wrap mb-4 p-4 bg-white rounded-lg shadow-md space-y-4 sm:space-y-0">
+                                        <div key={index} className="flex flex-wrap mb-4 p-4 bg-white rounded-lg  space-y-4 sm:space-y-0">
                                             <div className="flex flex-col w-full  sm:w-1/2 lg:w-1/6 px-2">
                                                 <label className="text-gray-600 font-semibold">Full Name*</label>
                                                 <input
@@ -394,7 +396,7 @@ const Tenant = () => {
 
                                     <div className="flex flex-wrap gap-4 justify-center">
                                         {vehicles.map((vehicle, index) => (
-                                            <div key={index} className="flex flex-col p-4 bg-white rounded-lg shadow-md w-full md:w-1/2 lg:w-5/12">
+                                            <div key={index} className="flex flex-col p-4 bg-white rounded-lg w-full md:w-1/2 lg:w-5/12">
                                                 <div className='flex'>
                                                     <div className="flex flex-col mb-4 w-1/3 ms-1">
                                                         <label className="text-gray-600 font-semibold">Vehicle Type*</label>
