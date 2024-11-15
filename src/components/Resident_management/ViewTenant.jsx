@@ -1,14 +1,48 @@
 import React, { useState } from 'react';
 import owner from '../../assets/image/owner.jpg'
 import { EyeOffIcon } from 'lucide-react';
+import { userRegistration } from '../../apis/api'; 
+
+import React, { useState } from 'react';
+import owner from '../../assets/image/owner.jpg'
+import { EyeOffIcon } from 'lucide-react';
+import { userRegistration } from '../../apis/api'; 
+
 export const ViewTenant = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [tenantDetails, setTenantDetails] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+    // Fetch tenant details from the API
+    useEffect(() => {
+        const fetchTenantDetails = async () => {
+            if (isSidebarOpen) {
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await userRegistration(); 
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch tenant details");
+                    }
+                    const data = await response.json();
+                    setTenantDetails(data);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchTenantDetails();
+    }, [isSidebarOpen]);
+
     return (
         <>
-
-            <div className="flex  bg-gray-100">
+            <div className="flex bg-gray-100">
                 {/* Button to open sidebar */}
                 <button
                     onClick={toggleSidebar}
@@ -27,152 +61,85 @@ export const ViewTenant = () => {
 
                 {/* Sidebar */}
                 <div
-                    className={`fixed top-0 right-0 h-full w-96 bg-white shadow-lg transition-transform transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
-                        } z-50`}
+                    className={`fixed top-0 right-0 h-full w-96 bg-white shadow-lg transition-transform transform ${
+                        isSidebarOpen ? "translate-x-0" : "translate-x-full"
+                    } z-50`}
                 >
                     <div className="p-6">
                         {/* Close button */}
-                        <button onClick={toggleSidebar} className="text-gray-600 hover:text-gray-800 font-bold mb-4">
-                            &larr;  View Tenant Details
+                        <button
+                            onClick={toggleSidebar}
+                            className="text-gray-600 hover:text-gray-800 font-bold mb-4"
+                        >
+                            &larr; View Tenant Details
                         </button>
 
-                        {/* Profile Information */}
-                        <div className="flex flex-col items-center text-center mb-6">
-                            <img
-                                src={owner}
-                                alt="Profile"
-                                className="w-20 h-20 rounded-full mb-2"
-                            />
-                            <h2 className="text-lg font-semibold">Roger Lubin</h2>
-                            <p className="text-gray-500">RogerLubin@gmail.com</p>
-                        </div>
+                        {/* Loading state */}
+                        {loading && <p>Loading...</p>}
 
-                        {/* Tenant  Details */}
-                        <div className="bg-white shadow-md p-4 rounded-lg mb-6">
-                            <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
-                                <span className='font-bold'>Wing</span>
-                                <span>A</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-gray-600 mb-2
-                            border-b-2 p-2">
-                                <span className='font-bold'>Unit</span>
-                                <span>101</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
-                                <span className='font-bold'>Age</span>
-                                <span>20</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-gray-600 mb-2">
-                                <span className='font-bold'>Gender</span>
-                                <span>Male</span>
-                            </div>
-                        </div>
+                        {/* Error state */}
+                        {error && <p className="text-red-500">{error}</p>}
 
-                        {/* Document Section */}
-                        <div className="mb-6">
-                            <h3 className="text-gray-800 font-semibold mb-2">Document</h3>
-                            <div className="flex items-center bg-white p-1 border rounded-lg mb-2">
-                                <span className="text-blue-500 text-2xl mr-2">📄</span>
-                                <div className="flex-1">
-                                    <p className="text-sm font-semibold">Adharcard Front Side.JPG</p>
-                                    <p className="text-xs text-gray-500">3.5 MB</p>
+                        {/* Tenant Details */}
+                        {tenantDetails && (
+                            <>
+                                {/* Profile Information */}
+                                <div className="flex flex-col items-center text-center mb-6">
+                                    <img
+                                        src={owner} // Replace with default image
+                                        alt="Profile"
+                                        className="w-20 h-20 rounded-full mb-2"
+                                    />
+                                    <h2 className="text-lg font-semibold">{tenantDetails.name}</h2>
+                                    <p className="text-gray-500">{tenantDetails.email}</p>
                                 </div>
-                                <button className="text-gray-500 hover:text-gray-700">
-                                    <EyeOffIcon className="h-5 w-5 text-gray-400" /></button>
-                            </div>
-                            <div className="flex items-center bg-white p-2 border rounded-lg">
-                                <span className="text-red-500 text-2xl mr-2">📄</span>
-                                <div className="flex-1">
-                                    <p className="text-sm font-semibold">Address Proof Front Side.PDF</p>
-                                    <p className="text-xs text-gray-500">3.5 MB</p>
-                                </div>
-                                <button className="text-gray-500 hover:text-gray-700">
-                                    <EyeOffIcon className="h-5 w-5 text-gray-400" />
-                                </button>
-                            </div>
-                        </div>
-                        {/* Owner Details */}
-                        <div className="bg-blue-500 text-white p-2 rounded-t-lg flex justify-between items-center">
-                            <h3 className="font-semibold">Owner Details</h3>
-                            
-                        </div>
-                        <div className='p-2 border'>
-                            <div className="bg-white shadow-lg p-4 rounded-b-lg">
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2"> Name</p>
-                                    <p className="text-gray-800 text-right w-1/2">Roger Lubin</p>
-                                </div>
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Phone No</p>
-                                    <p className="text-gray-800 w-1/2 text-right">9123455555</p>
-                                </div>
-                                
-                                
-                                <div className="flex">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Address</p>
-                                    <p className="text-gray-800
-                                w-1/2 text-right">2972 WestSide Rd</p>
-                                </div>
-                            </div>
-                           
-                        </div>
 
-                        {/* Member Counting Section */}
-                        <div className="bg-blue-500 text-white p-2 rounded-t-lg flex justify-between items-center">
-                            <h3 className="font-semibold">Member Counting</h3>
-                            <span className="text-lg font-semibold">02</span>
-                        </div>
-                        <div className='p-2 border'>
-                            <div className="bg-white shadow-lg p-4 rounded-b-lg">
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">First Name</p>
-                                    <p className="text-gray-800 text-right w-1/2">Roger Lubin</p>
+                                {/* Tenant Details */}
+                                <div className="bg-white shadow-md p-4 rounded-lg mb-6">
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span className="font-bold">Wing</span>
+                                        <span>{tenantDetails.wing}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span className="font-bold">Unit</span>
+                                        <span>{tenantDetails.unit}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span className="font-bold">Age</span>
+                                        <span>{tenantDetails.age}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                                        <span className="font-bold">Gender</span>
+                                        <span>{tenantDetails.gender}</span>
+                                    </div>
                                 </div>
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Phone No</p>
-                                    <p className="text-gray-800 w-1/2 text-right">9123455555</p>
+
+                                {/* Documents Section */}
+                                <div className="mb-6">
+                                    <h3 className="text-gray-800 font-semibold mb-2">Documents</h3>
+                                    {tenantDetails.documents.map((doc, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center bg-white p-2 border rounded-lg mb-2"
+                                        >
+                                            <span className="text-blue-500 text-2xl mr-2">📄</span>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-semibold">{doc.name}</p>
+                                                <p className="text-xs text-gray-500">{doc.size} MB</p>
+                                            </div>
+                                            <button className="text-gray-500 hover:text-gray-700">
+                                            <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                                                {/* Replace with your icon */}
+                                                <span>🔒</span>
+                                            </button>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Age</p>
-                                    <p className="text-gray-800 w-1/2 text-right">20</p>
-                                </div>
-                                <div className="mb-4 flex border-b-2 pb-1">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Gender</p>
-                                    <p className="text-gray-800 w-1/2 text-right">Male</p>
-                                </div>
-                                <div className="mb-4 flex">
-                                    <p className="text-gray-600 text-sm font-bold w-1/2">Relation</p>
-                                    <p className="text-gray-800
-                                w-1/2 text-right">Brother</p>
-                                </div>
-                            </div>
-                            <div className="bg-white shadow-lg p-4 rounded-b-lg">
-                                <div className="mb-4 flex border-b-2">
-                                    <p className="text-gray-600 text-sm font-medium w-1/2">First Name</p>
-                                    <p className="text-gray-800 text-right w-1/2">Roger Lubin</p>
-                                </div>
-                                <div className="mb-4 flex">
-                                    <p className="text-gray-600 text-sm font-medium w-1/2">Phone No</p>
-                                    <p className="text-gray-800 w-1/2 text-right">9123455555</p>
-                                </div>
-                                <div className="mb-4 flex">
-                                    <p className="text-gray-600 text-sm font-medium w-1/2">Age</p>
-                                    <p className="text-gray-800 w-1/2 text-right">20</p>
-                                </div>
-                                <div className="mb-4 flex">
-                                    <p className="text-gray-600 text-sm font-medium w-1/2">Gender</p>
-                                    <p className="text-gray-800 w-1/2 text-right">Male</p>
-                                </div>
-                                <div className="mb-4 flex">
-                                    <p className="text-gray-600 text-sm font-medium w-1/2">Relation</p>
-                                    <p className="text-gray-800
-                                w-1/2 text-right">Brother</p>
-                                </div>
-                            </div>
-                        </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
