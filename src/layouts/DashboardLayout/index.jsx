@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router";
 import { DSSidebar } from "@/components";
 import { Icons } from "../../constants";
+import Notification from "../../components/Notification/Notification";
 
 export const DashboardLayout = ({ items }) => {
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationType, setNotificationType] = useState('success');
+
+  const handleButtonClick = () => {
+    setNotificationMessage('This is a notification!');
+    setNotificationType('success'); // Change to 'error' for an error notification
+    setIsNotificationVisible(true);
+  };
+
+  const handleCloseNotification = () => {
+    setIsNotificationVisible(false);
+  };
+
   return (
     <div className="flex  min-h-screen">
       <DSSidebar items={items} />
@@ -51,7 +66,17 @@ export const DashboardLayout = ({ items }) => {
             </label>
           </div>
           <div className="flex items-center gap-4">
-            <div className="border p-2 rounded-lg">{Icons.Bell}</div>
+            <div className="border p-2 rounded-lg">
+              <button onClick={handleButtonClick}>
+                {Icons.Bell}
+              </button>
+              <Notification
+                isVisible={isNotificationVisible}
+                message={notificationMessage}
+                type={notificationType}
+                onClose={handleCloseNotification}
+              />
+            </div>
             <div className="flex">
               <img
                 src="/placeholder.svg"
@@ -61,7 +86,7 @@ export const DashboardLayout = ({ items }) => {
               <span>Moni Roy</span>
             </div>
           </div>
-          
+
         </header>
 
         {/* Main content area for the Outlet */}
