@@ -86,7 +86,7 @@ export const DSSidebar = ({ items }) => {
                                     `py-2 px-4 rounded-lg flex items-center ${
                                       isActive
                                         ? "bg-orange-500 text-white"
-                                        : "text-black hover:bg-orange-700"
+                                        : "text-black hover:bg-orange-500"
                                     }`
                                   }
                                 >
@@ -107,7 +107,7 @@ export const DSSidebar = ({ items }) => {
                             `py-2 px-4 rounded-lg flex items-center ${
                               isActive
                                 ? "bg-orange-500 text-white"
-                                : "text-black hover:bg-orange-700"
+                                : "text-black hover:bg-orange-500"
                             }`
                           }
                         >
