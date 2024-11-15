@@ -80,6 +80,10 @@
 
 
 import React, { useState } from 'react';
+import Table from '../../../components/ComplaintTraking/Table';
+import EditRequestForm from '../../../components/ComplaintTraking/EditRequestForm';
+import ViewRequestPopup from '../../../components/ComplaintTraking/ViewRequestPopup';
+import DeleteConfirmationPopup from '../../../components/ComplaintTraking/DeleteRequestPopup';
 
 export const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Last month");
@@ -109,6 +113,112 @@ export const Dashboard = () => {
     { event: 'Society Meeting', date: '24-09-2024', time: '8:00 PM to 10:00 PM' },
     { event: 'Holi Festival', date: '24-09-2024', time: '8:00 PM to 10:00 PM' },
   ];
+
+  // Complaint Table
+  const columns = [
+    { header: 'Complainer Name', accessor: 'complainerName' },
+    { header: 'Complaint Name', accessor: 'complaintName' },
+    { header: 'Description', accessor: 'description' },
+    {
+      header: 'Unit Number',
+      accessor: 'unit',
+      render: (value, row) => (
+        <span>
+          <span className="text-green-600 font-bold">{value}</span> {row.unitNumber}
+        </span>
+      ),
+    },
+    {
+      header: 'Priority',
+      accessor: 'priority',
+      render: (value) => (
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            value === 'High'
+              ? 'bg-red-200 text-white'
+              : value === 'Medium'
+              ? 'bg-blue-500 text-white'
+              : 'bg-green-500 text-white'
+          }`}
+        >
+          {value}
+        </span>
+      ),
+    },
+    {
+      header: 'Status',
+      accessor: 'status',
+      render: (value) => (
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            value === 'Pending'
+              ? 'bg-yellow-100 text-yellow-800'
+              : value === 'Open'
+              ? 'bg-blue-100 text-blue-800'
+              : 'bg-green-100 text-green-800'
+          }`}
+        >
+          {value}
+        </span>
+      ),
+    },
+  ];
+
+  const actions = [
+    {
+      className: 'text-green-500 hover:text-green-700',
+      icon: <i className="fa-regular fa-pen-to-square"></i>,
+      onClick: (row) => toggleModal('edit', row),
+    },
+    {
+      className: 'text-blue-500 hover:text-blue-700',
+      icon: <i className="fas fa-eye"></i>,
+      onClick: (row) => toggleModal('view', row),
+    },
+    {
+      className: 'text-red-500 hover:text-red-700',
+      icon: <i className="fas fa-trash"></i>,
+      onClick: (row) => toggleModal('delete', row),
+    },
+  ];
+
+  const [isModalOpen, setIsModalOpen] = useState({
+    create: false,
+    edit: false,
+    view: false,
+    delete: false,
+  });
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const toggleModal = (type, complaint = null) => {
+    setSelectedComplaint(complaint);
+    setIsModalOpen((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  };
+
+  const [complaintsTable, setcomplaintsTable] = useState([
+    {
+      id: 1,
+      complainerName: 'Evelyn Harper',
+      complaintName: 'Unethical Behavior',
+      description: 'Providing false information or deliberately.',
+      unit: 'A',
+      unitNumber: '1001',
+      priority: 'Medium',
+      status: 'Pending',
+    },
+    {
+      id: 2,
+      complainerName: 'Esther Howard',
+      complaintName: 'Preventive Measures',
+      description: 'Regular waste collection services.',
+      unit: 'B',
+      unitNumber: '1002',
+      priority: 'Low',
+      status: 'Open',
+    },
+  ]);
 
   return (
     <div className=" bg-gray-100 p-2 space-y-6">
@@ -189,7 +299,7 @@ export const Dashboard = () => {
         {/* Complaint List */}
         <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto w-3/4">
           <h2 className="text-lg font-semibold mb-4">Complaint List</h2>
-          <table className="min-w-full bg-white rounded-lg shadow-md">
+          {/* <table className="min-w-full bg-white rounded-lg shadow-md">
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-4 text-left">Complainer Name</th>
@@ -222,7 +332,11 @@ export const Dashboard = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+           <Table columns={columns} data={complaintsTable} actions={actions} />
+           {isModalOpen.edit && <EditRequestForm data={selectedComplaint} closeModal={() => toggleModal('edit')} />}
+      {isModalOpen.view && <ViewRequestPopup data={selectedComplaint} closeModal={() => toggleModal('view')} />}
+      {isModalOpen.delete && <DeleteConfirmationPopup data={selectedComplaint} closeModal={() => toggleModal('delete')} />}
         </div>
 
         {/* Upcoming Activities */}
