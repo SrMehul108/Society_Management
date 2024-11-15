@@ -84,9 +84,14 @@ import Table from '../../../components/ComplaintTraking/Table';
 import EditRequestForm from '../../../components/ComplaintTraking/EditRequestForm';
 import ViewRequestPopup from '../../../components/ComplaintTraking/ViewRequestPopup';
 import DeleteConfirmationPopup from '../../../components/ComplaintTraking/DeleteRequestPopup';
+import { FaPlus, FaUser } from 'react-icons/fa';
+import AddNumberPopup from '../../../components/Dashboard/AddNumberPopup/AddNumberPopup';
+import DeletePopup from '../../../components/Dashboard/DeletePopup/DeletePopup';
 
 export const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Last month");
+  const [ComplaintselectedMonth, setComplaintSelectedMonth] = useState("Last month");
+  const [UpcomingselectedMonth, setUpcomingSelectedMonth] = useState("Last month");
 
   const balanceData = [
     { title: 'Total Balance', amount: '₹ 2,22,520', icon: '📘' },
@@ -99,11 +104,7 @@ export const Dashboard = () => {
     { name: 'Hanna Donin', phone: '+91 99587 33657', work: 'Plumber' },
   ];
 
-  const complaints = [
-    { name: 'Evelyn Harper', complaint: 'Unethical Behavior', date: '01/02/2024', priority: 'Medium', status: 'Open' },
-    { name: 'Evelyn Harper', complaint: 'Unethical Behavior', date: '01/02/2024', priority: 'Low', status: 'Pending' },
-    { name: 'Evelyn Harper', complaint: 'Unethical Behavior', date: '01/02/2024', priority: 'High', status: 'Solved' },
-  ];
+
 
   const maintenances = [
     { name: 'Roger Lubin', status: '2 Month Pending', amount: '₹ 5,000' },
@@ -133,13 +134,12 @@ export const Dashboard = () => {
       accessor: 'priority',
       render: (value) => (
         <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === 'High'
-              ? 'bg-red-200 text-white'
-              : value === 'Medium'
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'High'
+            ? 'bg-red-200 text-white'
+            : value === 'Medium'
               ? 'bg-blue-500 text-white'
               : 'bg-green-500 text-white'
-          }`}
+            }`}
         >
           {value}
         </span>
@@ -150,13 +150,12 @@ export const Dashboard = () => {
       accessor: 'status',
       render: (value) => (
         <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === 'Pending'
-              ? 'bg-yellow-100 text-yellow-800'
-              : value === 'Open'
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'Pending'
+            ? 'bg-yellow-100 text-yellow-800'
+            : value === 'Open'
               ? 'bg-blue-100 text-blue-800'
               : 'bg-green-100 text-green-800'
-          }`}
+            }`}
         >
           {value}
         </span>
@@ -220,6 +219,31 @@ export const Dashboard = () => {
     },
   ]);
 
+  //Add or edit  NUmber Popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMode, setPopupMode] = useState('add'); // 'add' or 'edit'
+  const [editData, setEditData] = useState(null);
+
+  const handleAddClick = () => {
+    setPopupMode('add');
+    setEditData(null);
+    setIsPopupOpen(true);
+  };
+
+  const handleEditClick = () => {
+    setPopupMode('edit');
+    setEditData({
+      fullName: 'John Doe',
+      phoneNumber: '+1 555 555 5555',
+      work: 'Engineer',
+    });
+    setIsPopupOpen(true);
+  };
+  const [isDeleteData, setIsDeleteData] = useState(false);
+  const handleDeleteClick = () =>{
+    setIsDeleteData(true);
+  }
+
   return (
     <div className=" bg-gray-100 p-2 space-y-6">
       {/* Dashboard Cards */}
@@ -234,10 +258,6 @@ export const Dashboard = () => {
           </div>
         ))}
       </div>
-
-
-
-
       {/* Contacts and Maintenance */}
       <div className="flex flex-wrap gap-4">
         {/* Chart Section */}
@@ -245,7 +265,7 @@ export const Dashboard = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Total Balance</h2>
             <select
-              className="border border-gray-300 rounded p-1"
+              className="border border-gray-300 rounded-lg p-1"
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
             >
@@ -260,7 +280,21 @@ export const Dashboard = () => {
         </div>
         {/* Contacts */}
         <div className="flex-1   bg-white rounded-lg shadow-md p-4 flex flex-col">
-          <h2 className="text-lg font-semibold">Important Numbers</h2>
+          <div className='flex justify-between items-center'>
+            <h2 className="text-lg font-semibold">Important Numbers</h2>
+            <button className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex  rounded-sm items-center"
+              onClick={handleAddClick}>
+              <FaPlus className="mr-2 text-white" /> {/* Icon - Optional */}
+              Add
+            </button>
+            {isPopupOpen && (
+              <AddNumberPopup
+                mode={popupMode}
+                initialData={editData}
+                onClose={() => setIsPopupOpen(false)}
+              />
+            )}
+          </div>
           <ul className="space-y-3 mt-3">
             {contacts.map((contact, index) => (
               <li key={index} className="flex justify-between items-center">
@@ -270,8 +304,11 @@ export const Dashboard = () => {
                   <p className="text-sm text-gray-500">{contact.work}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <button className="text-green-500">✏️</button>
-                  <button className="text-red-500">🗑️</button>
+                  <button className="text-red-500" onClick={handleDeleteClick}>🗑️</button>
+                  {isDeleteData && <DeletePopup  onClose={() => setIsDeleteData(false)} />}
+                 
+                  <button className="text-green-500"
+                    onClick={handleEditClick}>✏️</button>
                 </div>
               </li>
             ))}
@@ -280,7 +317,10 @@ export const Dashboard = () => {
 
         {/* Maintenance */}
         <div className="flex-1 bg-white rounded-lg shadow-md p-4 flex flex-col">
-          <h2 className="text-lg font-semibold">Pending Maintenances</h2>
+          <div className='flex justify-between items-center'>
+            <h2 className="text-lg font-semibold">Pending Maintenances</h2>
+            <p><a href="#">View All</a></p>
+          </div>
           <ul className="space-y-3 mt-3">
             {maintenances.map((item, index) => (
               <li key={index} className="flex justify-between items-center">
@@ -298,50 +338,38 @@ export const Dashboard = () => {
       <div className="flex flex-wrap gap-4">
         {/* Complaint List */}
         <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto w-3/4">
-          <h2 className="text-lg font-semibold mb-4">Complaint List</h2>
-          {/* <table className="min-w-full bg-white rounded-lg shadow-md">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-4 text-left">Complainer Name</th>
-                <th className="p-4 text-left">Complaint Name</th>
-                <th className="p-4 text-left">Date</th>
-                <th className="p-4 text-left">Priority</th>
-                <th className="p-4 text-left">Complain Status</th>
-                <th className="p-4 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {complaints.map((item, index) => (
-                <tr key={index} className="border-t">
-                  <td className="p-4">{item.name}</td>
-                  <td className="p-4">{item.complaint}</td>
-                  <td className="p-4">{item.date}</td>
-                  <td className="p-4">
-                    <span className={`text-xs font-medium px-2 py-1 rounded ${item.priority === 'High' ? 'bg-red-100 text-red-600' :
-                      item.priority === 'Medium' ? 'bg-yellow-100 text-yellow-600' : 'bg-green-100 text-green-600'
-                      }`}>
-                      {item.priority}
-                    </span>
-                  </td>
-                  <td className="p-4">{item.status}</td>
-                  <td className="p-4">
-                    <button className="text-blue-500">🔍</button>
-                    <button className="text-green-500">✏️</button>
-                    <button className="text-red-500">🗑️</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
-           <Table columns={columns} data={complaintsTable} actions={actions} />
-           {isModalOpen.edit && <EditRequestForm data={selectedComplaint} closeModal={() => toggleModal('edit')} />}
-      {isModalOpen.view && <ViewRequestPopup data={selectedComplaint} closeModal={() => toggleModal('view')} />}
-      {isModalOpen.delete && <DeleteConfirmationPopup data={selectedComplaint} closeModal={() => toggleModal('delete')} />}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold ">Complaint List</h2>
+            <select
+              className="border border-gray-300 rounded-lg p-1"
+              value={ComplaintselectedMonth}
+              onChange={(e) => setComplaintSelectedMonth(e.target.value)}
+            >
+              <option>Last week</option>
+              <option>Last month</option>
+              <option>Last year</option>
+            </select>
+          </div>
+          <Table columns={columns} data={complaintsTable} actions={actions} />
+          {isModalOpen.edit && <EditRequestForm data={selectedComplaint} closeModal={() => toggleModal('edit')} />}
+          {isModalOpen.view && <ViewRequestPopup data={selectedComplaint} closeModal={() => toggleModal('view')} />}
+          {isModalOpen.delete && <DeleteConfirmationPopup data={selectedComplaint} closeModal={() => toggleModal('delete')} />}
         </div>
 
         {/* Upcoming Activities */}
         <div className="bg-white rounded-lg shadow-md p-4   flex-1  flex-wrap gap-4">
-          <h2 className=" pb-4 ">Upcoming Activity</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className=" text-lg font-semibold">Upcoming Activity</h2>
+            <select
+              className="border border-gray-300 rounded-lg p-1"
+              value={UpcomingselectedMonth}
+              onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
+            >
+              <option>Last week</option>
+              <option>Last month</option>
+              <option>Last year</option>
+            </select>
+          </div>
           <ul className="space-y-3">
             {activities.map((activity, index) => (
               <li key={index} className="flex justify-between items-center">
