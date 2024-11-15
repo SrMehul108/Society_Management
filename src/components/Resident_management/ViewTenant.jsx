@@ -3,11 +3,6 @@ import owner from '../../assets/image/owner.jpg'
 import { EyeOffIcon } from 'lucide-react';
 import { userRegistration } from '../../apis/api'; 
 
-import React, { useState } from 'react';
-import owner from '../../assets/image/owner.jpg'
-import { EyeOffIcon } from 'lucide-react';
-import { userRegistration } from '../../apis/api'; 
-
 export const ViewTenant = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [tenantDetails, setTenantDetails] = useState(null);
