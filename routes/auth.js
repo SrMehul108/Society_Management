@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Passport = require("passport");
-const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword } = require('../controllers/adminController');
+const upload = require('../services/multer.service');
+const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword, editProfile } = require('../controllers/adminController');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/verify-otp', verifyOtp);
 router.post('/reset-password', resetPassword);
 router.use('/user', Passport.authenticate('jwt', { failureMessage: 'You are not logged in' }), require('./user'));
+router.post('/edit-profile', Passport.authenticate('jwt', { failureMessage: 'You are not logged in' }), upload.fields([{ name: 'admin_image', maxCount: 1 }]), editProfile);
 module.exports = router;

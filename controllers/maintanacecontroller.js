@@ -37,7 +37,7 @@ module.exports.viewMaintance = async (req, res) => {
     try {
         const societyId = req.user.societyId;
         if (societyId) {
-            let maintance = await Maintenance.find({ societyId: societyId });
+            let maintance = await Maintenance.find({ societyId: societyId, isActive: true });
             if (maintance) {
                 return res.status(200).json({ message: "Maintance Detailed fetched succesfully", status: 1, data: maintance });
             }
@@ -112,3 +112,40 @@ module.exports.maintenanceDetail = async (req, res) => {
     }
 };
 
+module.exports.editMaintenance = async (req, res) => {
+    try {
+        const { Id } = req.params;
+        if (Id && req.body !== "") {
+            const updateData = await Maintenance.findByIdAndUpdate(Id, req.body, { new: true });
+            if (updateData) {
+                return res.status(200).json({ message: "data Update Successfully", status: 1, data: updateData });
+            }
+            return res.status(400).json({ message: "There is an error", status: 0 });
+        }
+        return res.status(400).json({ message: "Something went Wrong", status: 0 });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+    }
+}
+
+module.exports.deleteMaintenance = async (req, res) => {
+    try {
+        const { Id } = req.params;
+        if (Id) {
+            const data = await Maintenance.findById(Id);
+            if (data) {
+                data.isActive = false;
+                const deleted = await Maintenance.findByIdAndUpdate(Id, data);
+                if (deleted) {
+                    return res.status(200).json({ message: "Maintenance Delete Succesfully" });
+                }
+                return res.status(400).json({ message: "Something went wrong", data: 0 });
+            }
+            return res.status(400).json({ message: 'No data found', status: 0 });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+    }
+}

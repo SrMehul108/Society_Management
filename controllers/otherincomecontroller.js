@@ -32,7 +32,7 @@ module.exports.viewIncome = async (req, res) => {
             }
             return res.status(400).json({ message: 'No data found with the given id', status: 0 });
         }
-        const allData = await OtherIncome.find({ societyId: req.user.societyId });
+        const allData = await OtherIncome.find({ societyId: req.user.societyId, isActive: true });
         if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
         return res.status(400).json({ message: 'No data found', status: 0 });
     } catch (error) {

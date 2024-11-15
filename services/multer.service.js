@@ -9,6 +9,9 @@ const storage = new CloudinaryStorage({
     let folderName;
 
     switch (file.fieldname) {
+      case 'admin_image':
+        folderName = 'adminImages';
+        break;
       case 'aadharImage_front':
       case 'aadharImage_back':
         folderName = 'aadharImages';

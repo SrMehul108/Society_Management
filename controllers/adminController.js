@@ -2,6 +2,7 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const cloudinaryConfig = require('../config/cloudinaryConfig');
 
 module.exports.registerUser = async (req, res) => {
     try {
@@ -34,7 +35,6 @@ module.exports.registerUser = async (req, res) => {
                         })
                         return res.status(200).json({ message: "Admin Registered Successfully", status: 1, data: newUser });
                     } else {
-                        console.log(error.message);
                         return res.status(400).json({ message: "Something Wrong", status: 0 });
                     }
                 }
@@ -99,7 +99,7 @@ module.exports.forgotPassword = async (req, res) => {
 
         await transporter.sendMail({
             from: process.env.EMAIL,
-            to: checkmail.email, // Use checkmail.email instead of req.cookies.email
+            to: checkmail.email,
             subject: "Forgot Password OTP ✔",
             text: `Hello ${checkmail.name}`,
             html: `<p>Your OTP is ${otp}</p>`,
@@ -157,5 +157,34 @@ module.exports.resetPassword = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.status(400).json({ message: "Something Wrong", status: 0 });
+    }
+}
+
+module.exports.editProfile = async (req, res) => {
+    try {
+        if (req.user) {
+            let olddata = await Admin.findOne({ _id: req.user._id });
+            if (req.body == '') {
+                return res.status(400).json({ message: 'Something went wrong', status: 0 });
+            }
+            if (req.files) {
+                if (req.files?.admin_image?.[0]?.path) {
+                    if (olddata.admin_image) {
+                        const publicId = olddata.admin_image.split('/').pop().split('.')[0];
+                        await cloudinaryConfig.uploader.destroy(`adminImages/${publicId}`);
+                    }
+                    req.body.admin_image = req.files.admin_image[0].path;
+                }
+            }
+            const updatedData = await Admin.findByIdAndUpdate(req.user._id, req.body, { new: true });
+            if (updatedData) {
+                return res.status(200).json({ message: 'Data Updated Succesfully', status: 1, data: updatedData })
+            }
+            return res.status(400).json({ message: 'Something went Wrong', status: 0 });
+        }
+        return res.status(400).json({ message: 'UnAuthorized', status: 0 });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error", status: 0 });
     }
 }

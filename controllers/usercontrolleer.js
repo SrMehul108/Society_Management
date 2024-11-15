@@ -135,7 +135,7 @@ module.exports.viewUser = async (req, res) => {
                 return res.status(400).json({ message: "User not found", status: 0, data: [] });
             }
         }
-        const userData = await User.find({ societyId: req.user.societyId });
+        const userData = await User.find({ societyId: req.user.societyId, isActive: true });
         if (userData && userData.length > 0) {
             const formattedData = userData.map(user => ({
                 ...user.toObject(),
