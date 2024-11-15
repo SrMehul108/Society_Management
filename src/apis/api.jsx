@@ -95,3 +95,27 @@ export const resetPassword = async (rpass) => {
         throw error.response ? error.response.data : new Error('Network Error');
     }
 };
+
+export const userRegistration = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/auth/user/insertUser`);
+        if (response.status === 200 && response.data?.status === 1) {
+            return {
+                success: true,
+                data: response.data.data,
+            };
+        } else {
+            return {
+                success: false,
+                message: response.data?.message || 'Unexpected error occurred.',
+            };
+        }
+    } catch (error) {
+        const errorMessage =
+            error.response?.data?.message || 'An error occurred. Please try again.';
+        return {
+            success: false,
+            message: errorMessage,
+        };
+    }
+};
