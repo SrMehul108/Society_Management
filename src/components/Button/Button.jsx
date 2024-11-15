@@ -48,16 +48,33 @@ export const TenantButton = ({ label = "Tenant" }) => {
   export const PendingButton = ({ label = "Pending" }) => {
     return (
         <button className="flex items-center px-4 py-1.5 bg-yellow-50 text-yellow-600 font-medium rounded-full">
-        <FaUser className="mr-2 text-yellow-600" /> {/* Icon - Optional */}
+       
+        {label}
+      </button>
+    );
+  };
+  export const SolveButton = ({ label = "Solve" }) => {
+    return (
+        <button className="flex items-center px-4 py-1.5 bg-green-50 text-green-600 font-medium rounded-full">
+      
+        {label}
+      </button>
+    );
+  };
+  export const OpenButton = ({ label = "Open" }) => {
+    return (
+        <button className="flex items-center px-6 py-1.5 bg-blue-50 text-blue-600 font-medium rounded-full">
+       
         {label}
       </button>
     );
   };
 
+
   export const DoneButton = ({ label = "Done" }) => {
     return (
         <button className="flex items-center px-4 py-1.5 bg-emerald-50 text-emerald-800 font-medium rounded-full">
-        <FaUser className="mr-2 text-emerald-800" /> {/* Icon - Optional */}
+        
         {label}
       </button>
     );
@@ -65,7 +82,7 @@ export const TenantButton = ({ label = "Tenant" }) => {
   export const OnlineButton = ({ label = "Online" }) => {
     return (
         <button className="flex items-center px-4 py-1.5 bg-gray-100 text-blue-600 font-medium rounded-full">
-        <FaUser className="mr-2 text-blue-600" /> {/* Icon - Optional */}
+       
         {label}
       </button>
     );
@@ -73,7 +90,7 @@ export const TenantButton = ({ label = "Tenant" }) => {
   export const CashButton = ({ label = "Cash" }) => {
     return (
         <button className="flex items-center px-4 py-1.5 bg-gray-100 text-black font-medium rounded-full">
-        <FaUser className="mr-2 text-black" /> {/* Icon - Optional */}
+       
         {label}
       </button>
     );
@@ -87,4 +104,27 @@ export const TenantButton = ({ label = "Tenant" }) => {
     );
   };
 
-  
+  export const MediumButton = ({ label = "Medium" }) => {
+    return (
+        <button className="flex items-center px-4 py-1.5 bg-blue-500 text-white font-medium rounded-full">
+        
+        {label}
+      </button>
+    );
+  };
+  export const LowButton = ({ label = "Low" }) => {
+    return (
+        <button className="flex items-center px-7 py-1.5 bg-green-500 text-white font-medium rounded-full">
+        
+        {label}
+      </button>
+    );
+  };
+  export const HighButton = ({ label = "High" }) => {
+    return (
+        <button className="flex items-center px-4 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        
+        {label}
+      </button>
+    );
+  };

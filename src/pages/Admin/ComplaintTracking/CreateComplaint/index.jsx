@@ -70,8 +70,8 @@ export const CreactComplaint = () => {
             value === 'High'
               ? 'bg-red-200 text-white'
               : value === 'Medium'
-              ? 'bg-blue-500 text-white'
-              : 'bg-green-500 text-white'
+              ? 'bg-blue-500 text-white '
+              : 'bg-green-500 text-white px-6'
           }`}
         >
           {value}

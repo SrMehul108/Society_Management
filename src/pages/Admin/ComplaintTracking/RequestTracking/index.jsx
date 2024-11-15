@@ -6,6 +6,7 @@ import RequestForm from '../../../../components/ComplaintTraking/RequestTracking
 import RequestEdit from '../../../../components/ComplaintTraking/RequestTracking/RequestEdit';
 import RequestView from '../../../../components/ComplaintTraking/RequestTracking/RequestView';
 import DeleteRequest from '../../../../components/ComplaintTraking/RequestTracking/DeleteRequest';
+import {  HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton,  } from '../../../../components/Button/Button';
 
 export const RequestComplaint = () => {
 
@@ -133,14 +134,23 @@ const [isViewOpen, setIsViewOpen] = useState(false);
                 <td className="p-3 text-sm text-gray-700">{complaint.requestData}</td>
                 <td className="p-3 text-sm text-gray-700"><span className='text-green-600 font-bold'>{complaint.unit }</span>{complaint.unitNumber}</td>
                 <td className="p-3 text-sm">
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityBadge(complaint.priority)}`}>
-                    {complaint.priority}
-                  </span>
+                {complaint.priority === 'Medium' ? (
+                                        <MediumButton />
+                                    ) : complaint.priority === 'Low' ? (
+                                        <LowButton />
+                                    ) : (
+                                        <HighButton />
+                                    )}
                 </td>
                 <td className="p-3 text-sm">
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusBadge(complaint.status)}`}>
-                    {complaint.status}
-                  </span>
+                 
+                  {complaint.status === 'Pending' ? (
+                                        <PendingButton />
+                                    ) : complaint.status === 'Solve' ? (
+                                        <SolveButton />
+                                    ) : (
+                                        <OpenButton />
+                                    )}
                 </td>
                 <td className="p-3 text-sm flex gap-2">
                   <button className="text-green-500 hover:text-green-700"
