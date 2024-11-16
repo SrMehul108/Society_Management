@@ -220,6 +220,16 @@ export const Dashboard = () => {
       priority: 'Low',
       status: 'Open',
     },
+    {
+      id: 3,
+      complainerName: 'Esther Howard',
+      complaintName: 'Preventive Measures',
+      description: 'Regular waste collection services.',
+      unit: 'B',
+      unitNumber: '1005',
+      priority: 'High',
+      status: 'Solve',
+    },
   ]);
 
   //Add or edit  NUmber Popup

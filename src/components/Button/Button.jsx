@@ -55,7 +55,7 @@ export const TenantButton = ({ label = "Tenant" }) => {
   };
   export const SolveButton = ({ label = "Solve" }) => {
     return (
-        <button className="flex items-center px-4 py-1.5 bg-green-50 text-green-600 font-medium rounded-full">
+        <button className="flex items-center px-5 py-1.5 bg-green-100 text-green-600 font-medium rounded-full">
       
         {label}
       </button>
@@ -122,7 +122,7 @@ export const TenantButton = ({ label = "Tenant" }) => {
   };
   export const HighButton = ({ label = "High" }) => {
     return (
-        <button className="flex items-center px-4 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
         
         {label}
       </button>
