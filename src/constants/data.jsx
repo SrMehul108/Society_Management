@@ -3,7 +3,7 @@ import { Icons } from "@/constants/icons";
 export const AdminSidbar = [
   {
     title: "Dashboard",
-    url: "/admin",
+    url: "/admin/dashboard",
     icon: Icons.Dashboard,
   },
   {

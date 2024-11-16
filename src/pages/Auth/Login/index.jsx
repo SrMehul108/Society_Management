@@ -26,8 +26,10 @@ export const  Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(formData); // Call the login API
-      navigate("/dashboard"); // Redirect on successful login
+      const response = await login(formData);
+      if (response.status==1) {
+        navigate("/admin/dashboard"); 
+      }
     } catch (error) {
       console.error("Login failed:", error);
       setShowError(true); // Show error message if login fails
