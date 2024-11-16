@@ -89,7 +89,7 @@ const DashStackRoute = createBrowserRouter(
               element: <DashboardLayout items={AdminSidbar} />,
               children: [
                 {
-                  path: "",
+                  path: "dashboard",
                   element: <AdminDashBoard />,
                 },
                 {

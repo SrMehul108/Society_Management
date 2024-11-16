@@ -78,7 +78,7 @@ export const RegistrationForm = () => {
         societyId: "",
       });
       setSelectedSociety("");
-      navigate("/");
+      navigate("/admin/dashboard");
     } else {
       alert(data.message);
     }

@@ -131,7 +131,7 @@ const Tenant = () => {
                                         placeholder="Enter full name"
                                         className="border border-gray-300 p-2 rounded-md"
                                         value={owner.fullName}
-                                        onChange={(e) => handleChange('fullName', e.target.value)}
+                                        onChange={(e) => handleTenantChange('fullName', e.target.value)}
                                     />
                                 </div>
                                 <div className="flex flex-col w-1/3">
@@ -403,7 +403,7 @@ const Tenant = () => {
                                                         <select
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.type}
-                                                            onChange={(e) => handleInputChange(index, 'type', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'type', e.target.value)}
                                                         >
                                                             <option value="">Select Type</option>
                                                             <option value="Two Wheelers">Two Wheelers</option>
@@ -417,7 +417,7 @@ const Tenant = () => {
                                                             placeholder="Vehicle Name"
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.name}
-                                                            onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'name', e.target.value)}
                                                         />
                                                     </div>
                                                     <div className="flex flex-col  w-1/3 ms-1">
@@ -427,7 +427,7 @@ const Tenant = () => {
                                                             placeholder="Vehicle Number"
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.number}
-                                                            onChange={(e) => handleInputChange(index, 'number', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'number', e.target.value)}
                                                         />
                                                     </div>
                                                 </div>

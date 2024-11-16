@@ -1,81 +1,4 @@
-// import React from 'react'
-// import { BarChart3, LayoutDashboard, DollarSign, FileText, Bell, ShieldCheck, Banknote , LogOut } from 'lucide-react'
 
-
-// export const Dashboard = () => {
-//   return (
-//     <>
-//         {/* Dashboard Content */}
-//         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4">
-//             {/* Summary Cards */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-2">Total Balance</h3>
-//                     <p className="text-2xl font-bold">₹ 2,22,520</p>
-//                 </div>
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-2">Total Income</h3>
-//                     <p className="text-2xl font-bold">₹ 55,000</p>
-//                 </div>
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-2">Total Expense</h3>
-//                     <p className="text-2xl font-bold">₹ 20,550</p>
-//                 </div>
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-2">Total Unit</h3>
-//                     <p className="text-2xl font-bold">₹ 20,550</p>
-//                 </div>
-//             </div>
-
-//             {/* Chart and Important Numbers */}
-//             <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-//                 <div className=" bg-white p-5 rounded-lg shadow ">
-//                     <h3 className="text-lg font-semibold mb-4">Total Balance</h3>
-//                     <div className="h-64 flex items-center justify-center">
-//                         <BarChart3 className="w-full h-full text-blue-500" />
-//                     </div>
-//                 </div>
-//                 <div className="bg-white p-4  rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-4">Important Numbers</h3> <span><button type='button' className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-700">Add</button></span>
-
-//                     {/* Add your important numbers content here */}
-//                 </div>
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-4">Pending Maintenance</h3>
-//                     {/* Add your important numbers content here */}
-//                 </div>
-//             </div>
-
-//             {/* Complaint List */}
-//             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-//                 <div className="bg-white p-4 rounded-lg shadow mb-8">
-//                     <h3 className="text-lg font-semibold mb-4">Complaint List</h3>
-//                     <table className="min-w-full">
-//                         <thead>
-//                             <tr>
-//                                 <th className="text-left">Complainer Name</th>
-//                                 <th className="text-left">Complaint Name</th>
-//                                 <th className="text-left">Date</th>
-//                                 <th className="text-left">Priority</th>
-//                                 <th className="text-left">Complaint Status</th>
-//                                 <th className="text-left">Action</th>
-//                             </tr>
-//                         </thead>
-//                         <tbody>
-//                             {/* Add your complaint list items here */}
-//                         </tbody>
-//                     </table>
-//                 </div>
-
-//                 <div className="bg-white p-4 rounded-lg shadow">
-//                     <h3 className="text-lg font-semibold mb-4">Upcoming Activity</h3>
-//                     {/* Add your upcoming activity content here */}
-//                 </div>
-//             </div>
-//         </main>
-//     </>
-// )
-// }
 
 
 
@@ -87,6 +10,7 @@ import DeleteConfirmationPopup from '../../../components/ComplaintTraking/Delete
 import { FaPlus, FaUser } from 'react-icons/fa';
 import AddNumberPopup from '../../../components/Dashboard/AddNumberPopup/AddNumberPopup';
 import DeletePopup from '../../../components/Dashboard/DeletePopup/DeletePopup';
+import { HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton } from '../../../components/Button/Button';
 
 export const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Last month");
@@ -129,37 +53,39 @@ export const Dashboard = () => {
         </span>
       ),
     },
+  
     {
       header: 'Priority',
       accessor: 'priority',
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'High'
-            ? 'bg-red-200 text-white'
-            : value === 'Medium'
-              ? 'bg-blue-500 text-white'
-              : 'bg-green-500 text-white'
-            }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) =>
+        value === 'High' ? (
+          <HighButton />
+        ) : value === 'Medium' ? (
+          <MediumButton />
+        ) : value === 'Low' ? (
+          <LowButton />
+        ) : (
+          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
+            {value}
+          </span>
+        ),
     },
-    {
+    
+     {
       header: 'Status',
-      accessor: 'status',
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'Pending'
-            ? 'bg-yellow-100 text-yellow-800'
-            : value === 'Open'
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-green-100 text-green-800'
-            }`}
-        >
-          {value}
-        </span>
-      ),
+       accessor: 'status',
+       render: (value) =>  
+      value === 'Pending' ? (
+          <PendingButton />
+        ) : value === 'Open' ? (
+          <OpenButton />
+        ) : value === 'Solve' ? (
+          <SolveButton />
+        ) : (
+          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
+            {value}
+          </span>
+        ),
     },
   ];
 
@@ -216,6 +142,16 @@ export const Dashboard = () => {
       unitNumber: '1002',
       priority: 'Low',
       status: 'Open',
+    },
+    {
+      id: 3,
+      complainerName: 'Esther Howard',
+      complaintName: 'Preventive Measures',
+      description: 'Regular waste collection services.',
+      unit: 'B',
+      unitNumber: '1005',
+      priority: 'High',
+      status: 'Solve',
     },
   ]);
 
