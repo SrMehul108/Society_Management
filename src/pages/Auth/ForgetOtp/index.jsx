@@ -20,38 +20,44 @@ export const OtpPage = () => {
   }, [isActive, timer]);
 
   const handleChange = (e, index) => {
-    const value = e.target.value.replace(/\D/, ""); // Allow only digits
+    const value = e.target.value.replace(/\D/, "");
     if (value.length <= 1) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
       if (value && index < otp.length - 1) {
-        document.getElementById(`otp-input-${index + 1}`).focus(); // Move to the next input
+        document.getElementById(`otp-input-${index + 1}`).focus();
       }
     }
   };
 
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
-      document.getElementById(`otp-input-${index - 1}`).focus(); // Move to the previous input
+      document.getElementById(`otp-input-${index - 1}`).focus();
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setTimer(60);
     setIsActive(true);
     setOtp(Array(6).fill(""));
+    try {
+      const response = await otpPage.resend();
+      alert("OTP has been resent to your phone!");
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      alert("Failed to resend OTP. Please try again.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await otpPage(otp);
-    alert(`OTP Submitted: ${otp.join("")}`);
-    }
-    catch (error) {
-      console.error("Otp failed:", error);
-      setShowError(true);
+      alert(`OTP Submitted: ${otp.join("")}`);
+    } catch (error) {
+      console.error("OTP submission failed:", error);
+      alert("Failed to submit OTP. Please try again.");
     }
   };
 
@@ -63,12 +69,7 @@ export const OtpPage = () => {
       <h5 className="text-sm text-center mb-4">
         Please enter the 6 digit code sent to your phone number.
       </h5>
-      <form
-        className="space-y-6"
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
         <div className="flex justify-center space-x-2 mb-4">
           {otp.map((digit, index) => (
             <input
