@@ -99,6 +99,8 @@ export const Owner = () => {
         setVehicles(updatedVehicles);
     };
 
+  
+
     return (
 
         <>
@@ -110,7 +112,7 @@ export const Owner = () => {
                             <button className="bg-orange-500 text-white px-4 py-2 rounded-tl-md rounded-bl-md">Owner</button>
                             <Link to={"/admin/residents/TenateForm"} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-tr-md rounded-br-md">Tenant</Link>
                         </div>
-                       
+
                         <div className="bg-white shadow-md rounded-lg p-6">
                             <div className='flex w-full m-0'>
                                 <div>
@@ -353,7 +355,7 @@ export const Owner = () => {
                                                         <select
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.type}
-                                                            onChange={(e) => handleInputChange(index, 'type', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'type', e.target.value)}
                                                         >
                                                             <option value="">Select Type</option>
                                                             <option value="Two Wheelers">Two Wheelers</option>
@@ -367,7 +369,7 @@ export const Owner = () => {
                                                             placeholder="Vehicle Name"
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.name}
-                                                            onChange={(e) => handleInputChange(index, 'name', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'name', e.target.value)}
                                                         />
                                                     </div>
                                                     <div className="flex flex-col  w-1/3 ms-1">
@@ -377,13 +379,19 @@ export const Owner = () => {
                                                             placeholder="Vehicle Number"
                                                             className="border border-gray-300 p-2 rounded-md"
                                                             value={vehicle.number}
-                                                            onChange={(e) => handleInputChange(index, 'number', e.target.value)}
+                                                            onChange={(e) => handleChange(index, 'number', e.target.value)}
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
+                                  
+                                 
+
+
+
+
                                 </div>
                             </div>
                         </div>
