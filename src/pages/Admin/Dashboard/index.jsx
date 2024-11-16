@@ -87,6 +87,7 @@ import DeleteConfirmationPopup from '../../../components/ComplaintTraking/Delete
 import { FaPlus, FaUser } from 'react-icons/fa';
 import AddNumberPopup from '../../../components/Dashboard/AddNumberPopup/AddNumberPopup';
 import DeletePopup from '../../../components/Dashboard/DeletePopup/DeletePopup';
+import { HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton } from '../../../components/Button/Button';
 
 export const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Last month");
@@ -129,37 +130,39 @@ export const Dashboard = () => {
         </span>
       ),
     },
+  
     {
       header: 'Priority',
       accessor: 'priority',
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'High'
-            ? 'bg-red-200 text-white'
-            : value === 'Medium'
-              ? 'bg-blue-500 text-white'
-              : 'bg-green-500 text-white'
-            }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) =>
+        value === 'High' ? (
+          <HighButton />
+        ) : value === 'Medium' ? (
+          <MediumButton />
+        ) : value === 'Low' ? (
+          <LowButton />
+        ) : (
+          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
+            {value}
+          </span>
+        ),
     },
-    {
+    
+     {
       header: 'Status',
-      accessor: 'status',
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === 'Pending'
-            ? 'bg-yellow-100 text-yellow-800'
-            : value === 'Open'
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-green-100 text-green-800'
-            }`}
-        >
-          {value}
-        </span>
-      ),
+       accessor: 'status',
+       render: (value) =>  
+      value === 'Pending' ? (
+          <PendingButton />
+        ) : value === 'Open' ? (
+          <OpenButton />
+        ) : value === 'Solve' ? (
+          <SolveButton />
+        ) : (
+          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
+            {value}
+          </span>
+        ),
     },
   ];
 
