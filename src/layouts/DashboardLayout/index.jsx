@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Outlet } from "react-router";
 import { DSSidebar } from "@/components";
@@ -8,6 +9,7 @@ export const DashboardLayout = ({ items }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [notificationType, setNotificationType] = useState('success');
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Added state for menu toggle
 
   const handleButtonClick = () => {
     setNotificationMessage('This is a notification!');
@@ -20,9 +22,14 @@ export const DashboardLayout = ({ items }) => {
   };
 
   return (
-    <div className="flex  min-h-screen">
-      <DSSidebar items={items} />
-      <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex min-h-screen">
+      {/* Fixed Sidebar */}
+      <div className="w-64 bg-gray-800 h-screen fixed top-0 left-0">
+        <DSSidebar items={items} />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col pl-64"> {/* Padding to offset fixed sidebar */}
         {/* Top Bar */}
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
           <button
@@ -86,11 +93,10 @@ export const DashboardLayout = ({ items }) => {
               <span>Moni Roy</span>
             </div>
           </div>
-
         </header>
 
         {/* Main content area for the Outlet */}
-        <main className="flex-1 p-4 overflow-auto">
+        <main className="flex-1 p-4 overflow-auto max-h-screen"> {/* Allow scrolling of content */}
           <Outlet />
         </main>
       </div>
