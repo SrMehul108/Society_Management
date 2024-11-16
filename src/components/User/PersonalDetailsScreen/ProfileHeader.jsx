@@ -7,7 +7,7 @@ const ProfileHeader = ({ owner, tenant }) => {
   const activeData = activeTab === 'Owner' ? owner : tenant;
 
   return (
-    <div className="p-4 sm:p-6 rounded-lg shadow-md">
+    <div className="rounded-lg pb-5">
       {/* Tab Selector */}
       <div className="flex">
         <button
