@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { login } from "@/apis/api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Icons } from "@/constants";
 import "@/assets/css/login/login.css";
 
-export const  Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isFormValid, setIsFormValid] = useState(false);
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,8 +28,8 @@ export const  Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData);
-      if (response.status==1) {
-        navigate("/admin/dashboard"); 
+      if (response.status == 1) {
+        navigate("/admin/dashboard");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -140,15 +141,17 @@ export const  Login = () => {
         </div>
       </form>
 
-      <p className="mt-4 text-center text-sm text-gray-600">
-        Don't have an account?{" "}
-        <Link
-          to="/admin/register"
-          className="font-medium text-orange-600 hover:text-orange-500"
-        >
-          Registration
-        </Link>
-      </p>
+      {location.pathname === "/admin/login" && (
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <Link
+            to="/admin/register"
+            className="font-medium text-orange-600 hover:text-orange-500"
+          >
+            Registration
+          </Link>
+        </p>
+      )}
     </>
   );
-}
+};

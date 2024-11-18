@@ -181,7 +181,13 @@ const DashStackRoute = createBrowserRouter(
             },
             {
               element: <AuthLayout />,
-              children: [{ path: "register", element: <Registration /> }],
+              children: [
+                { path: "register", element: <Registration /> },
+                {
+                  path: "login",
+                  element: <Login />,
+                },
+              ],
             },
           ],
         },
@@ -222,7 +228,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                   ],
                 },
-               
+
                 {
                   path: "SecurityProtocols",
                   element: "Security Protocols",
