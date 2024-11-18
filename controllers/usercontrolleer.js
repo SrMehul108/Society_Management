@@ -40,7 +40,7 @@ module.exports.insertUser = async (req, res) => {
                 var vehicles = JSON.parse(req.body.vehicles);
             }
             if (req.files) {
-                if(req.files?.profile_image?.[0]?.path){
+                if (req.files?.profile_image?.[0]?.path) {
                     data.profile_image = req.files.profile_image[0].path
                 }
                 if (req.files?.aadharImage_front?.[0]?.path) {
@@ -157,10 +157,10 @@ module.exports.viewUser = async (req, res) => {
 
 module.exports.editUser = async (req, res) => {
     try {
-        const { Id } = req.params;
-        if (Id) {
+        const { id } = req.params;
+        if (id) {
             if (req.body) {
-                const existingData = await User.findOne({ _id: Id, societyId: req.user.societyId });
+                const existingData = await User.findOne({ _id: id, societyId: req.user.societyId });
                 if (existingData) {
                     const data = {
                         fullName: req.body.fullName,
@@ -192,7 +192,7 @@ module.exports.editUser = async (req, res) => {
                                 await Member.findByIdAndUpdate(member._id, member);
                                 updatedMemberIds.push(member._id);
                             } else {
-                                const newMember = new Member({ ...member, UserId: Id });
+                                const newMember = new Member({ ...member, UserId: id });
                                 const savedMember = await newMember.save();
                                 updatedMemberIds.push(savedMember._id);
                             }
@@ -207,7 +207,7 @@ module.exports.editUser = async (req, res) => {
                                 await Vehicle.findByIdAndUpdate(vehicle._id, vehicle);
                                 updatedVehicleIds.push(vehicle._id);
                             } else {
-                                const newVehicle = new Vehicle({ ...vehicle, UserId: Id });
+                                const newVehicle = new Vehicle({ ...vehicle, UserId: id });
                                 const savedVehicle = await newVehicle.save();
                                 updatedVehicleIds.push(savedVehicle._id);
                             }
@@ -215,7 +215,7 @@ module.exports.editUser = async (req, res) => {
                         data.vehicles = updatedVehicleIds;
                     }
                     if (req.files) {
-                        if(req.files?.profile_image?.[0]?.path){
+                        if (req.files?.profile_image?.[0]?.path) {
                             if (existingData.profile_image) {
                                 const publicId = existingData.profile_image.split('/').pop().split('.')[0];
                                 await cloudinaryConfig.uploader.destroy(`profileImages/${publicId}`);
@@ -251,7 +251,7 @@ module.exports.editUser = async (req, res) => {
                             data.rentalAgreementImage = req.files.rentalAgreementImage[0].path;
                         }
                     }
-                    const updatedUser = await User.findByIdAndUpdate(Id, data, { new: true });
+                    const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
                     if (updatedUser) {
                         return res.status(200).json({ message: "User updated successfully", status: 1, data: updatedUser });
                     } else {
@@ -264,7 +264,7 @@ module.exports.editUser = async (req, res) => {
                 return res.status(400).json({ message: "Data is Missing", status: 0 });
             }
         } else {
-            return res.status(400).json({ message: "Parameter Id is Missing", status: 0 });
+            return res.status(400).json({ message: "Parameter id is Missing", status: 0 });
         }
     } catch (error) {
         console.error(error);
@@ -274,12 +274,12 @@ module.exports.editUser = async (req, res) => {
 
 module.exports.deleteUser = async (req, res) => {
     try {
-        var { Id } = req.params;
-        if (Id) {
-            const userData = await User.findOne({ _id: Id, societyId: req.user.societyId });
+        var { id } = req.params;
+        if (id) {
+            const userData = await User.findOne({ _id: id, societyId: req.user.societyId });
             if (userData) {
                 userData.isActive = false;
-                const updateData = await User.findByIdAndUpdate(Id, userData, { new: true });
+                const updateData = await User.findByIdAndUpdate(id, userData, { new: true });
                 if (updateData) {
                     return res.status(200).json({ message: "User Vacate Successfully", status: 1 });
                 }
