@@ -192,6 +192,10 @@ module.exports.editUser = async (req, res) => {
                                 await Member.findByIdAndUpdate(member._id, member);
                                 updatedMemberIds.push(member._id);
                             } else {
+                                const existingMember = await Member.findOne({ email: member.email });
+                                if (existingMember) {
+                                    return res.status(400).json({ message: `Member with email ${member.email} already exists`, status: 0 });
+                                }
                                 const newMember = new Member({ ...member, UserId: id });
                                 const savedMember = await newMember.save();
                                 updatedMemberIds.push(savedMember._id);
@@ -207,6 +211,10 @@ module.exports.editUser = async (req, res) => {
                                 await Vehicle.findByIdAndUpdate(vehicle._id, vehicle);
                                 updatedVehicleIds.push(vehicle._id);
                             } else {
+                                const existingMember = await Member.findOne({ vehicleNumber: vehicle.vehicleNumber });
+                                if (existingMember) {
+                                    return res.status(400).json({ message: `Member with email ${vehicle.vehicleNumber} already exists`, status: 0 });
+                                }
                                 const newVehicle = new Vehicle({ ...vehicle, UserId: id });
                                 const savedVehicle = await newVehicle.save();
                                 updatedVehicleIds.push(savedVehicle._id);
@@ -220,7 +228,7 @@ module.exports.editUser = async (req, res) => {
                                 const publicId = existingData.profile_image.split('/').pop().split('.')[0];
                                 await cloudinaryConfig.uploader.destroy(`profileImages/${publicId}`);
                             }
-                            data.profile_iamge = req.files.profile_iamge[0].path
+                            data.profile_image = req.files.profile_image[0].path;
                         }
                         if (req.files?.aadharImage_front?.[0]?.path) {
                             if (existingData.aadharImage_front) {

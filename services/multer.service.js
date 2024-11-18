@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
       case 'admin_image':
         folderName = 'adminImages';
         break;
-      case 'profile_iamge':
+      case 'profile_image':
         folderName = 'profileImages';
         break;
       case 'aadharImage_front':
