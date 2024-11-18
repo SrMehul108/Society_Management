@@ -4,12 +4,12 @@ const upload = require('../services/multer.service');
 const { insertUser, viewUser, editUser, deleteUser } = require('../controllers/usercontrolleer');
 
 router.post('/insertUser', upload.fields([
-  { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), insertUser);
+  { name: 'profile_image', maxCount: 1 }, { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), insertUser);
 
 router.get('/getUser', viewUser);
 
 router.post('/editUser/:id', upload.fields([
-  { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), editUser);
+  { name: 'profile_image', maxCount: 1 }, { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), editUser);
 
 router.delete('/vacateUser/:id', deleteUser);
 

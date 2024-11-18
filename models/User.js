@@ -92,6 +92,7 @@ const userSchema = new mongoose.Schema({
     type: {
         type: String,
         enum: ['owner', 'tenant'],
+        default : 'owner',
         required: true
     },
     owner: {
