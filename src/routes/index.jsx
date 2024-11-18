@@ -59,7 +59,19 @@ const DashStackRoute = createBrowserRouter(
                   path: "EventsParticipation",
                   element: <ParticipationTabs />,
                 },
-
+                {
+                  path: "Community",
+                  children: [
+                    {
+                      path: "Access Forums",
+                      element: "Access Forms",
+                    },
+                    {
+                      path: "Community",
+                      element:"Community",
+                    },
+                  ],
+                },
                 {
                   path: "PaymentPortal",
                   children: [

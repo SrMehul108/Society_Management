@@ -79,6 +79,21 @@ export const UserSidebar = [
     icon: Icons.Calender,
   },
   {
+    title: "Community",
+    icon: Icons.Payment,
+    dricons: Icons.DropDown,
+    items: [
+      {
+        title: "Access Forums",
+        url: "/Community/AccessForums",
+      },
+      {
+        title: "Community Discussion",
+        url: "/Community/CommunityDiscussion",
+      },
+    ],
+  },
+  {
     title: "Payment Portal",
     icon: Icons.Payment,
     dricons: Icons.DropDown,
