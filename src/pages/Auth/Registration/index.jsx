@@ -365,7 +365,7 @@ export const RegistrationForm = () => {
         </button>
         <p className="mt-6 text-center  text-sm text-gray-600">
           Already have an account ?
-          <Link to="/login" className="dash">
+          <Link to="/admin/login" className="dash">
             Login
           </Link>
         </p>

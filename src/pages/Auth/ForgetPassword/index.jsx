@@ -87,7 +87,7 @@ export const ForgetPassword = () => {
 
       <p className="mt-4 text-center text-sm text-gray-600">
         <Link
-          to="/"
+          to="/login"
           className="font-medium text-orange-600 hover:text-orange-500"
         >
           Back To Login
