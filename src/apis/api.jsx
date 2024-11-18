@@ -61,6 +61,16 @@ export const login = async (credentials) => {
     }
 };
 
+export const resendOtp = async (email) => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error("Network Error");
+    }
+  };
+  
+
 
 export const forgotPassword = async (passdata) => {
     try {

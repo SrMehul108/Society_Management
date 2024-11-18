@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CiClock2 } from "react-icons/ci";
-import { otpPage } from "../../../apis/api";
+import { otpPage, resendOtp } from "../../../apis/api";
 
 export const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -38,12 +38,17 @@ export const OtpPage = () => {
   };
 
   const handleResend = async () => {
+    const email = localStorage.getItem("userEmail");
+    if (!email) {
+      alert("Email not found. Please restart the process.");
+      return;
+    }
     setTimer(60);
     setIsActive(true);
     setOtp(Array(6).fill(""));
     try {
-      const response = await otpPage.resend();
-      alert("OTP has been resent to your phone!");
+      const response = await resendOtp(email);
+      alert("OTP has been resent to your email!");
     } catch (error) {
       console.error("Error resending OTP:", error);
       alert("Failed to resend OTP. Please try again.");

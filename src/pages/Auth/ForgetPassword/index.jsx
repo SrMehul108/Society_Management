@@ -25,6 +25,7 @@ export const ForgetPassword = () => {
     e.preventDefault();
     try {
       const response = await forgotPassword(formData);
+      localStorage.setItem("userEmail", formData.email);
       navigate("/otp");
     }
     catch (error) {
