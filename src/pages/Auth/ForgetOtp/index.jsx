@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { CiClock2 } from "react-icons/ci";
 import { otpPage, resendOtp } from "../../../apis/api";
+import { useNavigate } from "react-router";
 
 export const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(60);
   const [isActive, setIsActive] = useState(true);
   const isOtpComplete = otp.every((digit) => digit !== "");
+  const navigate =useNavigate()
 
   useEffect(() => {
     if (isActive && timer > 0) {
@@ -55,14 +57,15 @@ export const OtpPage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await otpPage(otp);
-      alert(`OTP Submitted: ${otp.join("")}`);
+      const response = await otpPage(otp.join("")); // Join OTP array to string
+      alert("OTP Verified Successfully!");
+      navigate("/reset-password");
     } catch (error) {
-      console.error("OTP submission failed:", error);
-      alert("Failed to submit OTP. Please try again.");
+      console.error("OTP verification failed:", error);
+      setError(error.message || "Invalid OTP. Please try again.");
     }
   };
 

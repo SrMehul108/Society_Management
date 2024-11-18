@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "@/apis/api";
 
 export const Resetpassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [formData, setFormData] = useState({ password: "", cpassword: "" });
+  const navigate=useNavigate()
   const isFormValid =
     formData.password &&
     formData.cpassword &&
@@ -24,7 +25,8 @@ export const Resetpassword = () => {
     e.preventDefault();
     try {
       const response = await resetPassword(formData);
-      navigate("/dashboard");
+      navigate("/login");
+      console.log("Success")
     }
     catch (error) {
       console.error("Password Reset Failed:", error);
@@ -123,6 +125,7 @@ export const Resetpassword = () => {
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
             style={{ backgroundColor: isFormValid ? "#FE512E" : "gray" }}
             disabled={!isFormValid}
+            onClick={handleSubmit}
           >
             Reset Password
           </button>
