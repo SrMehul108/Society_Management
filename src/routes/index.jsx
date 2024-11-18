@@ -29,6 +29,7 @@ import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
 import Tenant from "../components/Resident_management/Tenant";
+import AccessForums from "../pages/User/AccessForums/Index";
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -64,7 +65,7 @@ const DashStackRoute = createBrowserRouter(
                   children: [
                     {
                       path: "AccessForums",
-                      element: "Access Forums",
+                      element: <AccessForums />,
                     },
                     {
                       path: "CommunityDiscussion",
