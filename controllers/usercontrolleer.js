@@ -40,6 +40,9 @@ module.exports.insertUser = async (req, res) => {
                 var vehicles = JSON.parse(req.body.vehicles);
             }
             if (req.files) {
+                if(req.files?.profile_image?.[0]?.path){
+                    data.profile_iamge = req.files.profile_iamge[0].path
+                }
                 if (req.files?.aadharImage_front?.[0]?.path) {
                     data.aadharImage_front = req.files.aadharImage_front[0].path;
                 }
@@ -212,6 +215,13 @@ module.exports.editUser = async (req, res) => {
                         data.vehicles = updatedVehicleIds;
                     }
                     if (req.files) {
+                        if(req.files?.profile_image?.[0]?.path){
+                            if (existingData.profile_image) {
+                                const publicId = existingData.profile_image.split('/').pop().split('.')[0];
+                                await cloudinaryConfig.uploader.destroy(`profileImages/${publicId}`);
+                            }
+                            data.profile_iamge = req.files.profile_iamge[0].path
+                        }
                         if (req.files?.aadharImage_front?.[0]?.path) {
                             if (existingData.aadharImage_front) {
                                 const publicId = existingData.aadharImage_front.split('/').pop().split('.')[0];

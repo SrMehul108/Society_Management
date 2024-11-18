@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    profile_image:{
+        type: String,
+        required : false
+    },
     aadharImage_front: {
         type: String,
         required: false
