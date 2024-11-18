@@ -41,7 +41,7 @@ module.exports.insertUser = async (req, res) => {
             }
             if (req.files) {
                 if(req.files?.profile_image?.[0]?.path){
-                    data.profile_iamge = req.files.profile_iamge[0].path
+                    data.profile_image = req.files.profile_image[0].path
                 }
                 if (req.files?.aadharImage_front?.[0]?.path) {
                     data.aadharImage_front = req.files.aadharImage_front[0].path;
