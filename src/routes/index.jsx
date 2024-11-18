@@ -63,12 +63,12 @@ const DashStackRoute = createBrowserRouter(
                   path: "Community",
                   children: [
                     {
-                      path: "Access Forums",
-                      element: "Access Forms",
+                      path: "AccessForums",
+                      element: "Access Forums",
                     },
                     {
-                      path: "Community",
-                      element:"Community",
+                      path: "CommunityDiscussion",
+                      element: "Community Discussion",
                     },
                   ],
                 },
@@ -116,9 +116,9 @@ const DashStackRoute = createBrowserRouter(
                       element: <Owner />,
                     },
                     {
-                      path:"TenateForm",
-                      element:<Tenant/>
-                    }
+                      path: "TenateForm",
+                      element: <Tenant />,
+                    },
                   ],
                 },
                 {
@@ -221,6 +221,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                   ],
                 },
+               
                 {
                   path: "SecurityProtocols",
                   element: "Security Protocols",
