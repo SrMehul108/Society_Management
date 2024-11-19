@@ -114,9 +114,9 @@ module.exports.maintenanceDetail = async (req, res) => {
 
 module.exports.editMaintenance = async (req, res) => {
     try {
-        const { Id } = req.params;
-        if (Id && req.body !== "") {
-            const updateData = await Maintenance.findByIdAndUpdate(Id, req.body, { new: true });
+        const { id } = req.params;
+        if (id && req.body !== "") {
+            const updateData = await Maintenance.findByIdAndUpdate(id, req.body, { new: true });
             if (updateData) {
                 return res.status(200).json({ message: "data Update Successfully", status: 1, data: updateData });
             }
@@ -131,12 +131,12 @@ module.exports.editMaintenance = async (req, res) => {
 
 module.exports.deleteMaintenance = async (req, res) => {
     try {
-        const { Id } = req.params;
-        if (Id) {
-            const data = await Maintenance.findById(Id);
+        const { id } = req.params;
+        if (id) {
+            const data = await Maintenance.findById(id);
             if (data) {
                 data.isActive = false;
-                const deleted = await Maintenance.findByIdAndUpdate(Id, data);
+                const deleted = await Maintenance.findByIdAndUpdate(id, data);
                 if (deleted) {
                     return res.status(200).json({ message: "Maintenance Delete Succesfully" });
                 }

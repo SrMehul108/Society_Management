@@ -16,4 +16,5 @@ router.delete('/vacateUser/:id', deleteUser);
 router.use('/maintanace', require('./maintanace'));
 router.use('/otheincome', require('./otherIncome'));
 router.use('/important', require('./important'));
+router.use('/expenses', require('./expenses'));
 module.exports = router;

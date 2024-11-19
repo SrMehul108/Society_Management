@@ -7,6 +7,7 @@ module.exports.insert = async (req, res) => {
             if (check) {
                 return res.status(400).json({ message: "Number already exist", status: 0 });
             }
+            re.body.societyId = req.user.societyId;
             let newData = new Important(req.body);
             await newData.save();
             if (newData) {
@@ -31,7 +32,7 @@ module.exports.viewImportnat = async (req, res) => {
             }
             return res.status(400).json({ message: "No data Found", status: 0 });
         }
-        const data = await Important.find({ isActive: true });
+        const data = await Important.find({ isActive: true, societyId: req.user.societyId });
         if (data) {
             return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
         }
@@ -81,7 +82,7 @@ module.exports.deleteImportant = async (req, res) => {
             }
             return res.status(400).json({ message: "No data Found", status: 0 });
         }
-        return res.status(400).json({ message: "Parameter (Id) is missing", status:0 })
+        return res.status(400).json({ message: "Parameter (Id) is missing", status: 0 })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal Server error', status: 0 });

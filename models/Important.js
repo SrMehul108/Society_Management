@@ -11,13 +11,18 @@ const importantSchema = new mongoose.Schema({
         required: true
     },
     work: {
-        type : String,
+        type: String,
         required: true,
     },
     isActive: {
         type: Boolean,
         required: true,
         default: true
+    },
+    societyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Society',
+        required: true
     },
     createdDate: {
         type: String,

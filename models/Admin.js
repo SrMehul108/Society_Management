@@ -57,6 +57,10 @@ const AdminSchema = mongoose.Schema({
         required: true,
         default: new Date().toLocaleDateString()
     },
+    admin_image:{
+        type: String,
+        required : false
+    }
 });
 
 module.exports = mongoose.model('Admin', AdminSchema);
