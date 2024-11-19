@@ -20,7 +20,6 @@ const AccessForms = () => {
     const [newMessage, setNewMessage] = useState("");
     const [showChat, setShowChat] = useState(false); // Toggle between chat and user list for small screens
 
-    // Handle user selection
     const handleUserSelection = (user) => {
         setSelectedUser(user);
         setMessages([
@@ -29,7 +28,6 @@ const AccessForms = () => {
         setShowChat(true); // Show chat on small screens
     };
 
-    // Handle sending a message
     const sendMessage = () => {
         if (newMessage.trim() !== "") {
             const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -38,22 +36,11 @@ const AccessForms = () => {
         }
     };
 
-    const [isOpen, setIsOpen] = useState(false);
-
-    const handleToggle = () => {
-        setIsOpen((prev) => !prev);
-    };
-
-    const handleOptionClick = (option) => {
-        console.log(`${option} clicked`);
-        setIsOpen(false);
-    };
-
     return (
-        <div className="flex flex-col md:flex-row h-full bg-gray-100">
+        <div className="flex flex-col md:flex-row h-screen bg-gray-100">
             {/* Sidebar */}
             <div
-                className={`w-full md:w-1/4 bg-white p-4 border-r transform md:translate-x-0 ${showChat ? "translate-x-[-100%]" : "translate-x-0"
+                className={`w-full md:w-1/3 lg:w-1/4 bg-white p-4 border-r transform md:translate-x-0 ${showChat ? "-translate-x-full" : "translate-x-0"
                     } transition-transform duration-300 ease-in-out`}
             >
                 <h2 className="text-xl font-bold mb-4">Chats</h2>
@@ -100,40 +87,6 @@ const AccessForms = () => {
                             <p className="text-sm text-gray-500">{selectedUser?.lastSeen || "9:00 PM"}</p>
                         </div>
                     </div>
-                    <div className="flex items-center space-x-4 text-gray-500">
-                        <button className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full">
-                            <i className="fa-solid fa-video"></i>
-                        </button>
-                        <button className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full">
-                            <i className="fa-solid fa-phone"></i>
-                        </button>
-                        <div className="relative">
-                            <button
-                                className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full"
-                                onClick={handleToggle}
-                            >
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            {isOpen && (
-                                <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                                    <ul className="py-2">
-                                        <li
-                                            className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => handleOptionClick("Copy")}
-                                        >
-                                            Copy
-                                        </li>
-                                        <li
-                                            className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => handleOptionClick("Forward")}
-                                        >
-                                            Forward
-                                        </li>
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
-                    </div>
                 </div>
 
                 {/* Messages */}
@@ -154,7 +107,7 @@ const AccessForms = () => {
                 </div>
 
                 {/* Message Input */}
-                <div className="p-3 bg-white border-t flex items-center space-x-3">
+                <div className="p-4 bg-white border-t flex items-center space-x-3">
                     <button className="flex items-center justify-center w-10 h-10 text-gray-500 hover:bg-gray-100 rounded-full">
                         <i className="fa-solid fa-smile"></i>
                     </button>
@@ -163,17 +116,14 @@ const AccessForms = () => {
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type a message..."
-                        className="flex-1 p-2 focus:outline-none"
+                        className="flex-1 p-2 border rounded-lg focus:outline-none"
                     />
                     <button className="flex items-center justify-center w-10 h-10 text-gray-500 hover:bg-gray-100 rounded-full">
                         <i className="fa-solid fa-paperclip"></i>
                     </button>
-                    <button className="flex items-center justify-center w-10 h-10 text-gray-500 hover:bg-gray-100 rounded-full">
-                        <i className="fa-solid fa-camera"></i>
-                    </button>
                     <button
                         onClick={sendMessage}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-full shadow"
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow"
                     >
                         Send
                     </button>
