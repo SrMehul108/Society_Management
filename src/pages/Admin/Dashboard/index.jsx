@@ -1,7 +1,5 @@
 
 
-
-
 import React, { useState } from 'react';
 import Table from '../../../components/ComplaintTraking/Table';
 import EditRequestForm from '../../../components/ComplaintTraking/EditRequestForm';
@@ -28,8 +26,6 @@ export const Dashboard = () => {
     { name: 'Hanna Donin', phone: '+91 99587 33657', work: 'Plumber' },
   ];
 
-
-
   const maintenances = [
     { name: 'Roger Lubin', status: '2 Month Pending', amount: '₹ 5,000' },
   ];
@@ -39,7 +35,6 @@ export const Dashboard = () => {
     { event: 'Holi Festival', date: '24-09-2024', time: '8:00 PM to 10:00 PM' },
   ];
 
-  // Complaint Table
   const columns = [
     { header: 'Complainer Name', accessor: 'complainerName' },
     { header: 'Complaint Name', accessor: 'complaintName' },
@@ -53,7 +48,6 @@ export const Dashboard = () => {
         </span>
       ),
     },
-  
     {
       header: 'Priority',
       accessor: 'priority',
@@ -70,12 +64,11 @@ export const Dashboard = () => {
           </span>
         ),
     },
-    
-     {
+    {
       header: 'Status',
-       accessor: 'status',
-       render: (value) =>  
-      value === 'Pending' ? (
+      accessor: 'status',
+      render: (value) =>  
+        value === 'Pending' ? (
           <PendingButton />
         ) : value === 'Open' ? (
           <OpenButton />
@@ -155,9 +148,8 @@ export const Dashboard = () => {
     },
   ]);
 
-  //Add or edit  NUmber Popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupMode, setPopupMode] = useState('add'); // 'add' or 'edit'
+  const [popupMode, setPopupMode] = useState('add');
   const [editData, setEditData] = useState(null);
 
   const handleAddClick = () => {
@@ -176,16 +168,16 @@ export const Dashboard = () => {
     setIsPopupOpen(true);
   };
   const [isDeleteData, setIsDeleteData] = useState(false);
-  const handleDeleteClick = () =>{
+  const handleDeleteClick = () => {
     setIsDeleteData(true);
   }
 
   return (
-    <div className=" bg-gray-100 p-2 space-y-6">
+    <div className="bg-gray-100 p-2 space-y-6">
       {/* Dashboard Cards */}
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {balanceData.map((item, index) => (
-          <div key={index} className="flex flex-1  items-center justify-between bg-white rounded-lg shadow-md p-4">
+          <div key={index} className="flex items-center justify-between bg-white rounded-lg shadow-md p-4">
             <div>
               <p className="text-sm font-medium text-gray-500">{item.title}</p>
               <p className="text-xl font-bold">{item.amount}</p>
@@ -194,10 +186,11 @@ export const Dashboard = () => {
           </div>
         ))}
       </div>
-      {/* Contacts and Maintenance */}
-      <div className="flex flex-wrap gap-4">
+      
+      {/* Chart, Contacts, and Maintenance */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Chart Section */}
-        <div className="bg-white rounded-lg shadow-md p-4 flex flex-col w-1/2 h-96">
+        <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Total Balance</h2>
             <select
@@ -210,72 +203,73 @@ export const Dashboard = () => {
               <option>Last year</option>
             </select>
           </div>
-          <div className=" bg-gray-200 flex items-center justify-center rounded-lg h-96">
+          <div className="bg-gray-200 flex items-center justify-center rounded-lg h-64 lg:h-96">
             <p className="text-gray-500">Chart Placeholder</p>
           </div>
         </div>
-        {/* Contacts */}
-        <div className="flex-1   bg-white rounded-lg shadow-md p-4 flex flex-col">
-          <div className='flex justify-between items-center'>
-            <h2 className="text-lg font-semibold">Important Numbers</h2>
-            <button className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex  rounded-sm items-center"
-              onClick={handleAddClick}>
-              <FaPlus className="mr-2 text-white" /> {/* Icon - Optional */}
-              Add
-            </button>
-            {isPopupOpen && (
-              <AddNumberPopup
-                mode={popupMode}
-                initialData={editData}
-                onClose={() => setIsPopupOpen(false)}
-              />
-            )}
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Contacts */}
+          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+            <div className='flex justify-between items-center'>
+              <h2 className="text-lg font-semibold">Important Numbers</h2>
+              <button className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex rounded-sm items-center"
+                onClick={handleAddClick}>
+                <FaPlus className="mr-2 text-white" />
+                Add
+              </button>
+              {isPopupOpen && (
+                <AddNumberPopup
+                  mode={popupMode}
+                  initialData={editData}
+                  onClose={() => setIsPopupOpen(false)}
+                />
+              )}
+            </div>
+            <ul className="space-y-3 mt-3">
+              {contacts.map((contact, index) => (
+                <li key={index} className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{contact.name}</p>
+                    <p className="text-sm text-gray-500">{contact.phone}</p>
+                    <p className="text-sm text-gray-500">{contact.work}</p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button className="text-red-500" onClick={handleDeleteClick}>🗑️</button>
+                    {isDeleteData && <DeletePopup onClose={() => setIsDeleteData(false)} />}
+                    <button className="text-green-500" onClick={handleEditClick}>✏️</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-3 mt-3">
-            {contacts.map((contact, index) => (
-              <li key={index} className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">{contact.name}</p>
-                  <p className="text-sm text-gray-500">{contact.phone}</p>
-                  <p className="text-sm text-gray-500">{contact.work}</p>
-                </div>
-                <div className="flex space-x-2">
-                  <button className="text-red-500" onClick={handleDeleteClick}>🗑️</button>
-                  {isDeleteData && <DeletePopup  onClose={() => setIsDeleteData(false)} />}
-                 
-                  <button className="text-green-500"
-                    onClick={handleEditClick}>✏️</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        {/* Maintenance */}
-        <div className="flex-1 bg-white rounded-lg shadow-md p-4 flex flex-col">
-          <div className='flex justify-between items-center'>
-            <h2 className="text-lg font-semibold">Pending Maintenances</h2>
-            <p><a href="#">View All</a></p>
+          {/* Maintenance */}
+          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+            <div className='flex justify-between items-center'>
+              <h2 className="text-lg font-semibold">Pending Maintenances</h2>
+              <p><a href="#">View All</a></p>
+            </div>
+            <ul className="space-y-3 mt-3">
+              {maintenances.map((item, index) => (
+                <li key={index} className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{item.name}</p>
+                    <p className="text-sm text-gray-500">{item.status}</p>
+                  </div>
+                  <p className="text-red-500 font-semibold">{item.amount}</p>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-3 mt-3">
-            {maintenances.map((item, index) => (
-              <li key={index} className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-gray-500">{item.status}</p>
-                </div>
-                <p className="text-red-500 font-semibold">{item.amount}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Complaint List */}
-        <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto w-3/4">
+        <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto lg:col-span-3">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold ">Complaint List</h2>
+            <h2 className="text-lg font-semibold">Complaint List</h2>
             <select
               className="border border-gray-300 rounded-lg p-1"
               value={ComplaintselectedMonth}
@@ -293,9 +287,9 @@ export const Dashboard = () => {
         </div>
 
         {/* Upcoming Activities */}
-        <div className="bg-white rounded-lg shadow-md p-4   flex-1  flex-wrap gap-4">
+        <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
           <div className="flex justify-between items-center mb-4">
-            <h2 className=" text-lg font-semibold">Upcoming Activity</h2>
+            <h2 className="text-lg font-semibold">Upcoming Activity</h2>
             <select
               className="border border-gray-300 rounded-lg p-1"
               value={UpcomingselectedMonth}
@@ -322,5 +316,3 @@ export const Dashboard = () => {
     </div>
   );
 };
-
-
