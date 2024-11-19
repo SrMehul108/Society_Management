@@ -27,7 +27,7 @@ module.exports.insertExpense = async (req, res) => {
 
 module.exports.viewExpense = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         if (id) {
             let data = await Expenses.findOne({ _id: id });
             if (data) {

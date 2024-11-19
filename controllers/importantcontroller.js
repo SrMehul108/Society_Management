@@ -24,7 +24,7 @@ module.exports.insert = async (req, res) => {
 
 module.exports.viewImportnat = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         if (id) {
             let data = await Important.findOne({ _id: id });
             if (data) {

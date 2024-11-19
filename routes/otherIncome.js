@@ -4,6 +4,6 @@ const { insertIncome, viewIncome, editIncome, deleteIncome } = require('../contr
 
 router.post('/insertIncome', insertIncome);
 router.get('/getIncome', viewIncome);
-router.post('/editIncome', editIncome);
-router.delete('/deleteIncome', deleteIncome);
+router.post('/editIncome/:id', editIncome);
+router.delete('/deleteIncome/:id', deleteIncome);
 module.exports = router;

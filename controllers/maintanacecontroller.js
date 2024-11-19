@@ -6,7 +6,7 @@ module.exports.insert = async (req, res) => {
     try {
         if (req.body && req.body !== '') {
             req.body.societyId = req.user.societyId;
-            let existingMaintance = await Maintenance.findOne({ societyId: req.body.societyId });
+            let existingMaintance = await Maintenance.findOne({ societyId: req.body.societyId, isActive: true });
             if (existingMaintance) {
                 return res.status(400).json({ message: "Maintenance is already in place for this society" });
             }
