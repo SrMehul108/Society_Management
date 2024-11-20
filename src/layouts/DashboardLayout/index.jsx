@@ -44,7 +44,7 @@ export const DashboardLayout = ({ items }) => {
         {/* Header */}
         <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between">
           {/* Menu Toggle for Mobile */}
-          <button
+          {/* <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="block md:hidden"
           >
@@ -62,11 +62,11 @@ export const DashboardLayout = ({ items }) => {
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-          </button>
+          </button> */}
 
           {/* Search Bar */}
           <div className="flex-1 px-4">
-            <label className="flex items-center gap-2 bg-gray-300 w-full md:w-80 rounded-lg p-2">
+            <label className="flex items-center gap-2 bg-gray-300 w-52  md:w-80 rounded-lg p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"

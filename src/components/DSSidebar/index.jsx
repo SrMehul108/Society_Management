@@ -32,7 +32,7 @@ export const DSSidebar = ({ items }) => {
     <>
       {/* Mobile Menu Toggle Button */}
       <button
-        className="md:hidden p-4 text-black fixed top-0 left-0 z-50"
+        className="md:hidden p-4 text-black fixed top-2.5 left-[-10px] z-50"
         onClick={handleToggleMenu}
       >
         {isMenuOpen ? (
@@ -133,12 +133,12 @@ export const DSSidebar = ({ items }) => {
       </SidebarProvider>
 
       {/* Overlay for mobile */}
-      {isMenuOpen && (
+      {/* {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
           onClick={handleToggleMenu}
         ></div>
-      )}
+      )} */}
     </>
   );
 };
