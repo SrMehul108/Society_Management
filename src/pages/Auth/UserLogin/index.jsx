@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Icons } from "@/constants";
 import "@/assets/css/login/login.css";
 
-export const Login = () => {
+export const Userlogin = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -140,16 +140,7 @@ export const Login = () => {
         </div>
       </form>
 
-      
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <Link
-            to="/admin/register"
-            className="font-medium text-orange-600 hover:text-orange-500"
-          >
-            Registration
-          </Link>
-        </p>
+
      
     </>
   );
