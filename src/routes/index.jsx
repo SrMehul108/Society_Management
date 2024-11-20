@@ -9,6 +9,7 @@ import {
   ForgetPassword,
   OtpPage,
   Resetpassword,
+  Userlogin
 } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
 import { Announcement, FacilityManagement } from "../pages";
@@ -90,6 +91,7 @@ const DashStackRoute = createBrowserRouter(
                   path: "SecurityProtocols",
                   element: <SecurityProtocolsTable />,
                 },
+                
               ],
             },
           ],
@@ -262,7 +264,7 @@ const DashStackRoute = createBrowserRouter(
           children: [
             {
               path: "login",
-              element: <Login />,
+              element: <Userlogin />,
             },
             {
               path: "forgot-password",
@@ -276,6 +278,7 @@ const DashStackRoute = createBrowserRouter(
               path: "reset-password",
               element: <Resetpassword />,
             },
+           
           ],
         },
       ],
