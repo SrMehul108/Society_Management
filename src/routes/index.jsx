@@ -31,6 +31,7 @@ import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
 import Tenant from "../components/Resident_management/Tenant";
 import AccessForums from "../pages/User/Community/AccessForums/Index";
+import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -70,7 +71,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "CommunityDiscussion",
-                      element: "Community Discussion",
+                      element: <CommunityDiscussionPage/>,
                     },
                   ],
                 },
