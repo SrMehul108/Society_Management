@@ -8,7 +8,7 @@ import {
   ResidentManagement,
   ForgetPassword,
   OtpPage,
-  Resetpassword,
+  ResetPassword,
   Userlogin
 } from "@/pages";
 import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
@@ -276,7 +276,7 @@ const DashStackRoute = createBrowserRouter(
             },
             {
               path: "reset-password",
-              element: <Resetpassword />,
+              element: <ResetPassword />,
             },
            
           ],

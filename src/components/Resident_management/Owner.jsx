@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 export const Owner = () => {
     const [fileNames, setFileNames] = useState(Array(4).fill(""));
+    const[formData,SetFormData]=useState([])
     const [files, setFiles] = useState([
         { id: 1, name: 'Syncfusion Essential Adhocard.JPG', size: '3.5 MB', progress: 40 },
         { id: 2, name: 'Syncfusion Essential Adhocard.JPG', size: '3.5 MB', progress: 0 },
@@ -99,6 +100,10 @@ export const Owner = () => {
         setVehicles(updatedVehicles);
     };
 
+    const handleSubmit = async (e) => {
+        
+      };
+      
   
 
     return (
@@ -400,7 +405,7 @@ export const Owner = () => {
                                 <button type="button" className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                                     Cancel
                                 </button>
-                                <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600">
+                                <button type="submit" className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600" onClick={handleSubmit}>
                                     Create
                                 </button>
                             </div>
