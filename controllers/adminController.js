@@ -133,7 +133,7 @@ module.exports.verifyOtp = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
     try {
         if (req.body !== "") {
-            let checkmail = await Admin.findOne({ email: req.cookies.email });
+            let checkmail = await Admin.findOne({ email: req.body.email });
             if (checkmail) {
                 const isSamePassword = await bcrypt.compare(req.body.password, checkmail.password);
                 if (isSamePassword) {
