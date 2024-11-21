@@ -140,10 +140,13 @@ export const userRegistration = async (formdata) => {
         message: response.data?.message || "Unexpected error occurred.",
       };
     }
+  } finally {
+    console.log("Completed");
+  }
 };
 
-
 export const submitMaintenance = async (maintenance) => {
+  try {
     try {
       const response = await fetch(`${API_URL}/auth/user/maintanace/insert`, {
         method: "POST",
@@ -152,17 +155,16 @@ export const submitMaintenance = async (maintenance) => {
         },
         body: JSON.stringify({ maintenance }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to submit maintence");
       }
-  
+
       return await response.json();
     } catch (error) {
       throw new Error(error.message || "Network error");
     }
-  };
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || "An error occurred. Please try again.";
