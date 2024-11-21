@@ -129,3 +129,25 @@ export const userRegistration = async () => {
         };
     }
 };
+
+
+export const submitMaintenance = async (maintenance) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/user/maintanace/insert`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ maintenance }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit maintence");
+      }
+  
+      return await response.json();
+    } catch (error) {
+      throw new Error(error.message || "Network error");
+    }
+  };
