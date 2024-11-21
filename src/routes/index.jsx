@@ -30,7 +30,7 @@ import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
 import Tenant from "../components/Resident_management/Tenant";
-import AccessForums from "../pages/User/AccessForums/Index";
+import AccessForums from "../pages/User/Community/AccessForums/Index";
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
