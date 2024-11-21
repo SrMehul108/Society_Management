@@ -31,20 +31,23 @@ export const AskQuestion = ({ onSubmit, onClose }) => {
           <label className="block text-gray-700 font-medium mb-2">
             Title
           </label>
+          <label className="block text-gray-700 font-medium mb-2">
+            Be Spacific and imagine you're asking a question to another person.
+          </label>
           <input
             type="text"
             value={questionTitle}
             onChange={(e) => setQuestionTitle(e.target.value)}
-            placeholder="e.g. How to implement a binary search in Python?"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. is there an  R function for finding the index of  an element in a vector?"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
         <div className="flex mt-4 space-x-4">
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+            className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-800"
           >
-            Submit
+           Next
           </button>
           <button
             onClick={onClose}
