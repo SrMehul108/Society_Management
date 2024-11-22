@@ -211,3 +211,40 @@ export const getUser = async () => {
     };
   }
 };
+
+export const getotherIncome =async()=>{
+  const token = AdminToken();
+  console.log("Token:", token);
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/auth/user/otheincome/getIncome`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+      },
+    });
+
+    console.log("Response:", response);
+
+    // Check for successful response
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
