@@ -248,3 +248,33 @@ export const getotherIncome =async()=>{
     };
   }
 }
+
+export const editMaintenance = async (maintenance) => {
+  try {
+    try {
+      const response = await fetch(`${API_URL}/auth/user/maintanace/editMaintenance/6734f318cc9869bd95409dd3`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ maintenance }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to edit maintence");
+      }
+
+      return await response.json();
+    } catch (error) {
+      throw new Error(error.message || "Network error");
+    }
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || "An error occurred. Please try again.";
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+};
