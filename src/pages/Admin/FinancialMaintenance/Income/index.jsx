@@ -190,32 +190,25 @@ function FinancialManagement() {
                       </td>
                       <td className="px-4 py-3">{item.phoneNo}</td>
                       <td className="px-4 py-3 text-green-500 font-bold">
-                        ₹{" "}
-                        {item.payments.length > 0
-                          ? item.payments
-                              .map((payment) => payment.amount) // Extract the amount
-                              .join(", ") // Join amounts with a comma if multiple payments exist
-                          : "0"}
+                        ₹ {item.payments?.amount ? item.payments.amount : "----"}
                       </td>
 
                       <td className="px-4 py-3 text-center">
-                        {item.payments &&
-                        item.payments.some((payment) => payment.penalty > 0) ? (
+                        {item.payments.penalty ? (
                           <PenalityButton />
                         ) : (
                           <EmptyButton />
                         )}
                       </td>
-
                       <td className="px-4 py-3">
-                        {item.paymentStatus === "Pending" ? (
+                        {item.payments.paymentStatus === false ? (
                           <PendingButton />
                         ) : (
                           <DoneButton />
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        {item.paymentMethod === "Online" ? (
+                        {item.payments.paymentType === "online" ? (
                           <OnlineButton />
                         ) : (
                           <CashButton />
