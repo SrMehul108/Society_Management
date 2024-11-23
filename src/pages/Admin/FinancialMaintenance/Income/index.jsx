@@ -12,21 +12,14 @@ import {
   PendingButton,
   TenantButton,
 } from "../../../../components/Button/Button";
-import { getMaintenance } from "../../../../apis/api";
+import { getMaintenance, viewmaintenance } from "../../../../apis/api";
 
 function FinancialManagement() {
   // State Management
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showOtherIncome, setShowOtherIncome] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [itemDetails, setItemDetails] = useState({
-    title: "Ganesh Chaturthi",
-    amount: "₹ 1,500",
-    date: "2024-07-01",
-    dueDate: "2024-07-10",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesha in Resident.",
-  });
+  const [itemDetails, setItemDetails] = useState();
   const [maintenanceData, setMaintenanceData] = useState([]);
   const [maintenanceAmount, setMaintenanceAmount] = useState(0);
   const [penaltyAmount, setPenaltyAmount] = useState(0);
@@ -40,7 +33,15 @@ function FinancialManagement() {
   const handleOtherIncomeClick = () => setShowOtherIncome(true);
 
   // View Popup Handlers
-  const openViewPopup = () => setIsViewOpen(true);
+  const openViewPopup = () => {
+    const getdata = async () => {
+      const item = await viewmaintenance();
+      setItemDetails(item[0]);
+      console.log(item);
+    };
+    getdata()
+    setIsViewOpen(true);
+  };
   const closeViewPopup = () => setIsViewOpen(false);
 
   // Fetch Maintenance Data
@@ -158,7 +159,7 @@ function FinancialManagement() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200  overflow-y-auto custom-scrollbar">
-                  {maintenanceData.map((item, index) => (
+                  {maintenanceData?.map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-4 py-3 flex items-center space-x-2">
                         <img
@@ -190,7 +191,8 @@ function FinancialManagement() {
                       </td>
                       <td className="px-4 py-3">{item.phoneNo}</td>
                       <td className="px-4 py-3 text-green-500 font-bold">
-                        ₹ {item.payments?.amount ? item.payments.amount : "----"}
+                        ₹{" "}
+                        {item.payments?.amount ? item.payments.amount : "----"}
                       </td>
 
                       <td className="px-4 py-3 text-center">
