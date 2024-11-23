@@ -93,7 +93,8 @@ module.exports.maintenanceDetail = async (req, res) => {
                     // Add penalty if it exists in the penaltyMap for the user
                     const paymentWithPenalty = userPayment ? {
                         ...userPayment.toObject(),
-                        penalty: penaltyMap[user._id] || 0  // Add penalty if it exists, otherwise 0
+                        penalty: penaltyMap[user._id] || 0,  // Add penalty if it exists, otherwise 0
+                        dueDate: maintenanceData[0]?.dueDate
                     } : {};
 
                     return { ...user.toObject(), payments: paymentWithPenalty };
