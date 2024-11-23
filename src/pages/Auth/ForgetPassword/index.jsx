@@ -4,6 +4,9 @@ import login from "../../../assets/image/forget.png";
 import "../../../assets/css/login/login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../../../apis/api";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export const ForgetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,10 +29,12 @@ export const ForgetPassword = () => {
     try {
       const response = await forgotPassword(formData);
       localStorage.setItem("userEmail", formData.email);
+      toast.success("OTP  sent to your email");
       navigate("/otp");
     }
     catch (error) {
       console.error("Otp failed:", error);
+      toast.error("Email Not Found")
       setShowError(true);
     }
   };
@@ -38,6 +43,7 @@ export const ForgetPassword = () => {
 
   return (
     <>
+    <ToastContainer/>
       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
         Forget Password
       </h2>
