@@ -88,11 +88,11 @@ module.exports.maintenanceDetail = async (req, res) => {
 
                 // Combine user data with payments and add penalty if applicable
                 const result = userData.map(user => {
-                    const userPayments = paymentData.filter(payment => payment.UserId.toString() === user._id.toString());
+                    const userPayment = paymentData.find(payment => payment.UserId.toString() === user._id.toString());
 
                     // Add penalty if it exists in the penaltyMap for the user
-                    const paymentWithPenalty = userPayments ? {
-                        ...userPayments.toObject(),
+                    const paymentWithPenalty = userPayment ? {
+                        ...userPayment.toObject(),
                         penalty: penaltyMap[user._id] || 0  // Add penalty if it exists, otherwise 0
                     } : {};
 
