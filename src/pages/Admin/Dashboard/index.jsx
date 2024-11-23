@@ -146,6 +146,16 @@ export const Dashboard = () => {
       priority: 'High',
       status: 'Solve',
     },
+    {
+      id: 3,
+      complainerName: 'Esther Howard',
+      complaintName: 'Preventive Measures',
+      description: 'Regular waste collection services.',
+      unit: 'B',
+      unitNumber: '1005',
+      priority: 'High',
+      status: 'Solve',
+    },
   ]);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -173,11 +183,11 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="bg-gray-100 p-2 space-y-6">
+    <div className="bg-gray-100  space-y-2">
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {balanceData.map((item, index) => (
-          <div key={index} className="flex items-center justify-between bg-white rounded-lg shadow-md p-4">
+          <div key={index} className="flex items-center justify-between bg-white rounded-lg shadow-md p-3">
             <div>
               <p className="text-sm font-medium text-gray-500">{item.title}</p>
               <p className="text-xl font-bold">{item.amount}</p>
@@ -188,9 +198,9 @@ export const Dashboard = () => {
       </div>
       
       {/* Chart, Contacts, and Maintenance */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Chart Section */}
-        <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+        <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Total Balance</h2>
             <select
@@ -265,9 +275,9 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72">
         {/* Complaint List */}
-        <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto lg:col-span-3">
+        <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Complaint List</h2>
             <select

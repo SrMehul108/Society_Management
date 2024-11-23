@@ -14,7 +14,13 @@
     background-color: #EEF1FD;
 }
 
-.custom-scrollbar::-webkit-scrollbar{
-    color: #FE512E;
+::-webkit-scrollbar{
+    width: 5px;
 }
-
+::-webkit-scrollbar-track{
+    background-color: #a19e9e;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #0e0d0dd0;
+    border-radius: 5px;
+}
