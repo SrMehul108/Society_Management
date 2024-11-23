@@ -15,7 +15,7 @@ export const Modal = ({ isOpen, onClose }) => {
 
     try {
       const response = await submitMaintenance(password);
-      alert(`Response: ${response.message}`); // Adjust this based on your API response
+      alert(`Response: ${response.message}`); 
       onClose();
     } catch (err) {
       setError(err.message || "An error occurred.");
