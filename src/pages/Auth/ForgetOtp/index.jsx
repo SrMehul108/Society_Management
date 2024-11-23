@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { CiClock2 } from "react-icons/ci";
 import { otpPage, resendOtp } from "../../../apis/api";
 import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(30);
   const [isActive, setIsActive] = useState(true);
   const isOtpComplete = otp.every((digit) => digit !== "");
-  const navigate =useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isActive && timer > 0) {
@@ -42,7 +44,7 @@ export const OtpPage = () => {
   const handleResend = async () => {
     const email = localStorage.getItem("userEmail");
     if (!email) {
-      alert("Email not found. Please restart the process.");
+      toast.error("Email not found. Please restart the process.");
       return;
     }
     setTimer(60);
@@ -50,27 +52,28 @@ export const OtpPage = () => {
     setOtp(Array(6).fill(""));
     try {
       const response = await resendOtp(email);
-      alert("OTP has been resent to your email!");
+      toast.success("OTP has been resent to your email!");
     } catch (error) {
       console.error("Error resending OTP:", error);
-      alert("Failed to resend OTP. Please try again.");
+      toast.error("Failed to resend OTP. Please try again.");
     }
   };
 
-   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await otpPage(otp.join("")); // Join OTP array to string
-      alert("OTP Verified Successfully!");
+      toast.success("OTP Verified Successfully!");
       navigate("/reset-password");
     } catch (error) {
       console.error("OTP verification failed:", error);
-      setError(error.message || "Invalid OTP. Please try again.");
+      toast.error(error.message || "Invalid OTP. Please try again.");
     }
   };
 
   return (
     <>
+      <ToastContainer />
       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
         Enter OTP
       </h2>

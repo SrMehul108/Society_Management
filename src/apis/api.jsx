@@ -15,14 +15,12 @@ export const LoginData = () => {
   const admintoken = localStorage.getItem("admintoken");
   if (admintoken) {
     const decodedToken = jwtDecode(admintoken);
-    console.log("DecodeToken:", decodedToken.userData);
     return decodedToken.userData;
   }
 };
 
 export const Registration = async (data) => {
   try {
-    console.log(data);
     const response = await axios.post(`${API_URL}/auth/register`, data);
     if (response.status === 200 && response.data.status === 1) {
       return response.data;
@@ -77,23 +75,24 @@ export const resendOtp = async (email) => {
 
 export const forgotPassword = async (passdata) => {
   try {
-    console.log(passdata);
+    var token = AdminToken();
     const response = await axios.post(
       `${API_URL}/auth/forgot-password`,
       passdata
     );
-    admintoken = response.data.data;
+    token = response.data.data;
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.response ? error.response.data : new Error("Network Error");
   }
 };
 
 export const otpPage = async (otp) => {
   try {
-    console.log(otp);
+    var token = AdminToken();
     const response = await axios.post(`${API_URL}/auth/verify-otp`, otp);
-    admintoken = response.data.data;
+    token = response.data.data;
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
@@ -102,9 +101,9 @@ export const otpPage = async (otp) => {
 
 export const resetPassword = async (rpass) => {
   try {
-    console.log(rpass);
+    var token = AdminToken();
     const response = await axios.post(`${API_URL}/auth/reset-password`, rpass);
-    admintoken = response.data.data;
+    token = response.data.data;
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
@@ -113,7 +112,6 @@ export const resetPassword = async (rpass) => {
 
 export const userRegistration = async (formdata) => {
   const token = AdminToken();
-  console.log("Token", token);
   if (!token) {
     return { success: false, message: "Authorization token is missing" };
   }
@@ -177,7 +175,6 @@ export const submitMaintenance = async (maintenance) => {
 
 export const getUser = async () => {
   const token = AdminToken();
-  console.log("Token:", token);
 
   if (!token) {
     return { success: false, message: "Authorization token is missing" };
@@ -212,23 +209,22 @@ export const getUser = async () => {
   }
 };
 
-export const getotherIncome =async()=>{
+export const getotherIncome = async () => {
   const token = AdminToken();
-  console.log("Token:", token);
 
   if (!token) {
     return { success: false, message: "Authorization token is missing" };
   }
 
   try {
-    const response = await axios.get(`${API_URL}/auth/user/otheincome/getIncome`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
-      },
-    });
-
-    console.log("Response:", response);
-
+    const response = await axios.get(
+      `${API_URL}/auth/user/otheincome/getIncome`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
+      }
+    );
     // Check for successful response
     if (response.status === 200 && response.data.status === 1) {
       return response.data.data;
@@ -247,18 +243,21 @@ export const getotherIncome =async()=>{
       data: [],
     };
   }
-}
+};
 
 export const editMaintenance = async (maintenance) => {
   try {
     try {
-      const response = await fetch(`${API_URL}/auth/user/maintanace/editMaintenance/6734f318cc9869bd95409dd3`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ maintenance }),
-      });
+      const response = await fetch(
+        `${API_URL}/auth/user/maintanace/editMaintenance/6734f318cc9869bd95409dd3`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ maintenance }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -275,6 +274,38 @@ export const editMaintenance = async (maintenance) => {
     return {
       success: false,
       message: errorMessage,
+    };
+  }
+};
+
+export const getMaintenance = async () => {
+  try {
+    var token=AdminToken()
+    const response = await axios.get(
+      `${API_URL}/auth/user/maintanace/maintenanceDetail`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error)
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
     };
   }
 };
