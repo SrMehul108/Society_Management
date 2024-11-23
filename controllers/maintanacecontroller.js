@@ -91,12 +91,12 @@ module.exports.maintenanceDetail = async (req, res) => {
                     const userPayments = paymentData.filter(payment => payment.UserId.toString() === user._id.toString());
 
                     // Add penalty if it exists in the penaltyMap for the user
-                    const userWithPenalty = userPayments.map(payment => ({
-                        ...payment.toObject(),
+                    const paymentWithPenalty = userPayments ? {
+                        ...userPayments.toObject(),
                         penalty: penaltyMap[user._id] || 0  // Add penalty if it exists, otherwise 0
-                    }));
+                    } : {};
 
-                    return { ...user.toObject(), payments: userWithPenalty };
+                    return { ...user.toObject(), payments: paymentWithPenalty };
                 });
 
                 return res.status(200).json({ data: result, status: 1 });

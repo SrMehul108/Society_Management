@@ -26,18 +26,14 @@ module.exports.insertUser = async (req, res) => {
                 type: req.body.type,
                 password: pass
             };
-            if (req.body.type === 'tenant') {
-                data.owner = {
-                    fullname: req.body.owner.fullname,
-                    phoneNo: req.body.owner.phoneNo,
-                    address: req.body.owner.address
-                }
-            }
             if (req.body.members && req.body.members.length > 0) {
                 var members = JSON.parse(req.body.members);
             }
             if (req.body.vehicles && req.body.vehicles.length > 0) {
                 var vehicles = JSON.parse(req.body.vehicles);
+            }
+            if (req.body.owner && data.type === 'tenant') {
+                data.owner = JSON.parse(req.body.owner);
             }
             if (req.files) {
                 if (req.files?.profile_image?.[0]?.path) {
@@ -56,6 +52,7 @@ module.exports.insertUser = async (req, res) => {
                     data.rentalAgreementImage = req.files.rentalAgreementImage[0].path;
                 }
             }
+
             const newUser = new User(data);
             await newUser.save();
             if (newUser) {
@@ -175,11 +172,7 @@ module.exports.editUser = async (req, res) => {
                     };
 
                     if (req.body.type === 'tenant' && req.body.owner) {
-                        data.owner = {
-                            fullname: req.body.owner.fullname,
-                            phoneNo: req.body.owner.phoneNo,
-                            address: req.body.owner.address
-                        };
+                        data.owner = JSON.parse(req.body.owner);
                     } else {
                         data.owner = existingData.owner;
                     }
