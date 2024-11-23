@@ -4,8 +4,12 @@ import OtherIncome from "../../../../components/Financial/OtherIncome";
 import MaintenanceDetailsPopup from "../../../../components/Financial/ViewPopup";
 import ViewPopup from "../../../../components/Financial/ViewPopup";
 import { CashButton, DoneButton, EmptyButton, OnlineButton, OwnerButton, PenalityButton, PendingButton, TenantButton } from "../../../../components/Button/Button";
+import "../../../../assets/css/Scrollbar/scrollbar.css"
+
+
 
 function FinancialManagement() {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showOtherIncome, setShowOtherIncome] = useState(false);
 
@@ -399,7 +403,7 @@ function FinancialManagement() {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
+                    <tbody className="divide-y divide-gray-200 custom-scrollbar">
                       {data.map((item, index) => (
                         <tr key={index} className="hover:bg-gray-50">
                           <td className="px-4 py-3 flex items-center space-x-2">
