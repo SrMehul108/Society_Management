@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
 import { getotherIncome, addincome } from "../../apis/api";
+import { useNavigate } from "react-router";
 
 function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -92,11 +93,18 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
       <div className="grid grid-cols-4 gap-4">
         {incomeData.map((incomeData, index) => (
           <OtherIncomeCard
+<<<<<<< HEAD
             key={incomeData.id || index}
             data={incomeData}
             onView={() => console.log(`Viewing ${incomeData.title}`)}
             // onEdit={() => onEditIncome(index)}
             
+=======
+            key={income.id || index}
+            data={income}
+            onView={() => console.log(`Viewing ${income.title}`)}
+            onEdit={() => onEditIncome(index)}
+>>>>>>> 482906fc5b43675217cbe09eb6dfa8450175ecc1
           />
         ))}
       </div>
@@ -128,7 +136,9 @@ export default function OtherIncomeContainer() {
   const handleSaveIncome = async (incomeData) => {
     console.log("Sending data to backend:", incomeData); // Debug log
     try {
+      console.log("Saving income:", income); // Log data before sending
       if (editingIndex !== null) {
+<<<<<<< HEAD
         const updatedIncome = await updateIncome(incomeData[editingIndex].id, incomeData);
         const updatedData = [...incomeData];
         updatedData[editingIndex] = updatedIncome;
@@ -137,10 +147,23 @@ export default function OtherIncomeContainer() {
       } else {
         const createdIncome = await addincome(incomeData);
         setIncomeData([...incomeData, createdIncome]);
+=======
+        // Implement edit functionality here if needed
+        console.log(`Editing income at index ${editingIndex}`);
+        setEditingIndex(null);
+      } else {
+        const createdIncome = await addincome(income); // API call
+        console.log("API Response:", createdIncome); // Log API response
+        if (createdIncome?.id) {
+          setIncomeData([...incomeData, createdIncome]);
+        } else {
+          console.error("Failed to create income, response:", createdIncome);
+        }
+>>>>>>> 482906fc5b43675217cbe09eb6dfa8450175ecc1
       }
       setIsPopupOpen(false);
     } catch (error) {
-      console.error("Error saving income:", error);
+      console.error("Error while saving income:", error); // Log errors
     }
   };
   
@@ -150,13 +173,11 @@ export default function OtherIncomeContainer() {
     setIsPopupOpen(true);
   };
 
-  
-
   return (
     <div>
       {isPopupOpen && (
         <OtherIncomePopup
-          // initialData={editingIndex !== null ? incomeData[editingIndex] : null}
+          initialData={editingIndex !== null ? incomeData[editingIndex] : null}
           onClose={() => setIsPopupOpen(false)}
           onSave={handleSaveIncome}
         />
@@ -164,8 +185,7 @@ export default function OtherIncomeContainer() {
       <OtherIncome
         incomeData={incomeData}
         onCreate={handleCreate}
-        
-        
+        onEditIncome={handleEditIncome}
       />
     </div>
   );

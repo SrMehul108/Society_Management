@@ -143,48 +143,7 @@ export const userRegistration = async (formdata) => {
   }
 };
 
-export const submitMaintenance = async (maintenance) => {
-  var token = AdminToken();
-  if (!token) {
-    return { success: false, message: "Authorization token is missing" };
-  }
-
-  try {
-    const response = await axios.post(
-      `${API_URL}/auth/user/maintenance/insert`, // Fixed typo here
-      maintenance, // Payload should be passed directly if it's an object
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (response.status === 200 && response.data?.status === 1) {
-      return {
-        success: true,
-        data: response.data.data,
-      };
-    } else {
-      return {
-        success: false,
-        message: response.data?.message || "Unexpected error occurred.",
-      };
-    }
-  } catch (error) {
-    console.error("Error occurred during request:", error.response?.data || error.message);
-    return {
-      success: false,
-      message: error.response?.data?.message || "Failed to submit maintenance.",
-    };
-  } finally {
-    console.log("Completed");
-  }
-};
-
-
-// export const submitMaintenance = async (maintenance) => {
+//      message: error.response?.data?.messmaintenanceled to
 //   try {
 //     const response = await fetch(`${API_URL}/auth/user/maintenance/insert`, {
 //       method: "POST",
@@ -204,6 +163,10 @@ export const submitMaintenance = async (maintenance) => {
 //   } catch (error) {
 //     // Ensure consistent error response
 //     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }ns// e/     return {
 //       success: false,
 //       message: error.message || "An unexpected error occurred. Please try again.",
 //     };
@@ -348,6 +311,7 @@ export const getMaintenance = async () => {
   }
 };
 
+<<<<<<< HEAD
 
 export const addincome = async (incomeData) => {
   const response = await fetch(`${API_URL}/auth/user/otheincome/insertIncome`, {
@@ -359,6 +323,22 @@ export const addincome = async (incomeData) => {
   });
   if (!response.ok) {
     throw new Error("Failed to add income");
+=======
+export const addincome = async (income) => {
+  try {
+    var token = AdminToken()
+    const response = await axios.post(`${API_URL}/auth/user/otheincome/insertIncome`,{
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }, {
+      income,
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+>>>>>>> 482906fc5b43675217cbe09eb6dfa8450175ecc1
   }
   return await response.json();
 };
