@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { submitMaintenance } from "../../apis/api";
 
 export const Modal = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState('');

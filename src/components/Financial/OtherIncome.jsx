@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
 import { getotherIncome, addincome } from "../../apis/api";
+import { useNavigate } from "react-router";
 
 function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -95,8 +96,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
             key={income.id || index}
             data={income}
             onView={() => console.log(`Viewing ${income.title}`)}
-            // onEdit={() => onEditIncome(index)}
-            
+            onEdit={() => onEditIncome(index)}
           />
         ))}
       </div>
@@ -127,34 +127,37 @@ export default function OtherIncomeContainer() {
 
   const handleSaveIncome = async (income) => {
     try {
+      console.log("Saving income:", income); // Log data before sending
       if (editingIndex !== null) {
-        
-        
-        
-        setIncomeData(addincome);
+        // Implement edit functionality here if needed
+        console.log(`Editing income at index ${editingIndex}`);
         setEditingIndex(null);
       } else {
-        const createdIncome = await addincome(income);
-        setIncomeData([...incomeData, createdIncome]);
+        const createdIncome = await addincome(income); // API call
+        console.log("API Response:", createdIncome); // Log API response
+        if (createdIncome?.id) {
+          setIncomeData([...incomeData, createdIncome]);
+        } else {
+          console.error("Failed to create income, response:", createdIncome);
+        }
       }
       setIsPopupOpen(false);
     } catch (error) {
-      console.error("Error saving income:", error);
+      console.error("Error while saving income:", error); // Log errors
     }
   };
+  
 
   const handleEditIncome = (index) => {
     setEditingIndex(index);
     setIsPopupOpen(true);
   };
 
-  
-
   return (
     <div>
       {isPopupOpen && (
         <OtherIncomePopup
-          // initialData={editingIndex !== null ? incomeData[editingIndex] : null}
+          initialData={editingIndex !== null ? incomeData[editingIndex] : null}
           onClose={() => setIsPopupOpen(false)}
           onSave={handleSaveIncome}
         />
@@ -162,8 +165,7 @@ export default function OtherIncomeContainer() {
       <OtherIncome
         incomeData={incomeData}
         onCreate={handleCreate}
-        
-        
+        onEditIncome={handleEditIncome}
       />
     </div>
   );
