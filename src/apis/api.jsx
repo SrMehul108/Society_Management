@@ -144,34 +144,72 @@ export const userRegistration = async (formdata) => {
 };
 
 export const submitMaintenance = async (maintenance) => {
+  var token = AdminToken();
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
   try {
-    try {
-      const response = await fetch(`${API_URL}/auth/user/maintanace/insert`, {
-        method: "POST",
+    const response = await axios.post(
+      `${API_URL}/auth/user/maintenance/insert`, // Fixed typo here
+      maintenance, // Payload should be passed directly if it's an object
+      {
         headers: {
+          Authorization: `Bearer ${token}`, // Include Bearer token
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ maintenance }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to submit maintence");
       }
+    );
 
-      return await response.json();
-    } catch (error) {
-      throw new Error(error.message || "Network error");
+    if (response.status === 200 && response.data?.status === 1) {
+      return {
+        success: true,
+        data: response.data.data,
+      };
+    } else {
+      return {
+        success: false,
+        message: response.data?.message || "Unexpected error occurred.",
+      };
     }
   } catch (error) {
-    const errorMessage =
-      error.response?.data?.message || "An error occurred. Please try again.";
+    console.error("Error occurred during request:", error.response?.data || error.message);
     return {
       success: false,
-      message: errorMessage,
+      message: error.response?.data?.message || "Failed to submit maintenance.",
     };
+  } finally {
+    console.log("Completed");
   }
 };
+
+
+// export const submitMaintenance = async (maintenance) => {
+//   try {
+//     const response = await fetch(`${API_URL}/auth/user/maintenance/insert`, {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({ maintenance }),
+//     });
+
+//     if (!token.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || "Failed to submit maintenance");
+//     }
+
+//     // Return the parsed JSON response
+//     return await response.json();
+//   } catch (error) {
+//     // Ensure consistent error response
+//     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }
+// };
+
 
 export const getUser = async () => {
   const token = AdminToken();
@@ -183,20 +221,20 @@ export const getUser = async () => {
   try {
     const response = await axios.get(`${API_URL}/auth/user/getUser`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        Authorization: `Bearer ${token}`, 
       },
     });
 
     console.log("Response:", response);
 
-    // Check for successful response
+   
     if (response.status === 200 && response.data.status === 1) {
       return response.data.data;
     } else {
       return { success: false, message: "Failed to fetch user data", data: [] };
     }
   } catch (error) {
-    // Log the error response and status
+    
     console.error(
       "Error:",
       error.response ? error.response.data : error.message
@@ -307,5 +345,16 @@ export const getMaintenance = async () => {
       message: error.response ? error.response.data : error.message,
       data: [],
     };
+  }
+};
+
+export const addincome = async (income) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/user/otheincome/insertIncome`, {
+      income,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
   }
 };
