@@ -143,48 +143,7 @@ export const userRegistration = async (formdata) => {
   }
 };
 
-export const submitMaintenance = async (maintenance) => {
-  var token = AdminToken();
-  if (!token) {
-    return { success: false, message: "Authorization token is missing" };
-  }
-
-  try {
-    const response = await axios.post(
-      `${API_URL}/auth/user/maintenance/insert`, // Fixed typo here
-      maintenance, // Payload should be passed directly if it's an object
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include Bearer token
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (response.status === 200 && response.data?.status === 1) {
-      return {
-        success: true,
-        data: response.data.data,
-      };
-    } else {
-      return {
-        success: false,
-        message: response.data?.message || "Unexpected error occurred.",
-      };
-    }
-  } catch (error) {
-    console.error("Error occurred during request:", error.response?.data || error.message);
-    return {
-      success: false,
-      message: error.response?.data?.message || "Failed to submit maintenance.",
-    };
-  } finally {
-    console.log("Completed");
-  }
-};
-
-
-// export const submitMaintenance = async (maintenance) => {
+//      message: error.response?.data?.messmaintenanceled to
 //   try {
 //     const response = await fetch(`${API_URL}/auth/user/maintenance/insert`, {
 //       method: "POST",
@@ -204,6 +163,10 @@ export const submitMaintenance = async (maintenance) => {
 //   } catch (error) {
 //     // Ensure consistent error response
 //     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }ns// e/     return {
 //       success: false,
 //       message: error.message || "An unexpected error occurred. Please try again.",
 //     };
