@@ -90,11 +90,11 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
         </button>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {incomeData.map((income, index) => (
+        {incomeData.map((incomeData, index) => (
           <OtherIncomeCard
-            key={income.id || index}
-            data={income}
-            onView={() => console.log(`Viewing ${income.title}`)}
+            key={incomeData.id || index}
+            data={incomeData}
+            onView={() => console.log(`Viewing ${incomeData.title}`)}
             // onEdit={() => onEditIncome(index)}
             
           />
@@ -125,16 +125,17 @@ export default function OtherIncomeContainer() {
     setIsPopupOpen(true);
   };
 
-  const handleSaveIncome = async (income) => {
+  const handleSaveIncome = async (incomeData) => {
+    console.log("Sending data to backend:", incomeData); // Debug log
     try {
       if (editingIndex !== null) {
-        
-        
-        
-        setIncomeData(addincome);
+        const updatedIncome = await updateIncome(incomeData[editingIndex].id, incomeData);
+        const updatedData = [...incomeData];
+        updatedData[editingIndex] = updatedIncome;
+        setIncomeData(updatedData);
         setEditingIndex(null);
       } else {
-        const createdIncome = await addincome(income);
+        const createdIncome = await addincome(incomeData);
         setIncomeData([...incomeData, createdIncome]);
       }
       setIsPopupOpen(false);
@@ -142,6 +143,7 @@ export default function OtherIncomeContainer() {
       console.error("Error saving income:", error);
     }
   };
+  
 
   const handleEditIncome = (index) => {
     setEditingIndex(index);
