@@ -92,7 +92,7 @@ export const AddNote = () => {
         {note.map((note) => (
           <div key={note.id} className="rounded-lg border relative">
             <div className="bg-blue-500 rounded-t-lg flex justify-between items-center p-3">
-              <h2 className="font-semibold text-2xl text-white">
+              <h2 className="font-semibold text-xl text-white">
                 {note.title}
               </h2>
               <div className="relative">

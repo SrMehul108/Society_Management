@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import { DSSidebar } from "@/components";
 import { Icons } from "../../constants";
 import Notification from "../../components/Notification/Notification";
+import ProfilePopup from "../../components/ProfilePopup/ProfilePopup";
 
 export const DashboardLayout = ({ items }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -19,6 +20,11 @@ export const DashboardLayout = ({ items }) => {
   const handleCloseNotification = () => {
     setIsNotificationVisible(false);
   };
+// profile popup
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   return (
     <div className="flex min-h-screen">
@@ -83,14 +89,15 @@ export const DashboardLayout = ({ items }) => {
               onClose={handleCloseNotification}
             />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={handleOpen}>
               <img
                 src="/placeholder.svg"
                 alt="User"
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full border"
               />
-              <span className="hidden sm:block">Moni Roy</span>
+              <span className="hidden sm:block" >Moni Roy</span>
             </div>
+            {isOpen && <ProfilePopup onClose={handleClose} />}
           </div>
         </header>
 
