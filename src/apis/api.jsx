@@ -311,38 +311,16 @@ export const getMaintenance = async () => {
   }
 };
 
-<<<<<<< HEAD
-
-export const addincome = async (incomeData) => {
-  const response = await fetch(`${API_URL}/auth/user/otheincome/insertIncome`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(incomeData),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to add income");
-=======
 export const addincome = async (income) => {
   try {
-    var token = AdminToken()
-    const response = await axios.post(`${API_URL}/auth/user/otheincome/insertIncome`,{
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }, {
+    const response = await axios.post(`${API_URL}/auth/user/otheincome/insertIncome`, {
       income,
     });
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
->>>>>>> 482906fc5b43675217cbe09eb6dfa8450175ecc1
   }
-  return await response.json();
 };
-
 
 export const viewmaintenance = async () => {
   try {
