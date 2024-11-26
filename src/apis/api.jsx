@@ -388,32 +388,33 @@ export const getImportantnumber = async () => {
 };
 
 export const getExpense = async () => {
-    try {
-        var token = AdminToken();
-        const response = await axios.get(
-            `${API_URL}/auth/user/expenses/getExpenses`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-        if (response.status === 200 && response.data.status === 1) {
-            return response.data.data;
-        } else {
-            return { success: false, message: "Failed to fetch user data", data: [] };
+  try {
+    var token = AdminToken();
+    const response = await axios.get(
+        `${API_URL}/auth/user/expenses/getExpenses`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         }
-    } catch (error) {
-        console.error(
-            "Error:",
-            error.response ? error.response.data : error.message
-        );
-        console.log(error);
-        return {
-            success: false,
-            message: error.response ? error.response.data : error.message,
-            data: [],
-        };
+    );
+    if (response.status === 200 && response.data.status === 1) {
+        return response.data.data;
+    } else {
+        return { success: false, message: "Failed to fetch user data", data: [] };
     }
+} catch (error) {
+    // Log the error response and status
+    console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+        success: false,
+        message: error.response ? error.response.data : error.message,
+        data: [],
+    };
+}
 }

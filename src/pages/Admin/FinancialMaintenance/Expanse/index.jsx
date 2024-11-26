@@ -3,12 +3,13 @@ import AddExpanse from "../../../../components/Financial/Expense/AddExpenses";
 import ExpenseDelete from "../../../../components/Financial/Expense/ExpenseDelete";
 import ExpenseView from "../../../../components/Financial/Expense/ExpenseView";
 import { getExpense } from "../../../../apis/api";
+import { Icons } from "../../../../constants";
 
 export default function Expanse() {
   // Modal and form state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null); // Tracks the item to be edited
-  const [expense, setExpense] = useState({});
+  const [expense, setExpense] = useState([]);
 
   const openModal = (item = null) => {
     setEditingItem(item); // If item is passed, open in edit mode
@@ -18,7 +19,7 @@ export default function Expanse() {
   useEffect(() => {
     const fetchExpense = async () => {
       try {
-        const data= await getExpense()
+        const data = await getExpense();
         setExpense(data);
       } catch (error) {
         console.log(error);
@@ -46,15 +47,6 @@ export default function Expanse() {
   return (
     <>
       <div className="p-4 bg-gray-100">
-        <div className="flex flex-col md:flex-row items-center justify-end space-y-4 md:space-y-0">
-          <button
-            onClick={() => openModal()} // Opens modal for adding new expense
-            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
-          >
-            Add New Expenses details
-          </button>
-        </div>
-
         {/* Modal for adding or editing expense */}
         {isModalOpen && (
           <AddExpanse
@@ -69,13 +61,24 @@ export default function Expanse() {
           className="mt-4 tabs tabs-lifted tabs-lg rounded-lg"
         >
           <div
-            className="bg-white p-4 overflow-hidden"
+            className="bg-white p-4 overflow-hidden rounded-lg"
             style={{ height: "680px" }}
           >
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">
-              Add Expenses details
-            </h2>
-
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-700 ">
+                  Add Expenses details
+                </h2>
+              </div>
+              <div className="flex flex-col md:flex-row items-center justify-end space-y-4 md:space-y-0 ">
+                <button
+                  onClick={() => openModal()} // Opens modal for adding new expense
+                  className=" flex w-full md:w-auto mt-4 md:mt-0 p-6 py-2 gap-4 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
+                ><span>{Icons.Add}</span>
+                  Add New Expenses details
+                </button>
+              </div>
+            </div>
             <div
               className="overflow-x-auto rounded-lg h-full"
               style={{ maxHeight: "600px" }}
@@ -103,7 +106,7 @@ export default function Expanse() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
+                <tbody className="divide-y divide-gray-200 overflow-y-auto custom-scrollbar">
                   {expense.map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-4 py-3 flex items-center space-x-2">
