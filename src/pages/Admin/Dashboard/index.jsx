@@ -275,7 +275,7 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72 sm:h-96 min-[430px]:h-96 max-[1024]:h-96">
         {/* Complaint List */}
         <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3">
           <div className="flex justify-between items-center mb-4">
