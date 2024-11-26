@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 
-const importantSchema = new mongoose.Schema({
-    fullName: {
+const facilitySchema = new mongoose.Schema({
+    facilityName: {
         type: String,
         required: true
     },
-    phoneNo: {
+    description: {
         type: String,
         unique: true,
         required: true
     },
-    work: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
+    },
+    reminderDate: {
+        type: Number,
+        required: true,
+        minlength: 1,
+        maxlength: 2
     },
     isActive: {
         type: Boolean,
@@ -25,17 +31,17 @@ const importantSchema = new mongoose.Schema({
         required: true
     },
     createdDate: {
-        type: String,
+        type: Date,
         required: true,
-        default: new Date().toLocaleDateString()
+        default: Date().now()
     },
     updatedDate: {
         type: String,
         required: true,
-        default: new Date().toLocaleDateString()
+        default: Date().now()
     },
 
 });
 
-module.exports = mongoose.model('Important', importantSchema);
+module.exports = mongoose.model('Facility', facilitySchema);
 

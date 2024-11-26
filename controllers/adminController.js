@@ -114,6 +114,7 @@ module.exports.forgotPassword = async (req, res) => {
 
 module.exports.verifyOtp = async (req, res) => {
     try {
+        console.log(req.body);
         if (req.body !== "") {
             if (req.body.otp == req.cookies.otp) {
                 return res.status(200).json({ message: "OTP Verified Successfully 🎉", status: 1 });
@@ -126,7 +127,6 @@ module.exports.verifyOtp = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.status(400).json({ message: "Something Wrong", status: 0 });
-
     }
 }
 

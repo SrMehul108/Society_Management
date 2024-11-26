@@ -18,4 +18,5 @@ router.use('/otheincome', require('./otherIncome'));
 router.use('/important', require('./important'));
 router.use('/expenses', require('./expenses'));
 router.use('/note', require('./note'));
+router.use('/facility', require('./facility'));
 module.exports = router;
