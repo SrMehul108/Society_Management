@@ -7,7 +7,7 @@ module.exports.insert = async (req, res) => {
             if (check) {
                 return res.status(400).json({ message: "Number already exist", status: 0 });
             }
-            re.body.societyId = req.user.societyId;
+            req.body.societyId = req.user.societyId;
             let newData = new Important(req.body);
             await newData.save();
             if (newData) {
