@@ -74,14 +74,12 @@ export const OtpPage = () => {
   return (
     <>
       <ToastContainer />
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-        Enter OTP
-      </h2>
-      <h5 className="text-sm text-center mb-4">
+      <h2 className="text-2xl md:text-3xl font-bold mb-4">Enter OTP</h2>
+      <h5 className="text-sm  mb-4">
         Please enter the 6 digit code sent to your phone number.
       </h5>
       <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-        <div className="flex justify-center space-x-2 mb-4">
+        <div className="flex justify-center space-x-9 mb-4">
           {otp.map((digit, index) => (
             <input
               key={index}
@@ -91,27 +89,27 @@ export const OtpPage = () => {
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               placeholder="0"
-              className="border border-gray-300 rounded text-center w-12 h-12 text-xl focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+              className="border border-gray-300 rounded text-center w-14 h-14 text-xl focus:outline-none focus:ring-orange-500 focus:border-orange-500"
               maxLength="1"
             />
           ))}
         </div>
 
-        <div className="flex justify-center mb-4">
-          {isActive ? (
-            <div className="flex items-center text-black-600">
-              <CiClock2 className="mr-2" />
-              <span>00: {timer} sec</span>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={handleResend}
-              className="text-red-500 font-medium"
-            >
-              Resend OTP
-            </button>
-          )}
+        <div className="flex justify-between mb-4">
+          <div className="flex items-center text-black-600">
+            <CiClock2 className="mr-2" />
+            <span>00: {timer} sec</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleResend}
+            className={`ml-4 font-medium ${
+              isActive ? "text-gray-400 cursor-not-allowed" : "text-red-500"
+            }`}
+            disabled={isActive}
+          >
+            Resend OTP
+          </button>
         </div>
 
         <button

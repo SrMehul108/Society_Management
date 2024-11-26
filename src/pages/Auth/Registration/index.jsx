@@ -106,7 +106,7 @@ export const RegistrationForm = () => {
               htmlFor="firstName"
               className="block text-sm font-medium text-gray-950"
             >
-              First Name*
+              First Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -124,7 +124,7 @@ export const RegistrationForm = () => {
               htmlFor="lastName"
               className="block text-sm font-medium text-gray-950"
             >
-              Last Name*
+              Last Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -144,7 +144,7 @@ export const RegistrationForm = () => {
               htmlFor="email"
               className="block text-sm font-medium text-gray-950"
             >
-              Email Address*
+              Email Address<span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -162,7 +162,7 @@ export const RegistrationForm = () => {
               htmlFor="number"
               className="block text-sm font-medium text-gray-950"
             >
-              Phone Number*
+              Phone Number<span className="text-red-500">*</span>
             </label>
             <input
               type="tel"
@@ -182,7 +182,7 @@ export const RegistrationForm = () => {
               htmlFor="country"
               className="block text-sm font-medium text-gray-950"
             >
-              Country*
+              Country<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -200,7 +200,7 @@ export const RegistrationForm = () => {
               htmlFor="state"
               className="block text-sm font-medium text-gray-950"
             >
-              State*
+              State<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -218,7 +218,7 @@ export const RegistrationForm = () => {
               htmlFor="city"
               className="block text-sm font-medium text-gray-950"
             >
-              City*
+              City<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -238,7 +238,7 @@ export const RegistrationForm = () => {
             htmlFor="society"
             className="block text-sm font-medium text-gray-950 mb-1"
           >
-            Select Society*
+            Select Society<span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <div
@@ -285,7 +285,7 @@ export const RegistrationForm = () => {
             htmlFor="password"
             className="block text-sm font-medium text-gray-950"
           >
-            Password*
+            Password<span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
             <input
@@ -316,7 +316,7 @@ export const RegistrationForm = () => {
             htmlFor="confirmPassword"
             className="block text-sm font-medium text-gray-950"
           >
-            Confirm Password*
+            Confirm Password<span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
             <input
@@ -359,7 +359,7 @@ export const RegistrationForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-md hover:bg-[#ff2e00] hover:text-white mt-5"
+          className="w-full bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-md hover:bg-[#ff2e00] hover:text-white mt-5" 
         >
           Register
         </button>

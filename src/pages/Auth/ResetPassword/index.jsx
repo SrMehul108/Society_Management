@@ -57,7 +57,7 @@ export const ResetPassword = () => {
 
   return (
     <>
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 ">
         Reset Password
       </h2>
       <form className="space-y-6" onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ export const ResetPassword = () => {
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
-            Password*
+           New Password<span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
             <input
@@ -87,9 +87,9 @@ export const ResetPassword = () => {
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <EyeOffIcon className="h-5 w-5 text-gray-400" />
-              ) : (
                 <EyeIcon className="h-5 w-5 text-gray-400" />
+              ) : (
+                <EyeOffIcon className="h-5 w-5 text-gray-400" />
               )}
             </button>
           </div>
@@ -100,7 +100,7 @@ export const ResetPassword = () => {
             htmlFor="confirmPassword"
             className="block text-sm font-medium text-gray-700"
           >
-            Confirm Password*
+            Confirm Password<span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
             <input
@@ -121,9 +121,10 @@ export const ResetPassword = () => {
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <EyeOffIcon className="h-5 w-5 text-gray-400" />
-              ) : (
                 <EyeIcon className="h-5 w-5 text-gray-400" />
+              ) : (
+                
+                <EyeOffIcon className="h-5 w-5 text-gray-400" />
               )}
             </button>
           </div>
