@@ -81,7 +81,6 @@ export const forgotPassword = async (passdata) => {
             `${API_URL}/auth/forgot-password`,
             passdata
         );
-        token = response.data.data;
         return response.data;
     } catch (error) {
         console.log(error);
@@ -92,7 +91,6 @@ export const forgotPassword = async (passdata) => {
 export const otpPage = async (otp) => {
     try {
         console.log(otp);
-        var token = AdminToken();
         const data = { otp }
         const response = await axios.post(`${API_URL}/auth/verify-otp`, data, {
             headers: {
@@ -108,9 +106,7 @@ export const otpPage = async (otp) => {
 
 export const resetPassword = async (rpass) => {
     try {
-        var token = AdminToken();
         const response = await axios.post(`${API_URL}/auth/reset-password`, rpass);
-        token = response.data.data;
         return response.data;
     } catch (error) {
         throw error.response ? error.response.data : new Error("Network Error");
