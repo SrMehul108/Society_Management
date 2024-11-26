@@ -108,17 +108,27 @@ export default function OtherIncomeContainer() {
   const [incomeData, setIncomeData] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const data = await getotherIncome();
         setIncomeData(data);
       } catch (error) {
         console.error("Failed to fetch income data:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false); 
       }
     };
+
     fetchData();
+    return () => {
+    };
   }, []);
 
   const handleCreate = () => {
