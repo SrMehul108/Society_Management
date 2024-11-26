@@ -45,7 +45,7 @@ export const Userlogin = () => {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
-            Email or Phone*
+            Email or Phone<span className="text-red-500">*</span>
           </label>
           <input
             id="email"
@@ -64,7 +64,7 @@ export const Userlogin = () => {
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
-            Password*
+            Password<span className="text-red-500">*</span>
           </label>
           <div className="mt-1 relative">
             <input

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CreateSociety } from "@/apis/api";
+
 const popupStyle = {
   position: 'fixed',
   top: 0,
@@ -12,13 +13,6 @@ const popupStyle = {
   alignItems: 'center',
   zIndex: 1000
 };
-const popupContentStyle = {
-  padding: '20px',
-  borderRadius: '5px',
-};
-
-
-
 
 const Societypopup = ({ isOpenDrop, togglePopup }) => {
   const [formData, setFormData] = useState({
@@ -30,6 +24,9 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
     zipcode: ''
   });
 
+  // Check if all fields are filled
+  const isFormComplete = Object.values(formData).every(field => field.trim() !== '');
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -37,12 +34,10 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = await CreateSociety(formData)
-    console.log();
-    
-    if(data.data.status == 1){
+    const data = await CreateSociety(formData);
+    if (data?.data?.status === 1) {
       togglePopup();
     }
   };
@@ -53,8 +48,8 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
         <div style={popupStyle}>
           <div className='rounded-2xl'>
             <div className="flex items-center bg-gray-100 rounded-2xl">
-              <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full ">
-                <h2 className="text-2xl font-bold mb-6 ">Create New Society</h2>
+              <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+                <h2 className="text-2xl font-bold mb-6">Create New Society</h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-6">
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -101,7 +96,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Enter Name"
+                        placeholder="Enter Country"
                       />
                     </div>
                     <div>
@@ -116,7 +111,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Enter Name"
+                        placeholder="Enter State"
                       />
                     </div>
                   </div>
@@ -134,7 +129,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Enter Name"
+                        placeholder="Enter City"
                       />
                     </div>
                     <div>
@@ -155,23 +150,38 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                   </div>
 
                   <div className="flex justify-between my-5">
-                    <button type="button" onClick={togglePopup} className="bg-transparent border border-zinc-400 text-gray-700 py-2 px-4 rounded-md" style={{ width: '170px', height: '51px' }}>
+                    <button
+                      type="button"
+                      onClick={togglePopup}
+                      className="bg-transparent border border-zinc-400 text-gray-700 py-2 px-4 rounded-lg"
+                      style={{ width: '170px', height: '51px' }}
+                    >
                       Cancel
                     </button>
-                    <button type="submit" className="bg-slate-200 text-black py-2 px-4 rounded-md " style={{ width: '170px', height: '51px' }}>
+                    <button
+                      type="submit"
+                      className="text-black py-2 px-4 rounded-lg"
+                      style={{
+                        width: '170px',
+                        height: '51px',
+                        color:"#ffffff",
+                        background: isFormComplete
+                          ? 'linear-gradient(90deg, #FE512E 0%, #F09619 100%)'
+                          : 'rgb(229 231 235)' // default gray color
+                      }}
+                      disabled={!isFormComplete} // Prevent submission when incomplete
+                    >
                       Save
                     </button>
                   </div>
                 </form>
               </div>
             </div>
-
           </div>
         </div>
       )}
-
     </>
-  )
-}
+  );
+};
 
 export default Societypopup;
