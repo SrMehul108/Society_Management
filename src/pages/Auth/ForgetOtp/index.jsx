@@ -62,14 +62,21 @@ export const OtpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await otpPage(otp.join("")); // Join OTP array to string
+      console.log("code is run");
+      
+      const tempOtp = otp.join(""); // Convert OTP array to string
+      const parsedOtp = parseInt(tempOtp); // Parse the string into an integer
+      const response = await otpPage(parsedOtp); // Pass the parsed OTP
       toast.success("OTP Verified Successfully!");
       navigate("/reset-password");
     } catch (error) {
       console.error("OTP verification failed:", error);
       toast.error(error.message || "Invalid OTP. Please try again.");
+      console.log(error);
     }
   };
+
+
 
   return (
     <>

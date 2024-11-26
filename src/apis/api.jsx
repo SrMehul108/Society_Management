@@ -75,6 +75,7 @@ export const resendOtp = async (email) => {
 
 export const forgotPassword = async (passdata) => {
   try {
+    console.log(passdata)
     var token = AdminToken();
     const response = await axios.post(
       `${API_URL}/auth/forgot-password`,
@@ -91,10 +92,12 @@ export const forgotPassword = async (passdata) => {
 export const otpPage = async (otp) => {
   try {
     var token = AdminToken();
-    const response = await axios.post(`${API_URL}/auth/verify-otp`, otp);
+    const data ={otp}
+    const response = await axios.post(`${API_URL}/auth/verify-otp`, data);
     token = response.data.data;
     return response.data;
   } catch (error) {
+    console.log(error)
     throw error.response ? error.response.data : new Error("Network Error");
   }
 };
