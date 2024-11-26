@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const cloudinaryConfig = require('../config/cloudinaryConfig');
-
+this.OTP = '';
 module.exports.registerUser = async (req, res) => {
     try {
         if (req.body !== "") {
@@ -84,8 +84,9 @@ module.exports.forgotPassword = async (req, res) => {
             return res.status(400).json({ message: "Email is incorrect", status: 0 });
         }
         const otp = Math.floor(100000 + Math.random() * 900000);
-        res.cookie('otp', otp, { httpOnly: true, secure: true });
-        res.cookie('email', checkmail.email, { httpOnly: true, secure: true });
+        res.cookie('otp', otp, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: 'Strict' });
+        this.OTP = otp;
+        res.cookie('email', checkmail.email);
 
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -114,9 +115,11 @@ module.exports.forgotPassword = async (req, res) => {
 
 module.exports.verifyOtp = async (req, res) => {
     try {
-        console.log(req.body);
+        console.log(req.body, req.cookies.otp);
         if (req.body !== "") {
-            if (req.body.otp == req.cookies.otp) {
+            let sendedOtp = req.cookies.otp ? req.cookies.otp : this.OTP;
+            if (req.body.otp == sendedOtp) {
+                this.OTP = '';
                 return res.status(200).json({ message: "OTP Verified Successfully 🎉", status: 1 });
             } else {
                 return res.status(400).json({ message: "Wrong OTP Entered", status: 0 });
