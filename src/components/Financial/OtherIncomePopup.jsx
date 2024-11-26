@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { addincome } from "../../apis/api";
+import { useNavigate } from "react-router";
+import OtherIncome from "../../pages/User/PaymentPortal/OtherIncome";
 
 function OtherIncomePopup({ onClose }) {
-  // State for form fields
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -10,7 +12,9 @@ function OtherIncomePopup({ onClose }) {
     amount: "",
   });
 
-  // Handle input changes
+  const [error, setError] = useState(null);
+  const navigate =useNavigate()
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -19,12 +23,24 @@ function OtherIncomePopup({ onClose }) {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Add logic to save the data or make an API call
-    onClose(); // Close the popup after submission
+    setError(null);
+
+    if (!formData.title || !formData.date || !formData.dueDate || !formData.description || !formData.amount) {
+      setError("All fields are required!");
+      return;
+    }
+
+    try {
+      const response = await addincome(formData);
+      console.log("Income added successfully:", response);
+      navigate(<OtherIncome/>)
+    } catch (error) {
+      console.error("Error adding income:", error);
+      setError("Failed to add income. Please try again.");
+    }
+    onClose();
   };
 
   return (
@@ -89,25 +105,26 @@ function OtherIncomePopup({ onClose }) {
               Amount<span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               name="amount"
               value={formData.amount}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-md p-2"
-              placeholder="₹ 1,500"
+              placeholder="1500"
             />
           </div>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           <div className="flex justify-between">
             <button
               type="button"
-              className="px-4 py-2 bg-gray-300 rounded-md"
+              className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md"
+              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
             >
               Save
             </button>

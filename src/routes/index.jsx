@@ -289,7 +289,10 @@ const DashStackRoute = createBrowserRouter(
       /* Default Route (404) */
       path: "*",
       element: <>404 - Page Not Found</>,
-    },
+    },{
+      path:"/OtherIncome",
+      element:<OtherIncome/>
+    }
   ],
   {
     /* Base URL */

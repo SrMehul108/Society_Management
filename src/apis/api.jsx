@@ -316,13 +316,20 @@ export const getMaintenance = async () => {
 
 export const addincome = async (income) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/user/otheincome/insertIncome`, {
-            income,
-        });
+        var token = AdminToken()
+        const response = await axios.post(
+          `${API_URL}/auth/user/otheincome/insertIncome`,
+          income, // Pass income directly
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add Authorization header
+            },
+          }
+        );
         return response.data;
-    } catch (error) {
+      } catch (error) {
         throw error.response ? error.response.data : new Error("Network Error");
-    }
+      }
 };
 
 export const viewmaintenance = async () => {
