@@ -304,7 +304,7 @@ export const Dashboard = () => {
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Important Numbers</h2>
                 <button
-                  className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex rounded-sm items-center"
+                  className=" p-1 bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white flex rounded-sm items-center"
                   onClick={handleAddClick}
                 >
                   <FaPlus className="mr-2 text-white" />

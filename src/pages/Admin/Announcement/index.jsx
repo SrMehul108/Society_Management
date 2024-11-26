@@ -119,7 +119,7 @@ const closeViewModal = () => setIsViewOpen(false);
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h1 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-0">Announcement</h1>
         <button
-          className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-all"
+          className=" text-white py-2 px-4 rounded-lg bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition-all"
           onClick={openPopup}
         >
          Create  Announcement

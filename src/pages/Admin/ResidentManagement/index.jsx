@@ -58,7 +58,7 @@ export const ResidentManagement = () => {
             Resident Tenant and Owner Details
           </h1>
           <button
-            className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 text-sm md:text-base"
+            className=" text-white px-4 py-2 rounded-md  text-sm md:text-base bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
             onClick={statusPopup}
           >
             <i className="fas fa-plus mr-2"></i> Add New Resident Details

@@ -83,7 +83,7 @@ function FinancialManagement() {
 
           <button
             onClick={openModal}
-            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
+            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2  text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition"
           >
             Set Maintenance
           </button>
@@ -100,7 +100,7 @@ function FinancialManagement() {
             onClick={handleMaintenanceClick}
             className={`py-2 px-4 tab rounded-t border-b-2 ${
               !showOtherIncome
-                ? "bg-orange-500 text-white border-b-orange-500"
+                ? "bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white border-b-orange-500"
                 : "bg-white hover:bg-gray-200"
             }`}
           >
@@ -111,7 +111,7 @@ function FinancialManagement() {
             onClick={handleOtherIncomeClick}
             className={`py-2 px-4 tab rounded-t border-b-2 ${
               showOtherIncome
-                ? "bg-orange-500 text-white border-b-orange-500"
+                ? "bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white border-b-orange-500"
                 : "bg-white hover:bg-gray-200"
             }`}
           >

@@ -87,7 +87,7 @@ export const FacilityManagement = () => {
           Facility Management
         </h1>
         <button
-          className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-all"
+          className=" text-white py-2 px-4 rounded-lg bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition-all"
           onClick={openPopup}
         >
           Create Facility
