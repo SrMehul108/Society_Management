@@ -1,28 +1,40 @@
-.body{
-    background-color: gray;
+.body {
+  background-color: gray;
 }
 
 .hover-gradient {
-    transition: background-image 0.3s ease;
+  transition: background-image 0.3s ease;
 }
 .hover-gradient:hover {
-    background-image: linear-gradient(90deg, #FE512E 0%, #F09619 100%);
-}
-  
-
-.bg-royalgray{
-    background-color: #EEF1FD;
+  background-image: linear-gradient(90deg, #fe512e 0%, #f09619 100%);
 }
 
-::-webkit-scrollbar{
-    width: 5px;
-}
-::-webkit-scrollbar-track{
-    background-color: #a19e9e;
-}
-::-webkit-scrollbar-thumb{
-    background-color: #0e0d0dd0;
-    border-radius: 5px;
+.bg-royalgray {
+  background-color: #eef1fd;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: #a19e9e;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #0e0d0dd0;
+  border-radius: 5px;
+}
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #202224;
+  border-radius: 10px;
+}
