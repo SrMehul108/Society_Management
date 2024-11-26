@@ -11,10 +11,10 @@ const facilitySchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
     },
-    reminderDate: {
+    reminderDay: {
         type: Number,
         required: true,
         minlength: 1,
@@ -33,12 +33,12 @@ const facilitySchema = new mongoose.Schema({
     createdDate: {
         type: Date,
         required: true,
-        default: Date().now()
+        default: Date.now()
     },
     updatedDate: {
         type: String,
         required: true,
-        default: Date().now()
+        default: Date.now()
     },
 
 });
