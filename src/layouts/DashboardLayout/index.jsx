@@ -46,7 +46,7 @@ export const DashboardLayout = ({ items }) => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col pl-0 md:pl-64 flex-auto min-h-0">
+      <div className="flex flex-col pl-0 md:pl-64 flex-auto min-h-0">
         {/* Header */}
         <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between flex-[0_0_auto]">
           
@@ -95,7 +95,7 @@ export const DashboardLayout = ({ items }) => {
                 alt="User"
                 className="w-8 h-8 rounded-full border"
               />
-              <span className="hidden sm:block" >Moni Roy</span>
+              <span className="sm:block" >Moni Roy</span>
             </div>
             {isOpen && <ProfilePopup onClose={handleClose} />}
           </div>
