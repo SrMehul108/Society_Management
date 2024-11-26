@@ -1,62 +1,47 @@
-
-
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddExpanse from "../../../../components/Financial/Expense/AddExpenses";
 import ExpenseDelete from "../../../../components/Financial/Expense/ExpenseDelete";
 import ExpenseView from "../../../../components/Financial/Expense/ExpenseView";
- 
+import { getExpense } from "../../../../apis/api";
+
 export default function Expanse() {
   // Modal and form state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null); // Tracks the item to be edited
+  const [expense, setExpense] = useState({});
 
   const openModal = (item = null) => {
     setEditingItem(item); // If item is passed, open in edit mode
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    const fetchExpense = async () => {
+      try {
+        const data= await getExpense()
+        setExpense(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchExpense();
+  }, []);
+
   const closeModal = () => {
     setEditingItem(null);
     setIsModalOpen(false);
   };
 
+  // delete
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const data = [
-    {
-      title: "Cody Fisher",
-      description: "1001",
-      date: "10/02/2024",
-      amount: 1000,
-      billFormat: "pdf",
-    },
-    {
-      title: "Esther Howard",
-      description: "1002",
-      date: "11/02/2024",
-      amount: 1000,
-      billFormat: "JPG",
-    },
-    {
-      title: "Cody Fisher",
-      description: "1001",
-      date: "10/02/2024",
-      amount: 1000,
-      billFormat: "pdf",
-    },
-  ];
+  const openDeleteModal = () => setIsDeleteOpen(true);
+  const closeDeleteModal = () => setIsDeleteOpen(false);
 
-    // delete 
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-    const openDeleteModal = () => setIsDeleteOpen(true);
-    const closeDeleteModal = () => setIsDeleteOpen(false);
-
-     // view 
-     const [isViewOpen, setIsViewOpen] = useState(false);
+  // view
+  const [isViewOpen, setIsViewOpen] = useState(false);
   const openViewModal = () => setIsViewOpen(true);
-     const closeViewModal = () => setIsViewOpen(false);
- 
+  const closeViewModal = () => setIsViewOpen(false);
 
   return (
     <>
@@ -72,36 +57,69 @@ export default function Expanse() {
 
         {/* Modal for adding or editing expense */}
         {isModalOpen && (
-          <AddExpanse isOpen={isModalOpen} onClose={closeModal} itemToEdit={editingItem} />
+          <AddExpanse
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            itemToEdit={editingItem}
+          />
         )}
 
-        <div role="tablist" className="mt-4 tabs tabs-lifted tabs-lg rounded-lg">
-          <div className="bg-white p-4 overflow-hidden" style={{ height: "680px" }}>
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Add Expenses details</h2>
+        <div
+          role="tablist"
+          className="mt-4 tabs tabs-lifted tabs-lg rounded-lg"
+        >
+          <div
+            className="bg-white p-4 overflow-hidden"
+            style={{ height: "680px" }}
+          >
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Add Expenses details
+            </h2>
 
-            <div className="overflow-x-auto rounded-lg h-full" style={{ maxHeight: "600px" }}>
+            <div
+              className="overflow-x-auto rounded-lg h-full"
+              style={{ maxHeight: "600px" }}
+            >
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-royalgray sticky top-0 w-full">
                   <tr>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Title</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Description</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Date</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Amount</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Bill Format</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Action</th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Title
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Description
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Date
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Amount
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Bill Format
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
-                  {data.map((item, index) => (
+                  {expense.map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="px-4 py-3 flex items-center space-x-2">
-                        <span className="text-gray-700 font-medium">{item.title}</span>
+                        <span className="text-gray-700 font-medium">
+                          {item.title}
+                        </span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-black px-2 py-1">{item.description}</span>
+                        <span className="text-black px-2 py-1">
+                          {item.description}
+                        </span>
                       </td>
                       <td className="px-4 py-3">{item.date}</td>
-                      <td className="px-4 py-3 text-green-500 font-bold">₹{item.amount}</td>
+                      <td className="px-4 py-3 text-green-500 font-bold">
+                        ₹{item.amount}
+                      </td>
                       <td className="px-4 py-3">
                         <span
                           className={`px-2 py-1 rounded-full ${
@@ -120,15 +138,24 @@ export default function Expanse() {
                         >
                           <i className="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button className="text-blue-500 hover:text-blue-700 p-1" onClick={openViewModal}>
+                        <button
+                          className="text-blue-500 hover:text-blue-700 p-1"
+                          onClick={openViewModal}
+                        >
                           <i className="fas fa-eye"></i>
                         </button>
-                        {isViewOpen && <ExpenseView closeModal={closeViewModal} />}
-                        <button className="text-red-500 hover:text-red-700 p-1" onClick={openDeleteModal}>
+                        {isViewOpen && (
+                          <ExpenseView closeModal={closeViewModal} />
+                        )}
+                        <button
+                          className="text-red-500 hover:text-red-700 p-1"
+                          onClick={openDeleteModal}
+                        >
                           <i className="fas fa-trash"></i>
                         </button>
-                  {isDeleteOpen && <ExpenseDelete closeModal={closeDeleteModal} />}
-
+                        {isDeleteOpen && (
+                          <ExpenseDelete closeModal={closeDeleteModal} />
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -141,4 +168,3 @@ export default function Expanse() {
     </>
   );
 }
-

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
-import EditPopup from "./EditPopup";
-import DeletePopup from "./DeletePopup";
-import { getotherIncome } from "../../apis/api";
+import { getotherIncome, addincome } from "../../apis/api";
+import { useNavigate } from "react-router";
 
 function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -79,7 +78,7 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   );
 }
 
-function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
+function OtherIncome({ incomeData, onCreate, onEditIncome }) {
   return (
     <div className="p-6 bg-white">
       <div className="flex justify-between items-center mb-4">
@@ -92,13 +91,12 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
         </button>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {incomeData.map((item, index) => (
+        {incomeData.map((income, index) => (
           <OtherIncomeCard
-            key={index}
-            data={item}
-            onView={() => console.log(`Viewing ${item.title}`)}
+            key={income.id || index}
+            data={income}
+            onView={() => console.log(`Viewing ${income.title}`)}
             onEdit={() => onEditIncome(index)}
-            onDelete={() => onDeleteIncome(index)}
           />
         ))}
       </div>
@@ -127,25 +125,32 @@ export default function OtherIncomeContainer() {
     setIsPopupOpen(true);
   };
 
-  const handleSaveIncome = (newIncome) => {
-    if (editingIndex !== null) {
-      const updatedData = [...incomeData];
-      updatedData[editingIndex] = newIncome;
-      setIncomeData(updatedData);
-      setEditingIndex(null);
-    } else {
-      setIncomeData([...incomeData, newIncome]);
+  const handleSaveIncome = async (income) => {
+    const navigate=useNavigate()
+    try {
+      if (editingIndex !== null) {
+        // Editing existing income (if editing functionality is implemented)
+        console.log(`Editing income at index: ${editingIndex}`);
+        setEditingIndex(null);
+      } else {
+        // Adding new income
+        const createdIncome = await addincome(income);
+        if (createdIncome?.id) {
+          setIncomeData([...incomeData, createdIncome]);
+        } else {
+          console.error("Failed to add income");
+        }
+      }
+      setIsPopupOpen(false);
+
+    } catch (error) {
+      console.error("Error saving income:", error);
     }
-    setIsPopupOpen(false);
   };
 
   const handleEditIncome = (index) => {
     setEditingIndex(index);
     setIsPopupOpen(true);
-  };
-
-  const handleDeleteIncome = (index) => {
-    setIncomeData(incomeData.filter((_, i) => i !== index));
   };
 
   return (
@@ -161,7 +166,6 @@ export default function OtherIncomeContainer() {
         incomeData={incomeData}
         onCreate={handleCreate}
         onEditIncome={handleEditIncome}
-        onDeleteIncome={handleDeleteIncome}
       />
     </div>
   );
