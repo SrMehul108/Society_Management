@@ -15,7 +15,7 @@ import {
   SolveButton,
 } from "../../../components/Button/Button";
 import { getImportantnumber } from "../../../apis/api";
-import{ Icons } from "../../../constants/icons"
+import { Icons } from "../../../constants/icons";
 
 export const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState("Last month");
@@ -38,10 +38,20 @@ export const Dashboard = () => {
   }, []);
 
   const balanceData = [
-    { title: "Total Balance", amount: "₹ 2,22,520", icon: "📘" },
-    { title: "Total Income", amount: "₹ 55,000", icon: "💰" },
-    { title: "Total Expense", amount: "₹ 20,550", icon: "💸" },
-    { title: "Total Unit", amount: "₹ 20,550", icon: "🏢" },
+    {
+      title: "Total Balance",
+      amount: "₹ 2,22,520",
+      icon: Icons.Page,
+      color: "#fccba9",
+    },
+    { title: "Total Income", amount: "₹ 55,000", icon: Icons.MarketDown, color: "#9ccb9e" },
+    {
+      title: "Total Expense",
+      amount: "₹ 20,550",
+      icon:Icons.MarketUp,
+      color: "#c3cff9",
+    },
+    { title: "Total Unit", amount: "₹ 20,550",  icon:Icons.Units,color: "#f59be1" },
   ];
 
   const maintenances = [
@@ -206,187 +216,220 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="bg-gray-100  space-y-2">
-      {/* Dashboard Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {balanceData.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between bg-white rounded-lg shadow-md p-3"
-          >
-            <div>
-              <p className="text-sm font-medium text-gray-500">{item.title}</p>
-              <p className="text-xl font-bold">{item.amount}</p>
-            </div>
-            <div className="text-3xl">{item.icon}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Chart, Contacts, and Maintenance */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        {/* Chart Section */}
-        <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Total Balance</h2>
-            <select
-              className="border border-gray-300 rounded-lg p-1"
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
+    <>
+      <div className="bg-gray-100  space-y-2">
+        {/* Dashboard Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {balanceData.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center bg-white rounded-lg shadow-md"
+              style={{
+                borderRight: `4px solid ${item.color}`,
+                borderTop: `2px solid ${item.color}`,
+                borderTopWidth: "0px",
+                borderTopRightRadius: "10px",
+              }}
             >
-              <option>Last week</option>
-              <option>Last month</option>
-              <option>Last year</option>
-            </select>
-          </div>
-          <div className="bg-gray-200 flex items-center justify-center rounded-lg h-64 lg:h-96">
-            <p className="text-gray-500">Chart Placeholder</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Contacts */}
-          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Important Numbers</h2>
-              <button
-                className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex rounded-sm items-center"
-                onClick={handleAddClick}
-              >
-                <FaPlus className="mr-2 text-white" />
-                Add
-              </button>
-              {isPopupOpen && (
-                <AddNumberPopup
-                  mode={popupMode}
-                  initialData={editData}
-                  onClose={() => setIsPopupOpen(false)}
-                />
-              )}
-            </div>
-            <ul className="space-y-3 mt-3">
-              {importantnumber.map((important, index) => (
-                <li key={index} className="flex justify-between items-center">
-                  <div>
-                    <p className="font-medium">
-                      Name :{" "}
-                      <span className="font-medium text-gray-400">
-                        {important.fullName}
-                      </span>
-                    </p>
-                    <p className="font-medium">
-                      Ph Number : <span className="font-medium text-gray-400">{important.phoneNo}</span>
-                    </p>
-                    <p className="font-medium">Work : <span className="font-medium text-gray-400">{important.work}</span></p>
-                  </div>
-                  <div className="flex space-x-3">
-                    <button
-                      className="bg-gray-100 p-1 rounded-lg"
-                      onClick={handleDeleteClick}
-                    >
-                      {Icons.Delete}
-                    </button>
-                    {isDeleteData && (
-                      <DeletePopup onClose={() => setIsDeleteData(false)} />
-                    )}
-                    <button
-                      className="bg-gray-100 p-1 rounded-lg"
-                      onClick={handleEditClick}
-                    >
-                      {Icons.Pen}
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Maintenance */}
-          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Pending Maintenances</h2>
-              <p>
-                <a href="#">View All</a>
-              </p>
-            </div>
-            <ul className="space-y-3 mt-3">
-              {maintenances.map((item, index) => (
-                <li key={index} className="flex justify-between items-center">
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-gray-500">{item.status}</p>
-                  </div>
-                  <p className="text-red-500 font-semibold">{item.amount}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72 sm:h-96 min-[430px]:h-96 max-[1024]:h-96">
-        {/* Complaint List */}
-        <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Complaint List</h2>
-            <select
-              className="border border-gray-300 rounded-lg p-1"
-              value={ComplaintselectedMonth}
-              onChange={(e) => setComplaintSelectedMonth(e.target.value)}
-            >
-              <option>Last week</option>
-              <option>Last month</option>
-              <option>Last year</option>
-            </select>
-          </div>
-          <Table columns={columns} data={complaintsTable} actions={actions} />
-          {isModalOpen.edit && (
-            <EditRequestForm
-              data={selectedComplaint}
-              closeModal={() => toggleModal("edit")}
-            />
-          )}
-          {isModalOpen.view && (
-            <ViewRequestPopup
-              data={selectedComplaint}
-              closeModal={() => toggleModal("view")}
-            />
-          )}
-          {isModalOpen.delete && (
-            <DeleteConfirmationPopup
-              data={selectedComplaint}
-              closeModal={() => toggleModal("delete")}
-            />
-          )}
-        </div>
-
-        {/* Upcoming Activities */}
-        <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Upcoming Activity</h2>
-            <select
-              className="border border-gray-300 rounded-lg p-1"
-              value={UpcomingselectedMonth}
-              onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
-            >
-              <option>Last week</option>
-              <option>Last month</option>
-              <option>Last year</option>
-            </select>
-          </div>
-          <ul className="space-y-3">
-            {activities.map((activity, index) => (
-              <li key={index} className="flex justify-between items-center">
+              <div
+                className="w-2 h-10 rounded-e-lg"
+                style={{ backgroundColor: item.color }} // Small vertical bar color
+              ></div>
+              <div className="flex items-center justify-between w-full p-4">
                 <div>
-                  <p className="font-medium">{activity.event}</p>
-                  <p className="text-sm text-gray-500">{activity.time}</p>
+                  <p className="text-sm font-medium text-gray-500">
+                    {item.title}
+                  </p>
+                  <p className="text-xl font-bold">{item.amount}</p>
                 </div>
-                <p className="text-gray-500">{activity.date}</p>
-              </li>
-            ))}
-          </ul>
+                <div
+                  className="flex items-center justify-center w-10 h-10 rounded-lg"
+                  style={{
+                    backgroundColor: `${item.color}20`, // Transparent background matching border color
+                  }}
+                >
+                  <span className="text-3xl" style={{ color: item.color }}>
+                    {item.icon}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Chart, Contacts, and Maintenance */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {/* Chart Section */}
+          <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Total Balance</h2>
+              <select
+                className="border border-gray-300 rounded-lg p-1"
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+              >
+                <option>Last week</option>
+                <option>Last month</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <div className="bg-gray-200 flex items-center justify-center rounded-lg h-64 lg:h-96">
+              <p className="text-gray-500">Chart Placeholder</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Contacts */}
+            <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Important Numbers</h2>
+                <button
+                  className="bg-orange-500 p-1 hover:bg-orange-600 text-white flex rounded-sm items-center"
+                  onClick={handleAddClick}
+                >
+                  <FaPlus className="mr-2 text-white" />
+                  Add
+                </button>
+                {isPopupOpen && (
+                  <AddNumberPopup
+                    mode={popupMode}
+                    initialData={editData}
+                    onClose={() => setIsPopupOpen(false)}
+                  />
+                )}
+              </div>
+              <ul className="space-y-3 mt-3">
+                {importantnumber.map((important, index) => (
+                  <li key={index} className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">
+                        Name :{" "}
+                        <span className="font-normal text-gray-400">
+                          {important.fullName}
+                        </span>
+                      </p>
+                      <p className="font-medium">
+                        Ph Number :{" "}
+                        <span className="font-normal text-gray-400">
+                          {important.phoneNo}
+                        </span>
+                      </p>
+                      <p className="font-medium">
+                        Work :{" "}
+                        <span className="font-normal text-gray-400">
+                          {important.work}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex space-x-3">
+                      <button
+                        className="bg-gray-100 p-1 rounded-lg"
+                        onClick={handleDeleteClick}
+                      >
+                        {Icons.Delete}
+                      </button>
+                      {isDeleteData && (
+                        <DeletePopup onClose={() => setIsDeleteData(false)} />
+                      )}
+                      <button
+                        className="bg-gray-100 p-1 rounded-lg"
+                        onClick={handleEditClick}
+                      >
+                        {Icons.Pen}
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Maintenance */}
+            <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Pending Maintenances</h2>
+                <p>
+                  <a href="#">View All</a>
+                </p>
+              </div>
+              <ul className="space-y-3 mt-3">
+                {maintenances.map((item, index) => (
+                  <li key={index} className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">{item.name}</p>
+                      <p className="text-sm text-gray-500">{item.status}</p>
+                    </div>
+                    <p className="text-red-500 font-semibold">{item.amount}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72">
+          {/* Complaint List */}
+          <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Complaint List</h2>
+              <select
+                className="border border-gray-300 rounded-lg p-1"
+                value={ComplaintselectedMonth}
+                onChange={(e) => setComplaintSelectedMonth(e.target.value)}
+              >
+                <option>Last week</option>
+                <option>Last month</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <Table columns={columns} data={complaintsTable} actions={actions} />
+            {isModalOpen.edit && (
+              <EditRequestForm
+                data={selectedComplaint}
+                closeModal={() => toggleModal("edit")}
+              />
+            )}
+            {isModalOpen.view && (
+              <ViewRequestPopup
+                data={selectedComplaint}
+                closeModal={() => toggleModal("view")}
+              />
+            )}
+            {isModalOpen.delete && (
+              <DeleteConfirmationPopup
+                data={selectedComplaint}
+                closeModal={() => toggleModal("delete")}
+              />
+            )}
+          </div>
+
+          {/* Upcoming Activities */}
+          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Upcoming Activity</h2>
+              <select
+                className="border border-gray-300 rounded-lg p-1"
+                value={UpcomingselectedMonth}
+                onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
+              >
+                <option>Last week</option>
+                <option>Last month</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <ul className="space-y-3">
+              {activities.map((activity, index) => (
+                <li key={index} className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{activity.event}</p>
+                    <p className="text-sm text-gray-500">{activity.time}</p>
+                  </div>
+                  <p className="text-gray-500">{activity.date}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
