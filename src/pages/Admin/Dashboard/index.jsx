@@ -189,6 +189,26 @@ export const Dashboard = () => {
       priority: "High",
       status: "Solve",
     },
+    {
+      id: 3,
+      complainerName: "Esther Howard",
+      complaintName: "Preventive Measures",
+      description: "Regular waste collection services.",
+      unit: "B",
+      unitNumber: "1005",
+      priority: "High",
+      status: "Solve",
+    },
+    {
+      id: 3,
+      complainerName: "Esther Howard",
+      complaintName: "Preventive Measures",
+      description: "Regular waste collection services.",
+      unit: "B",
+      unitNumber: "1006",
+      priority: "High",
+      status: "Solve",
+    },
   ]);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -366,9 +386,9 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-72">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 min-h-11">
           {/* Complaint List */}
-          <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3">
+          <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3 h-72">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Complaint List</h2>
               <select

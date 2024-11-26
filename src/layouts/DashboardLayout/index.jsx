@@ -27,7 +27,7 @@ export const DashboardLayout = ({ items }) => {
   const handleClose = () => setIsOpen(false);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full bg-gray-800 z-40 transform ${
@@ -46,9 +46,9 @@ export const DashboardLayout = ({ items }) => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col pl-0 md:pl-64">
+      <div className="flex-1 flex flex-col pl-0 md:pl-64 flex-auto min-h-0">
         {/* Header */}
-        <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between">
+        <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between flex-[0_0_auto]">
           
 
           {/* Search Bar */}
