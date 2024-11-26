@@ -39,6 +39,7 @@ function OtherIncomePopup({ onClose }) {
     } catch (error) {
       console.error("Error adding income:", error);
       setError("Failed to add income. Please try again.");
+      console.log(error)
     }
     onClose();
   };

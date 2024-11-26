@@ -363,6 +363,25 @@ export const viewmaintenance = async () => {
     }
 };
 
+export const addimportantNumber = async (formData) => {
+    try {
+        var token = AdminToken()
+        const response = await axios.post(
+          `${API_URL}/auth/user/important/insertImportant`,
+          formData, // Pass income directly
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add Authorization header
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error)
+        throw error.response ? error.response.data : new Error("Network Error");
+      }
+};
+
 export const getImportantnumber = async () => {
     try {
         var token = AdminToken();
