@@ -85,7 +85,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
         <h2 className="text-2xl font-semibold text-gray-700">Other Income</h2>
         <button
           onClick={onCreate}
-          className="px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-600 transition"
+          className="px-6 py-2  text-white font-semibold rounded-lg shadow-md  transition bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
         >
           Create Other Income
         </button>

@@ -120,7 +120,7 @@ export const CreactComplaint = () => {
       <div className="flex justify-between items-center mb-4 rounded-md">
         <h1 className="text-xl font-bold">Complaints</h1>
         <button
-          className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-xl"
+          className="bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white py-2 px-4 rounded-xl"
           onClick={() => toggleModal('create')}
         >
           Create Complaint

@@ -67,7 +67,7 @@ export default function SecurityGuard() {
         <div className="flex flex-col md:flex-row items-center justify-end space-y-4 md:space-y-0">
           <button
             onClick={() => openModal()} // Opens modal for adding new expense
-            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-orange-500 hover:to-orange-700 transition"
+            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2  0  text-white font-semibold rounded-lg shadow-md  transition bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
           >
             Add Security
           </button>
