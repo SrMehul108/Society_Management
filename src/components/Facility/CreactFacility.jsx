@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addFacility } from "../../apis/api";
+import { addFacility, getFacility } from "../../apis/api";
 
 function FacilityPopup({ onClose }) {
   const [formData, setFormData] = useState({
@@ -28,9 +28,8 @@ function FacilityPopup({ onClose }) {
       setError("All fields are required!");
       return;
     }
-
     setIsSaving(true);
-
+    getFacility()
     try {
       const response = await addFacility(formData);
       console.log(response);
