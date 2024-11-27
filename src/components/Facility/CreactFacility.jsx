@@ -31,8 +31,8 @@ function FacilityPopup({ onClose, onFacilityAdded }) {
     setIsSaving(true);
     try {
       const response = await addFacility(formData);
-      onFacilityAdded(); // Notify parent component to refresh the facilities
-      onClose(); // Close the popup
+      onFacilityAdded(); 
+      onClose(); 
     } catch (error) {
       console.error("Error adding facility:", error);
       setError("Failed to add facility. Please try again.");
