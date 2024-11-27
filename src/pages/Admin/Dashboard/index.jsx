@@ -310,6 +310,7 @@ export const Dashboard = () => {
                   <FaPlus className="mr-2 text-white" />
                   Add
                 </button>
+                
                 {isPopupOpen && (
                   <AddNumberPopup
                     mode={popupMode}
