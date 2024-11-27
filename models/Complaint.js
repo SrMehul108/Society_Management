@@ -60,8 +60,6 @@ const complaintSchema = new mongoose.Schema({
         required: true,
         default: new Date().toLocaleDateString()
     },
-    
-
 });
 
 module.exports = mongoose.model('Compalint', complaintSchema);
