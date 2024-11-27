@@ -75,8 +75,6 @@ export const resendOtp = async (email) => {
 
 export const forgotPassword = async (passdata) => {
     try {
-        console.log(passdata)
-        var token = AdminToken();
         const response = await axios.post(
             `${API_URL}/auth/forgot-password`,
             passdata
@@ -90,7 +88,6 @@ export const forgotPassword = async (passdata) => {
 
 export const otpPage = async (otp) => {
     try {
-        console.log(otp);
         const data = { otp }
         const response = await axios.post(`${API_URL}/auth/verify-otp`, data, {
             headers: {
@@ -125,7 +122,7 @@ export const userRegistration = async (formdata) => {
             { formdata },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+                    Authorization: `Bearer ${token}`, 
                 },
             }
         );
@@ -225,7 +222,7 @@ export const getotherIncome = async () => {
             `${API_URL}/auth/user/otheincome/getIncome`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+                    Authorization: `Bearer ${token}`, 
                 },
             }
         );
@@ -236,7 +233,6 @@ export const getotherIncome = async () => {
             return { success: false, message: "Failed to fetch user data", data: [] };
         }
     } catch (error) {
-        // Log the error response and status
         console.error(
             "Error:",
             error.response ? error.response.data : error.message
@@ -300,7 +296,6 @@ export const getMaintenance = async () => {
             return { success: false, message: "Failed to fetch user data", data: [] };
         }
     } catch (error) {
-        // Log the error response and status
         console.error(
             "Error:",
             error.response ? error.response.data : error.message
