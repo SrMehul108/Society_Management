@@ -336,7 +336,7 @@ export const Dashboard = () => {
 
               <ul className="space-y-3 mt-3 overflow-y-auto h-[calc(475px-100px)]">
                 {importantnumber.length > 0 ? (
-                  importantnumber.map((important, index) => (
+                  importantnumber?.map((important, index) => (
                     <li
                       key={index}
                       className="flex justify-between items-center bg-gray-50 p-3 rounded-md"
