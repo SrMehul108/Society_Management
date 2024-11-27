@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { addFacility, getFacility } from "../../apis/api";
+import { addFacility } from "../../apis/api";
 
-function FacilityPopup({ onClose }) {
+function FacilityPopup({ onClose, onFacilityAdded }) {
   const [formData, setFormData] = useState({
     facilityName: "",
     description: "",
@@ -29,11 +29,10 @@ function FacilityPopup({ onClose }) {
       return;
     }
     setIsSaving(true);
-    getFacility()
     try {
       const response = await addFacility(formData);
-      console.log(response);
-      onClose();
+      onFacilityAdded(); // Notify parent component to refresh the facilities
+      onClose(); // Close the popup
     } catch (error) {
       console.error("Error adding facility:", error);
       setError("Failed to add facility. Please try again.");
@@ -99,7 +98,7 @@ function FacilityPopup({ onClose }) {
             </label>
             <select
               className="w-full border border-gray-300 rounded-lg p-2"
-              name="reminderDay" // Changed name to reminderDay
+              name="reminderDay"
               value={formData.reminderDay}
               onChange={handleChange}
             >

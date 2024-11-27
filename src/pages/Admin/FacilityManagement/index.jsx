@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import FacilityPopup from "@/components/Facility/CreactFacility";
 import EditPopup from "@/components/Facility/EditFacility";
 import { getFacility } from "@/apis/api";
@@ -25,18 +25,26 @@ export const FacilityManagement = () => {
   };
   const EditclosePopup = () => setIsPopupEdit(false);
 
+  const fetchFacilities = async () => {
+    try {
+      const response = await getFacility();
+      setFacilities(response);
+    } catch (error) {
+      console.log(error);
+      SetError(error.message);
+    }
+  };
+
+  // Fetch facilities when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getFacility();
-        setFacilities(response);
-      } catch (error) {
-        console.log(error);
-        SetError(error.message);
-      }
-    };
-    fetchData();
+    fetchFacilities();
   }, []);
+
+  // Handle facility added in the popup form
+  const handleFacilityAdded = () => {
+    fetchFacilities(); // Re-fetch the facilities after a new one is added
+    closePopup(); // Close the popup
+  };
 
   return (
     <div className="p-4 sm:p-6 bg-white rounded-xl">
@@ -51,7 +59,9 @@ export const FacilityManagement = () => {
         >
           Create Facility
         </button>
-        {isPopupOpen && <FacilityPopup onClose={closePopup} />}
+        {isPopupOpen && (
+          <FacilityPopup onClose={closePopup} onFacilityAdded={handleFacilityAdded} />
+        )}
       </div>
 
       {/* Error Message */}
@@ -70,7 +80,7 @@ export const FacilityManagement = () => {
                   <div className="relative">
                     <i
                       className="fas fa-ellipsis-h text-gray-600 bg-white p-1 rounded-sm cursor-pointer"
-                      onClick={(id) => toggleMenu(facility._id)} // Toggle the dropdown for the clicked facility
+                      onClick={() => toggleMenu(facility._id)} // Toggle the dropdown for the clicked facility
                     ></i>
                     {/* Only show the dropdown if this facility's ID matches menuVisible */}
                     {menuVisible === facility._id && (
