@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { addimportantNumber } from '../../../apis/api';
-import { useNavigate } from 'react-router';
 
-function AddNumberPopup({ mode = 'add', initialData = {}, onClose }) {
+function AddNumberPopup({ mode = 'add', initialData = {}, onClose, onAdd }) {
     const [formData, setFormData] = useState({
         fullName: '',
         phoneNo: '',
@@ -33,15 +32,18 @@ function AddNumberPopup({ mode = 'add', initialData = {}, onClose }) {
             return;
         }
 
-        
-
         setIsSaving(true);
         try {
             const response = await addimportantNumber(formData);
             console.log('Number added successfully:', response);
-            onClose();
+
+            // Call the onAdd callback to update the parent state
+            if (onAdd) {
+                onAdd(response.data); // Assuming `response.data` contains the added number
+            }
+
+            onClose(); // Close the popup
         } catch (error) {
-            console.log(error)
             console.error('Error adding number:', error);
             setError('Failed to add number. Please try again.');
         } finally {
@@ -128,10 +130,11 @@ AddNumberPopup.propTypes = {
     mode: PropTypes.oneOf(['add', 'edit']),
     initialData: PropTypes.shape({
         fullName: PropTypes.string,
-        phoneNumber: PropTypes.string,
+        phoneNo: PropTypes.string,
         work: PropTypes.string,
     }),
     onClose: PropTypes.func.isRequired,
+    onAdd: PropTypes.func, // Callback for updating the parent state
 };
 
 export default AddNumberPopup;
