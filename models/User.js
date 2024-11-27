@@ -71,14 +71,14 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     createdDate: {
-        type: Date,
+        type: String,
         required: true,
-        default: Date.now
+        default: new Date().toLocaleDateString()
     },
     updatedDate: {
-        type: Date,
+        type: String,
         required: true,
-        default: Date.now
+        default: new Date().toLocaleDateString()
     },
     role: {
         type: String,

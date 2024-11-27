@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
-const facilitySchema = new mongoose.Schema({
-    facilityName: {
+const complaintSchema = new mongoose.Schema({
+    complainerName: {
+        type: String,
+        required: true
+    },
+    complaintName: {
         type: String,
         required: true
     },
@@ -10,15 +14,31 @@ const facilitySchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    date: {
+    wing: {
+        type: String,
+        required: true
+    },
+    unit: {
         type: String,
         required: true,
     },
-    reminderDay: {
-        type: Number,
-        required: true,
-        minlength: 1,
-        maxlength: 2
+    priority: {
+        type: String,
+        enum: ['high', 'medium', 'low'],
+        default: 'medium',
+        required : true
+    },
+    status: {
+        type: String,
+        enum: ['open', 'pending', 'solve'],
+        default: 'pending',
+        required : true
+    },
+    type:{
+        type : String,
+        enum : ['request', 'complaint'],
+        defaul : 'complaint',
+        required : true
     },
     isActive: {
         type: Boolean,
@@ -40,8 +60,9 @@ const facilitySchema = new mongoose.Schema({
         required: true,
         default: new Date().toLocaleDateString()
     },
+    
 
 });
 
-module.exports = mongoose.model('Facility', facilitySchema);
+module.exports = mongoose.model('Compalint', complaintSchema);
 
