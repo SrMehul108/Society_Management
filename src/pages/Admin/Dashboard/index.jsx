@@ -44,14 +44,24 @@ export const Dashboard = () => {
       icon: Icons.Page,
       color: "#fccba9",
     },
-    { title: "Total Income", amount: "₹ 55,000", icon: Icons.MarketDown, color: "#9ccb9e" },
+    {
+      title: "Total Income",
+      amount: "₹ 55,000",
+      icon: Icons.MarketDown,
+      color: "#9ccb9e",
+    },
     {
       title: "Total Expense",
       amount: "₹ 20,550",
-      icon:Icons.MarketUp,
+      icon: Icons.MarketUp,
       color: "#c3cff9",
     },
-    { title: "Total Unit", amount: "₹ 20,550",  icon:Icons.Units,color: "#f59be1" },
+    {
+      title: "Total Unit",
+      amount: "₹ 20,550",
+      icon: Icons.Units,
+      color: "#f59be1",
+    },
   ];
 
   const maintenances = [
@@ -298,89 +308,118 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Contacts */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden rounded-lg"
+            style={{ height: "475px" }}
+          >
+            {/* Contacts Section */}
             <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Important Numbers</h2>
                 <button
-                  className=" p-1 bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white flex rounded-sm items-center"
+                  className="p-1 bg-gradient-to-r from-orange-600 to-yellow-500 hover:from-orange-500 hover:to-yellow-500 text-white flex rounded-sm items-center"
                   onClick={handleAddClick}
                 >
                   <FaPlus className="mr-2 text-white" />
                   Add
                 </button>
-                {isPopupOpen && (
-                  <AddNumberPopup
-                    mode={popupMode}
-                    initialData={editData}
-                    onClose={() => setIsPopupOpen(false)}
-                  />
-                )}
               </div>
-              <ul className="space-y-3 mt-3">
-                {importantnumber.map((important, index) => (
-                  <li key={index} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">
-                        Name :{" "}
-                        <span className="font-normal text-gray-400">
-                          {important.fullName}
-                        </span>
-                      </p>
-                      <p className="font-medium">
-                        Ph Number :{" "}
-                        <span className="font-normal text-gray-400">
-                          {important.phoneNo}
-                        </span>
-                      </p>
-                      <p className="font-medium">
-                        Work :{" "}
-                        <span className="font-normal text-gray-400">
-                          {important.work}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex space-x-3">
-                      <button
-                        className="bg-gray-100 p-1 rounded-lg"
-                        onClick={handleDeleteClick}
-                      >
-                        {Icons.Delete}
-                      </button>
-                      {isDeleteData && (
-                        <DeletePopup onClose={() => setIsDeleteData(false)} />
-                      )}
-                      <button
-                        className="bg-gray-100 p-1 rounded-lg"
-                        onClick={handleEditClick}
-                      >
-                        {Icons.Pen}
-                      </button>
-                    </div>
-                  </li>
-                ))}
+
+              {/* Popup for Adding or Editing Numbers */}
+              {isPopupOpen && (
+                <AddNumberPopup
+                  mode={popupMode}
+                  initialData={editData}
+                  onClose={() => setIsPopupOpen(false)}
+                />
+              )}
+
+              <ul className="space-y-3 mt-3 overflow-y-auto h-[calc(475px-100px)]">
+                {importantnumber.length > 0 ? (
+                  importantnumber.map((important, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center bg-gray-50 p-3 rounded-md"
+                    >
+                      <div>
+                        <p className="font-medium">
+                          Name:{" "}
+                          <span className="font-normal text-gray-400">
+                            {important.fullName}
+                          </span>
+                        </p>
+                        <p className="font-medium">
+                          Phone Number:{" "}
+                          <span className="font-normal text-gray-400">
+                            {important.phoneNo}
+                          </span>
+                        </p>
+                        <p className="font-medium">
+                          Work:{" "}
+                          <span className="font-normal text-gray-400">
+                            {important.work}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="flex space-x-3">
+                        <button
+                          className="bg-gray-100 p-1 rounded-lg"
+                          onClick={() => handleDeleteClick(important.id)}
+                        >
+                          {Icons.Delete}
+                        </button>
+                        {isDeleteData && (
+                          <DeletePopup onClose={() => setIsDeleteData(false)} />
+                        )}
+                        <button
+                          className="bg-gray-100 p-1 rounded-lg"
+                          onClick={() => handleEditClick(important)}
+                        >
+                          {Icons.Pen}
+                        </button>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center mt-4">
+                    No contacts available
+                  </p>
+                )}
               </ul>
             </div>
 
-            {/* Maintenance */}
+            {/* Maintenance Section */}
             <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Pending Maintenances</h2>
                 <p>
-                  <a href="#">View All</a>
+                  <a href="#" className="text-blue-500 hover:underline">
+                    View All
+                  </a>
                 </p>
               </div>
-              <ul className="space-y-3 mt-3">
-                {maintenances.map((item, index) => (
-                  <li key={index} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-gray-500">{item.status}</p>
-                    </div>
-                    <p className="text-red-500 font-semibold">{item.amount}</p>
-                  </li>
-                ))}
+
+              <ul className="space-y-3 mt-3 overflow-y-auto h-[calc(475px-100px)]">
+                {maintenances.length > 0 ? (
+                  maintenances.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center bg-gray-50 p-3 rounded-md"
+                    >
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-gray-500">{item.status}</p>
+                      </div>
+                      <p className="text-red-500 font-semibold">
+                        {item.amount}
+                      </p>
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center mt-4">
+                    No pending maintenances available
+                  </p>
+                )}
               </ul>
             </div>
           </div>
