@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
-import { getotherIncome, addincome } from "../../apis/api";
+import { getotherIncome, addincome, deleteIncome } from "../../apis/api";
 import EditPopup from "./EditPopup";
 import DeletePopup from "./DeletePopup";
 
@@ -109,7 +109,7 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   );
 }
 
-function OtherIncome({ incomeData, onCreate, onEditIncome }) {
+function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
   return (
     <div className="p-6 bg-white">
       <div className="flex justify-between items-center mb-4">
@@ -128,13 +128,14 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
             data={income}
             onView={() => console.log(`Viewing ${income.title}`)}
             onEdit={(updatedData) => onEditIncome(index, updatedData)}
-            onDelete={() => console.log(`Deleting ${income.title}`)}
+            onDelete={() => onDeleteIncome(index, income.id)} // Call delete handler
           />
         ))}
       </div>
     </div>
   );
 }
+
 
 export default function OtherIncomeContainer() {
   const [incomeData, setIncomeData] = useState([]);
@@ -166,7 +167,6 @@ export default function OtherIncomeContainer() {
   };
 
   const handleSaveIncome = async (income) => {
-    
     try {
       if (editingIndex !== null) {
         const updatedData = [...incomeData];
@@ -184,6 +184,17 @@ export default function OtherIncomeContainer() {
       setIsPopupOpen(false);
     } catch (error) {
       console.error("Error saving income:", error);
+    }
+  };
+
+  const handleDeleteIncome = async (index, id) => {
+    try {
+      await deleteIncome({ _id: id });
+      const updatedData = incomeData.filter((_, i) => i !== index);
+      setIncomeData(updatedData);
+      console.log(`Income with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error(`Failed to delete income with ID ${id}:`, error);
     }
   };
 
@@ -206,6 +217,7 @@ export default function OtherIncomeContainer() {
         incomeData={incomeData}
         onCreate={handleCreate}
         onEditIncome={handleEditIncome}
+        onDeleteIncome={handleDeleteIncome} // Pass the delete handler here
       />
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}

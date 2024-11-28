@@ -262,37 +262,70 @@ export const addincome = async (income) => {
   }
 };
 
-export const getIncomeById = async (id) => {
-  const response = await fetch(`/auth/admin/otheincome/getIncome/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch income data.");
-  }
-  return response.json();
-};
-
 export const updateIncome = async (data) => {
-  const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to update income.");
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/otheincome/editIncome/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
   }
-  return response.json();
 };
 
-export const deleteIncome = async (id) => {
+export const deleteIncome = async ({ _id }) => {
   try {
+    var token = AdminToken(); // Ensure you have the correct token logic for admin authorization
     const response = await axios.delete(
-      API_URL`/auth/admin/otheincome/deleteIncome/${id}`
+      `${API_URL}/auth/admin/otheincome/deleteIncome/${_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    return response.data;
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Income deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete income:", response.data.message);
+      return { success: false, message: "Failed to delete income" };
+    }
   } catch (error) {
-    console.error(`Error deleting income with ID ${id}:`, error);
-    throw error;
+    console.log(error)
+    console.error("Error deleting income:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+    };
   }
 };
+
+
 //Maintenance Page
 
 export const editMaintenance = async (maintenance) => {
@@ -598,16 +631,3 @@ export const getFacility = async () => {
 };
 
 
-
-// export const updateIncome = async (data) => {
-//   const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
-//     method: "PUT",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(data),
-//   });
-//   if (!response.ok) {
-//     throw new Error("Failed to update income.");
-    
-//   }
-//   return response.json();
-// };
