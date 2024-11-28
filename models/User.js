@@ -26,11 +26,19 @@ const userSchema = new mongoose.Schema({
     },
     wing: {
         type: String,
-        required: true
+        required: function() {
+            return this.role === 'user';
+        }
     },
     unit: {
         type: Number,
-        required: true,
+        required: function() {
+            return this.role === 'user';
+        },
+        index: {
+            unique: true,
+            sparse: true,
+        },
     },
     profile_image:{
         type: String,

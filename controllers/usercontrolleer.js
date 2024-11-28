@@ -4,7 +4,7 @@ const Vehicle = require('../models/Vehicle');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const cloudinaryConfig = require('../config/cloudinaryConfig');
-const RegistrationEmail = require('../services/emailtemplate');
+const { regestration } = require('../services/emailtemplate');
 
 module.exports.insertUser = async (req, res) => {
     try {
@@ -70,7 +70,7 @@ module.exports.insertUser = async (req, res) => {
                         pass: process.env.PASSWORD,
                     },
                 });
-                const htmlMessage = RegistrationEmail(req.body.fullname, req.body.email, password);
+                const htmlMessage = regestration(req.body.fullname, req.body.email, password);
                 const info = await transporter.sendMail({
                     from: process.env.EMAIL,
                     to: req.body.email,
@@ -161,7 +161,7 @@ module.exports.editUser = async (req, res) => {
             if (req.body) {
                 const existingData = await User.findOne({ _id: id, societyId: req.user.societyId, role: 'user' });
                 if (existingData) {
-                    if (req.body.wing && req.body.unit && 
+                    if (req.body.wing && req.body.unit &&
                         (req.body.wing !== existingData.wing || req.body.unit !== existingData.unit)) {
                         const wingValidation = await User.findOne({
                             societyId: req.user.societyId,
@@ -326,7 +326,7 @@ module.exports.addNewSecurity = async (req, res) => {
                 age: req.body.age,
                 gender: req.body.gender,
                 wing: "-",
-                unit: 0,
+                unit: req.body.unit || -1,
                 shift: req.body.shift,
                 shiftDate: req.body.shiftDate,
                 shiftTime: req.body.shiftTime,
@@ -334,6 +334,7 @@ module.exports.addNewSecurity = async (req, res) => {
                 role: req.body.role ? req.body.role : 'security',
                 password: pass
             };
+
             if (req.files) {
                 if (req.files?.profile_image?.[0]?.path) {
                     data.profile_image = req.files.profile_image[0].path
@@ -354,7 +355,7 @@ module.exports.addNewSecurity = async (req, res) => {
                         pass: process.env.PASSWORD,
                     },
                 });
-                const htmlMessage = RegistrationEmail(req.body.fullname, req.body.email, password);
+                const htmlMessage = regestration(req.body.fullname, req.body.email, password);
                 const info = await transporter.sendMail({
                     from: process.env.EMAIL,
                     to: req.body.email,
