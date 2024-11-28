@@ -118,7 +118,7 @@ export const userRegistration = async (formdata) => {
 
   try {
     const response = await axios.post(
-      `${API_URL}/auth/user/insertUser`,
+      `${API_URL}/auth/admin/insertUser`,
       { formdata },
       {
         headers: {
@@ -181,7 +181,7 @@ export const getUser = async () => {
   }
 
   try {
-    const response = await axios.get(`${API_URL}/auth/user/getUser`, {
+    const response = await axios.get(`${API_URL}/auth/admin/getUser`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -216,7 +216,7 @@ export const getotherIncome = async () => {
 
   try {
     const response = await axios.get(
-      `${API_URL}/auth/user/otheincome/getIncome`,
+      `${API_URL}/auth/admin/otheincome/getIncome`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -246,7 +246,7 @@ export const editMaintenance = async (maintenance) => {
   try {
     try {
       const response = await fetch(
-        `${API_URL}/auth/user/maintanace/editMaintenance/6734f318cc9869bd95409dd3`,
+        `${API_URL}/auth/admin/maintanace/editMaintenance/6734f318cc9869bd95409dd3`,
         {
           method: "POST",
           headers: {
@@ -279,7 +279,7 @@ export const getMaintenance = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/user/maintanace/maintenanceDetail`,
+      `${API_URL}/auth/admin/maintanace/maintenanceDetail`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -310,7 +310,7 @@ export const addincome = async (income) => {
   try {
     var token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/user/otheincome/insertIncome`,
+      `${API_URL}/auth/admin/otheincome/insertIncome`,
       income, // Pass income directly
       {
         headers: {
@@ -328,7 +328,7 @@ export const viewmaintenance = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/user/maintanace/getMaintance`,
+      `${API_URL}/auth/admin/maintanace/getMaintance`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -359,7 +359,7 @@ export const addimportantNumber = async (formData) => {
   try {
     var token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/user/important/insertImportant`,
+      `${API_URL}/auth/admin/important/insertImportant`,
       formData, // Pass income directly
       {
         headers: {
@@ -378,7 +378,7 @@ export const getImportantnumber = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/user/important/getImportant`,
+      `${API_URL}/auth/admin/important/getImportant`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -409,7 +409,7 @@ export const getExpense = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/user/expenses/getExpenses`,
+      `${API_URL}/auth/admin/expenses/getExpenses`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -441,7 +441,7 @@ export const addFacility = async (formData) => {
   try {
     var token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/user/facility/insertFacility/`,
+      `${API_URL}/auth/admin/facility/insertFacility/`,
       formData,
       {
         headers: {
@@ -460,7 +460,7 @@ export const getFacility = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/user/facility/viewFacility/`,
+      `${API_URL}/auth/admin/facility/viewFacility/`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -489,7 +489,7 @@ export const getFacility = async () => {
 };
 
 export const getIncomeById = async (id) => {
-  const response = await fetch(`/auth/user/otheincome/getIncome/${id}`);
+  const response = await fetch(`/auth/admin/otheincome/getIncome/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch income data.");
   }
@@ -497,7 +497,7 @@ export const getIncomeById = async (id) => {
 };
 
 export const updateIncome = async (data) => {
-  const response = await fetch(`/auth/user/otheincome/editIncome/${data.id}`, {
+  const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -511,7 +511,7 @@ export const updateIncome = async (data) => {
 export const deleteIncome = async (id) => {
   try {
     const response = await axios.delete(
-      API_URL`/auth/user/otheincome/deleteIncome/${id}`
+      API_URL`/auth/admin/otheincome/deleteIncome/${id}`
     );
     return response.data;
   } catch (error) {
