@@ -172,6 +172,7 @@ export default function OtherIncomeContainer() {
   };
 
   const handleSaveIncome = async (income) => {
+    
     try {
       if (editingIndex !== null) {
         const updatedData = [...incomeData];
