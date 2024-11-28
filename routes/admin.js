@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../services/multer.service');
-const { insertUser, viewUser, editUser, deleteUser } = require('../controllers/usercontrolleer');
+const { insertUser, viewUser, editUser, deleteUser, addNewSecurity, viewSecurity, editSecurity, deleteSecurity } = require('../controllers/usercontrolleer');
 
+// Resident
 router.post('/insertUser', upload.fields([
   { name: 'profile_image', maxCount: 1 }, { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), insertUser);
 
@@ -13,6 +14,16 @@ router.post('/editUser/:id', upload.fields([
 
 router.delete('/vacateUser/:id', deleteUser);
 
+
+// Security Gaurd
+router.post('/addNewSecurity', upload.fields([{ name: 'aadharImage_front', maxCount: 1 }, { name: 'profile_image', maxCount: 1 }]), addNewSecurity);
+router.get('/getSecurity', viewSecurity);
+router.post('/editSecurity/:id', upload.fields([{ name: 'aadharImage_front', maxCount: 1 }, { name: 'profile_image', maxCount: 1 }]), editSecurity);
+router.delete('/deleteSecurity/:id', deleteSecurity);
+
+
+
+// Other Secure Routes 
 router.use('/maintanace', require('./maintanace'));
 router.use('/otheincome', require('./otherIncome'));
 router.use('/important', require('./important'));

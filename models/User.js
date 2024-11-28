@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     unit: {
-        type: String,
+        type: Number,
         required: true,
     },
     profile_image:{
@@ -65,26 +65,6 @@ const userSchema = new mongoose.Schema({
         ref: 'Society',
         required: true
     },
-    isActive: {
-        type: Boolean,
-        default: true,
-        required: true,
-    },
-    createdDate: {
-        type: String,
-        required: true,
-        default: new Date().toLocaleDateString()
-    },
-    updatedDate: {
-        type: String,
-        required: true,
-        default: new Date().toLocaleDateString()
-    },
-    role: {
-        type: String,
-        required: true,
-        default: 'user'
-    },
     password: {
         type: String,
         required: true
@@ -93,7 +73,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['owner', 'tenant'],
         default : 'owner',
-        required: true
+        required: function() {
+            return this.role === 'security';
+        }
     },
     owner: {
         fullname: {
@@ -114,7 +96,47 @@ const userSchema = new mongoose.Schema({
                 return this.type === 'tenant';
             }
         }
-    }
+    },
+    shift :{
+        type : String,
+        enum :['day', 'night'],
+        required: function() {
+            return this.role === 'security';
+        }
+    },
+    shiftDate :{
+        type : String,
+        required: function() {
+            return this.role === 'security';
+        }
+    },
+    shiftTime :{
+        type: String,
+        required: function() {
+            return this.role === 'security';
+        }
+    },
+    role:{
+        type: String,
+        enum : ['user', 'security'],
+        required : true,
+        default :"user"
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+        required: true,
+    },
+    createdDate: {
+        type: String,
+        required: true,
+        default: new Date().toLocaleDateString()
+    },
+    updatedDate: {
+        type: String,
+        required: true,
+        default: new Date().toLocaleDateString()
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);

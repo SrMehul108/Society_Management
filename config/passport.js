@@ -11,11 +11,15 @@ const opts = {
 };
 
 Passport.use(new jwtStrategy(opts, async (record, done) => {
-    let data = await Admin.findById(record.userData._id);
-    if (data && data.role === 'admin') {
-        return done(null, data);
-    } else {
-        return done(null, false, { message: 'Unauthorized access' });
+    try {
+        let data = await Admin.findById(record.userData._id);
+        if (data && data.role === 'admin') {
+            return done(null, data);
+        } else {
+            return done(null, false, { message: 'Unauthorized access' });
+        }
+    } catch (error) {
+        return done(error, false);
     }
 }));
 
