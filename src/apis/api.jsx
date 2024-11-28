@@ -324,6 +324,36 @@ export const addincome = async (income) => {
   }
 };
 
+export const getIncomeById = async (id) => {
+  const response = await fetch(`/auth/user/otheincome/getIncome/${id}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch income data.");
+  }
+  return response.json();
+};
+
+export const updateIncome = async (data) => {
+  const response = await fetch(`/auth/user/otheincome/editIncome/${data.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to update income.");
+  }
+  return response.json();
+};
+
+export const deleteIncome = async (id) => {
+  try {
+    const response = await axios.delete(API_URL`/auth/user/otheincome/deleteIncome/${id}`);
+    return response.data;   
+  } catch (error) {
+    console.error(`Error deleting income with ID ${id}:`, error);
+    throw error;
+  }
+};
+
 export const viewmaintenance = async () => {
   try {
     var token = AdminToken();

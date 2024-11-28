@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
-import { getotherIncome, addincome } from "../../apis/api";
-import { useNavigate } from "react-router";
+import { getotherIncome, addincome, updateIncome, deleteIncome } from "../../apis/api";
 
 function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -78,25 +77,26 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   );
 }
 
-function OtherIncome({ incomeData, onCreate, onEditIncome }) {
+function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
   return (
     <div className="p-6 bg-white">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-gray-700">Other Income</h2>
         <button
           onClick={onCreate}
-          className="px-6 py-2  text-white font-semibold rounded-lg shadow-md  transition bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
+          className="px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-md hover:bg-orange-600 transition"
         >
           Create Other Income
         </button>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {incomeData.map((income, index) => (
+        {incomeData.map((item, index) => (
           <OtherIncomeCard
-            key={income.id || index}
-            data={income}
-            onView={() => console.log(`Viewing ${income.title}`)}
-            onEdit={() => onEditIncome(index)}
+            key={item.id}
+            data={item}
+            onView={() => console.log(`Viewing ${item.title}`)}
+            onEdit={() => onEditIncome(item.id)}
+            onDelete={() => onDeleteIncome(item.id)}
           />
         ))}
       </div>
@@ -108,59 +108,56 @@ export default function OtherIncomeContainer() {
   const [incomeData, setIncomeData] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
+  useEffect((incomedata,_id) => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        setError(null);
         const data = await getotherIncome();
         setIncomeData(data);
       } catch (error) {
         console.error("Failed to fetch income data:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false); 
       }
     };
-
-    fetchData();
-    return () => {
-    };
+    fetchData(incomedata,_id);
   }, []);
 
   const handleCreate = () => {
     setIsPopupOpen(true);
   };
 
-  const handleSaveIncome = async (income) => {
-    const navigate=useNavigate()
+  const handleSaveIncome = async (newIncome) => {
     try {
       if (editingIndex !== null) {
-        // Editing existing income (if editing functionality is implemented)
-        console.log(`Editing income at index: ${editingIndex}`);
+        const updatedIncome = await updateIncome(incomeData[editingIndex].id, newIncome);
+        const updatedData = [...incomeData];
+        updatedData[editingIndex] = updatedIncome;
+        setIncomeData(updatedData);
         setEditingIndex(null);
       } else {
-        // Adding new income
-        const createdIncome = await addincome(income);
-        if (createdIncome?.id) {
-          setIncomeData([...incomeData, createdIncome]);
-        } else {
-          console.error("Failed to add income");
-        }
+        const createdIncome = await addincome(newIncome);
+        setIncomeData([...incomeData, createdIncome]);
       }
       setIsPopupOpen(false);
-
     } catch (error) {
       console.error("Error saving income:", error);
     }
   };
 
-  const handleEditIncome = (index) => {
-    setEditingIndex(index);
-    setIsPopupOpen(true);
+  const handleEditIncome = (id) => {
+    const incomeIndex = incomeData.findIndex((income) => income.id === id);
+    if (incomeIndex !== -1) {
+      setEditingIndex(incomeIndex);
+      setIsPopupOpen(true);
+    }
+  };
+
+  const handleDeleteIncome = async (id) => {
+    try {
+      await deleteIncome(id);
+      setIncomeData(incomeData.filter((income) => income.id !== id));
+    } catch (error) {
+      console.error("Error deleting income:", error);
+    }
   };
 
   return (
@@ -176,6 +173,7 @@ export default function OtherIncomeContainer() {
         incomeData={incomeData}
         onCreate={handleCreate}
         onEditIncome={handleEditIncome}
+        onDeleteIncome={handleDeleteIncome}
       />
     </div>
   );
