@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { addFacility } from "../../apis/api";
 
-function FacilityPopup({ onClose }) {
+function FacilityPopup({ onClose, onFacilityAdded }) {
   const [formData, setFormData] = useState({
     facilityName: "",
     description: "",
@@ -28,13 +28,11 @@ function FacilityPopup({ onClose }) {
       setError("All fields are required!");
       return;
     }
-
     setIsSaving(true);
-
     try {
       const response = await addFacility(formData);
-      console.log(response);
-      onClose();
+      onFacilityAdded(); 
+      onClose(); 
     } catch (error) {
       console.error("Error adding facility:", error);
       setError("Failed to add facility. Please try again.");
@@ -100,7 +98,7 @@ function FacilityPopup({ onClose }) {
             </label>
             <select
               className="w-full border border-gray-300 rounded-lg p-2"
-              name="reminderDay" // Changed name to reminderDay
+              name="reminderDay"
               value={formData.reminderDay}
               onChange={handleChange}
             >

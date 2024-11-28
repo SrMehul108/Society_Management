@@ -1,53 +1,50 @@
-import React, { useEffect, useRef, useState } from "react";
-import FacilityPopup from "../../../components/Facility/CreactFacility";
-import EditPopup from "../../../components/Facility/EditFacility";
-import { getFacility } from "../../../apis/api";
+import React, { useState, useEffect } from "react";
+import FacilityPopup from "@/components/Facility/CreactFacility";
+import EditPopup from "@/components/Facility/EditFacility";
+import { getFacility } from "@/apis/api";
 
 export const FacilityManagement = () => {
   const [menuVisible, setMenuVisible] = useState(null);
-  const [facilities, setFacilities] = useState({});
+  const [facilities, setFacilities] = useState([]);
   const [error, SetError] = useState(null);
+
   const toggleMenu = (id) => {
     setMenuVisible((prev) => (prev === id ? null : id));
   };
-  // create facility popup
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const openPopup = () => setIsPopupOpen(true);
+  const closePopup = () => setIsPopupOpen(false);
 
-  const openPopup = () => {
-    console.log("creact");
-
-    setIsPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
-
-  // Edit facility popup
   const [isPopupEdit, setIsPopupEdit] = useState(false);
+  const [editFacility, setEditFacility] = useState(null); // Track the facility to be edited
 
-  const editPopup = () => {
-    console.log("edit");
-
+  const editPopup = (facility) => {
+    setEditFacility(facility); // Set the facility to be edited
     setIsPopupEdit(true);
   };
+  const EditclosePopup = () => setIsPopupEdit(false);
 
-  const EditclosePopup = () => {
-    setIsPopupEdit(false);
+  const fetchFacilities = async () => {
+    try {
+      const response = await getFacility();
+      setFacilities(response);
+    } catch (error) {
+      console.log(error);
+      SetError(error.message);
+    }
   };
 
+  // Fetch facilities when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getFacility();
-        setFacilities(response);
-      } catch (error) {
-        console.log(error);
-        SetError(error.message);
-      }
-    };
-    fetchData();
+    fetchFacilities();
   }, []);
+
+  // Handle facility added in the popup form
+  const handleFacilityAdded = () => {
+    fetchFacilities(); // Re-fetch the facilities after a new one is added
+    closePopup(); // Close the popup
+  };
 
   return (
     <div className="p-4 sm:p-6 bg-white rounded-xl">
@@ -62,14 +59,19 @@ export const FacilityManagement = () => {
         >
           Create Facility
         </button>
-        {isPopupOpen && <FacilityPopup onClose={closePopup} />}
+        {isPopupOpen && (
+          <FacilityPopup onClose={closePopup} onFacilityAdded={handleFacilityAdded} />
+        )}
       </div>
+
+      {/* Error Message */}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
 
       {/* Facility Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {facilities.length > 0 ? (
           facilities.map((facility) => (
-            <div key={facility.id} className="border rounded-xl">
+            <div key={facility._id} className="border rounded-xl">
               <div className="flex flex-col">
                 <div className="flex justify-between items-center bg-blue-500 p-4 rounded-t-xl">
                   <h2 className="text-lg font-semibold text-white">
@@ -78,13 +80,14 @@ export const FacilityManagement = () => {
                   <div className="relative">
                     <i
                       className="fas fa-ellipsis-h text-gray-600 bg-white p-1 rounded-sm cursor-pointer"
-                      onClick={() => toggleMenu(facility.id)}
+                      onClick={() => toggleMenu(facility._id)} // Toggle the dropdown for the clicked facility
                     ></i>
-                    {menuVisible === facility.id && (
+                    {/* Only show the dropdown if this facility's ID matches menuVisible */}
+                    {menuVisible === facility._id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
                         <button
                           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={editPopup}
+                          onClick={() => editPopup(facility)} // Pass the facility to edit
                         >
                           Edit
                         </button>
@@ -110,7 +113,7 @@ export const FacilityManagement = () => {
         ) : (
           <div>No facilities found.</div>
         )}
-        {isPopupEdit && <EditPopup onClose={EditclosePopup} />}
+        {isPopupEdit && <EditPopup onClose={EditclosePopup} facility={editFacility} />}
       </div>
     </div>
   );

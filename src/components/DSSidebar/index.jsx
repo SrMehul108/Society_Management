@@ -224,7 +224,7 @@ export const DSSidebar = ({ items }) => {
                       {openGroups[group.title] && (
                         <div className="pl-4">
                           {group.items.map((item) => (
-                            <SidebarMenuItem key={item.title}>
+                            <SidebarMenuItem key={item.title} className="pt-2">
                               <NavLink
                                 to={item.url}
                                 className={({ isActive }) =>
