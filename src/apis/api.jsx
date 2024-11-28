@@ -519,3 +519,4 @@ export const deleteIncome = async (id) => {
     throw error;
   }
 };
+}
