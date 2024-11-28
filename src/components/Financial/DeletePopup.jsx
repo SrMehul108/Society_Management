@@ -2,7 +2,7 @@ import React from "react";
 
 function DeletePopup({ itemTitle, onClose, onDelete }) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-black">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
         <h2 className="text-lg font-semibold mb-4 border-b-2 pb-4 ">Delete {itemTitle}?</h2>
         <p className="text-gray-600 mb-6">Are you sure you want to delete this?</p>

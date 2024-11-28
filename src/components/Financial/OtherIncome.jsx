@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import OtherIncomePopup from "./OtherIncomePopup";
 import { getotherIncome, addincome } from "../../apis/api";
-import { useNavigate } from "react-router";
+import EditPopup from "./EditPopup";
+import DeletePopup from "./DeletePopup";
 
 function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const toggleMenu = () => setMenuVisible((prev) => !prev);
 
@@ -18,11 +21,24 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
   useEffect(() => {
     if (menuVisible) {
       document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuVisible]);
+
+  const openEditPopup = () => setIsEditOpen(true);
+  const closeEditPopup = () => setIsEditOpen(false);
+
+  const openDeletePopup = () => setIsDeleteOpen(true);
+  const closeDeletePopup = () => setIsDeleteOpen(false);
+
+  const handleDelete = () => {
+    onDelete();
+    closeDeletePopup();
+  };
 
   return (
     <div className="bg-white border rounded-lg overflow-hidden shadow-md flex flex-col space-y-2 m-2">
@@ -42,17 +58,34 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
                 View
               </button>
               <button
-                onClick={onEdit}
+                onClick={openEditPopup}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Edit
               </button>
+              {isEditOpen && (
+                <EditPopup
+                  formData={data}
+                  onClose={closeEditPopup}
+                  onSave={(updatedData) => {
+                    onEdit(updatedData);
+                    closeEditPopup();
+                  }}
+                />
+              )}
               <button
-                onClick={onDelete}
+                onClick={openDeletePopup}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Delete
               </button>
+              {isDeleteOpen && (
+                <DeletePopup
+                  itemTitle={data.title}
+                  onClose={closeDeletePopup}
+                  onDelete={handleDelete}
+                />
+              )}
             </div>
           )}
         </div>
@@ -68,7 +101,11 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
           Date: <span className="font-bold">{data.date}</span>
         </p>
         <p className="text-gray-500">
-          Due Date: <span className="font-bold">{data.dueDate}</span>
+          Due Date: <span className="font-bold">{new Date(data.dueDate).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          })}</span>
         </p>
         <p className="text-gray-500">
           Description: <span className="font-bold">{data.description}</span>
@@ -85,7 +122,7 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
         <h2 className="text-2xl font-semibold text-gray-700">Other Income</h2>
         <button
           onClick={onCreate}
-          className="px-6 py-2  text-white font-semibold rounded-lg shadow-md  transition bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
+          className="px-6 py-2 text-white font-semibold rounded-lg shadow-md transition bg-gradient-to-r from-orange-600 to-yellow-500 hover:from-orange-500 hover:to-yellow-500"
         >
           Create Other Income
         </button>
@@ -96,7 +133,8 @@ function OtherIncome({ incomeData, onCreate, onEditIncome }) {
             key={income.id || index}
             data={income}
             onView={() => console.log(`Viewing ${income.title}`)}
-            onEdit={() => onEditIncome(index)}
+            onEdit={(updatedData) => onEditIncome(index, updatedData)}
+            onDelete={() => console.log(`Deleting ${income.title}`)}
           />
         ))}
       </div>
@@ -122,13 +160,11 @@ export default function OtherIncomeContainer() {
         console.error("Failed to fetch income data:", error);
         setError(error.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchData();
-    return () => {
-    };
   }, []);
 
   const handleCreate = () => {
@@ -136,14 +172,13 @@ export default function OtherIncomeContainer() {
   };
 
   const handleSaveIncome = async (income) => {
-    const navigate=useNavigate()
     try {
       if (editingIndex !== null) {
-        // Editing existing income (if editing functionality is implemented)
-        console.log(`Editing income at index: ${editingIndex}`);
+        const updatedData = [...incomeData];
+        updatedData[editingIndex] = income;
+        setIncomeData(updatedData);
         setEditingIndex(null);
       } else {
-        // Adding new income
         const createdIncome = await addincome(income);
         if (createdIncome?.id) {
           setIncomeData([...incomeData, createdIncome]);
@@ -152,15 +187,15 @@ export default function OtherIncomeContainer() {
         }
       }
       setIsPopupOpen(false);
-
     } catch (error) {
       console.error("Error saving income:", error);
     }
   };
 
-  const handleEditIncome = (index) => {
-    setEditingIndex(index);
-    setIsPopupOpen(true);
+  const handleEditIncome = (index, updatedData) => {
+    const updatedIncome = [...incomeData];
+    updatedIncome[index] = updatedData;
+    setIncomeData(updatedIncome);
   };
 
   return (
@@ -177,6 +212,8 @@ export default function OtherIncomeContainer() {
         onCreate={handleCreate}
         onEditIncome={handleEditIncome}
       />
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
     </div>
   );
 }
