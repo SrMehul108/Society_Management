@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema({
         enum: ['owner', 'tenant'],
         default : 'owner',
         required: function() {
-            return this.role === 'security';
+            return this.role === 'user';
         }
     },
     owner: {
