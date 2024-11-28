@@ -596,3 +596,18 @@ export const getFacility = async () => {
     };
   }
 };
+
+
+
+// export const updateIncome = async (data) => {
+//   const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
+//     method: "PUT",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(data),
+//   });
+//   if (!response.ok) {
+//     throw new Error("Failed to update income.");
+    
+//   }
+//   return response.json();
+// };
