@@ -52,12 +52,6 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
           {menuVisible && (
             <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg">
               <button
-                onClick={onView}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                View
-              </button>
-              <button
                 onClick={openEditPopup}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
@@ -101,7 +95,7 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
           Date: <span className="font-bold">{data.date}</span>
         </p>
         <p className="text-gray-500">
-          Due Date: <span className="font-bold">{new Date(data.dueDate).toLocaleDateString("en-US", {
+          Due Date: <span className="font-bold">{new Date(data.dueDate).toLocaleDateString("en-IN", {
             year: "numeric",
             month: "numeric",
             day: "numeric",

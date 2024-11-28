@@ -1,48 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NoteEditPopup from "../../../../components/Financial/Note/NoteEdit";
 import CreateAdd from "../../../../components/Financial/Note/NoteCreact";
+import { GetNotes } from "../../../../apis/api";
 
-const note = [
-  {
-    id: 1,
-    title: "Parking Facilities",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-  {
-    id: 2,
-    title: "Community Center",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-  {
-    id: 3,
-    title: "Swimming Pool",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-  {
-    id: 4,
-    title: "Parks and Green Spaces",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-  {
-    id: 5,
-    title: "Wi-Fi and Connectivity",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-  {
-    id: 6,
-    title: "Pet-Friendly Facilities",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-  },
-];
 
 export const AddNote = () => {
   const [menuVisible, setMenuVisible] = useState(null);
+  const [noteData, setNoteData] = useState();
 
   const toggleMenu = (id) => {
     setMenuVisible((prev) => (prev === id ? null : id));
@@ -72,6 +36,17 @@ export const AddNote = () => {
   const EditclosePopup = () => {
     setIsPopupEdit(false);
   };
+  useEffect(()=>{
+    const fetchData=async()=>{
+      try {
+        const data=await GetNotes()
+        setNoteData(data)
+      } catch (error) {
+        console.log("Error in Fetching Note",error)
+      }
+    }
+    fetchData()
+  },[])
 
   return (
     <div className="p-4 sm:p-6 bg-white w-full rounded-xl">
@@ -89,7 +64,7 @@ export const AddNote = () => {
 
       {/* Facility Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {note.map((note) => (
+        {noteData?.map((note) => (
           <div key={note.id} className="rounded-lg border relative">
             <div className="bg-blue-500 rounded-t-lg flex justify-between items-center p-3">
               <h2 className="font-semibold text-xl text-white">

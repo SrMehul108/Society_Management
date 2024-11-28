@@ -207,6 +207,8 @@ export const getUser = async () => {
   }
 };
 
+//OtherIncome Page
+
 export const getotherIncome = async () => {
   const token = AdminToken();
 
@@ -241,6 +243,57 @@ export const getotherIncome = async () => {
     };
   }
 };
+
+export const addincome = async (income) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/otheincome/insertIncome`,
+      income, // Pass income directly
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Authorization header
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const getIncomeById = async (id) => {
+  const response = await fetch(`/auth/admin/otheincome/getIncome/${id}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch income data.");
+  }
+  return response.json();
+};
+
+export const updateIncome = async (data) => {
+  const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to update income.");
+  }
+  return response.json();
+};
+
+export const deleteIncome = async (id) => {
+  try {
+    const response = await axios.delete(
+      API_URL`/auth/admin/otheincome/deleteIncome/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting income with ID ${id}:`, error);
+    throw error;
+  }
+};
+//Maintenance Page
 
 export const editMaintenance = async (maintenance) => {
   try {
@@ -306,24 +359,6 @@ export const getMaintenance = async () => {
   }
 };
 
-export const addincome = async (income) => {
-  try {
-    var token = AdminToken();
-    const response = await axios.post(
-      `${API_URL}/auth/admin/otheincome/insertIncome`,
-      income, // Pass income directly
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add Authorization header
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error("Network Error");
-  }
-};
-
 export const viewmaintenance = async () => {
   try {
     var token = AdminToken();
@@ -354,6 +389,110 @@ export const viewmaintenance = async () => {
     };
   }
 };
+
+//Expense API
+
+export const addExpense = async (data) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/user/expenses/insertExpense`,
+      formData, // Pass income directly
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Authorization header
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const getExpense = async () => {
+  try {
+    var token = AdminToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/expenses/getExpenses`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+//Note API
+export const AddNote = async (formData) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/note/insertNote`,
+      formData, // Pass income directly
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Authorization header
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const GetNotes = async () => {
+  try {
+    var token = AdminToken();
+    const response = await axios.get(`${API_URL}/auth/admin/note/viewNote`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+//Important Number
 
 export const addimportantNumber = async (formData) => {
   try {
@@ -405,37 +544,7 @@ export const getImportantnumber = async () => {
   }
 };
 
-export const getExpense = async () => {
-  try {
-    var token = AdminToken();
-    const response = await axios.get(
-      `${API_URL}/auth/admin/expenses/getExpenses`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (response.status === 200 && response.data.status === 1) {
-      return response.data.data;
-    } else {
-      return { success: false, message: "Failed to fetch user data", data: [] };
-    }
-  } catch (error) {
-    // Log the error response and status
-    console.error(
-      "Error:",
-      error.response ? error.response.data : error.message
-    );
-    console.log(error);
-    return {
-      success: false,
-      message: error.response ? error.response.data : error.message,
-      data: [],
-    };
-  }
-};
+//Facility API
 
 export const addFacility = async (formData) => {
   try {
@@ -485,37 +594,5 @@ export const getFacility = async () => {
       message: error.response ? error.response.data : error.message,
       data: [],
     };
-  }
-};
-
-export const getIncomeById = async (id) => {
-  const response = await fetch(`/auth/admin/otheincome/getIncome/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch income data.");
-  }
-  return response.json();
-};
-
-export const updateIncome = async (data) => {
-  const response = await fetch(`/auth/admin/otheincome/editIncome/${data.id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to update income.");
-  }
-  return response.json();
-};
-
-export const deleteIncome = async (id) => {
-  try {
-    const response = await axios.delete(
-      API_URL`/auth/admin/otheincome/deleteIncome/${id}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`Error deleting income with ID ${id}:`, error);
-    throw error;
   }
 };
