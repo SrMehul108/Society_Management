@@ -26,7 +26,7 @@ module.exports.viewComplaint = async (req, res) => {
     try {
         const { id } = req.query;
         if (id) {
-            const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: req.body.type });
+            const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: req.params.type });
             if (data) {
                 return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
             }
