@@ -39,6 +39,12 @@ const complaintSchema = new mongoose.Schema({
         defaul : 'complaint',
         required : true
     },
+    date :{
+        type : String,
+        required: function() {
+            return this.type === 'request';
+        },
+    },
     isActive: {
         type: Boolean,
         required: true,
