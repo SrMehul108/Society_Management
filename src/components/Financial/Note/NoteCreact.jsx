@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AddNote } from "../../../apis/api";
 
-function CreateAdd({ onClose }) {
+function CreateAdd({ onClose,onNoteAdded }) {
   const [formdata, setFormdata] = useState({
     title: "",
     description: "",
@@ -26,6 +26,7 @@ function CreateAdd({ onClose }) {
     try {
       const response = await AddNote(formdata);
       console.log(response);
+      onNoteAdded();
       onClose();
     } catch (error) {
       console.error(error);

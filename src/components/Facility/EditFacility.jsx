@@ -1,6 +1,6 @@
 import React from "react";
 
-function EditPopup({ onClose }) {
+function EditFacility({ onClose }) {
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
       <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4 sm:mx-0">
@@ -75,4 +75,4 @@ function EditPopup({ onClose }) {
   );
 }
 
-export default EditPopup;
+export default EditFacility;

@@ -24,18 +24,25 @@ export const Dashboard = () => {
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
     useState("Last month");
   const [importantnumber, setImporytantnumber] = useState([]);
+  const [selectedNumberData, setSelectedNumberData] = useState(null);
 
+  const fetchImportantNumber = async () => {
+    try {
+      const data = await getImportantnumber();
+      setImporytantnumber(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchImportantNumber = async () => {
-      try {
-        const data = await getImportantnumber();
-        setImporytantnumber(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchImportantNumber();
   }, []);
+
+  // Handle facility added in the popup form
+  const handleImportantNumberAdded = () => {
+    fetchImportantNumber(); // Re-fetch the facilities after a new one is added
+    closePopup(); // Close the popup
+  };
 
   const balanceData = [
     {
@@ -231,18 +238,25 @@ export const Dashboard = () => {
     setIsPopupOpen(true);
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (important) => {
     setPopupMode("edit");
-    setEditData({
-      fullName: "John Doe",
-      phoneNumber: "+1 555 555 5555",
-      work: "Engineer",
+    setSelectedNumberData({
+      fullName: important.fullName,
+      phoneNo: important.phoneNo,  // Ensure this is properly set
+      work: important.work,
     });
     setIsPopupOpen(true);
   };
+  
+  
+
   const [isDeleteData, setIsDeleteData] = useState(false);
   const handleDeleteClick = () => {
     setIsDeleteData(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
   };
 
   return (
@@ -328,9 +342,10 @@ export const Dashboard = () => {
               {/* Popup for Adding or Editing Numbers */}
               {isPopupOpen && (
                 <AddNumberPopup
-                  mode={popupMode}
-                  initialData={editData}
-                  onClose={() => setIsPopupOpen(false)}
+                  mode={popupMode} // To indicate add or edit mode
+                  initialData={selectedNumberData} // Pass selectedNumberData here
+                  onClose={closePopup}
+                  onImportantNumberAdded={handleImportantNumberAdded}
                 />
               )}
 

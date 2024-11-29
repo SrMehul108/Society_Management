@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { addimportantNumber } from '../../../apis/api';
 import { useNavigate } from 'react-router';
 
-function AddNumberPopup({ mode = 'add', initialData = {}, onClose }) {
+function AddNumberPopup({ mode = 'add', initialData = {}, onClose,onImportantNumberAdded }) {
     const [formData, setFormData] = useState({
         fullName: '',
         phoneNo: '',
@@ -39,6 +39,7 @@ function AddNumberPopup({ mode = 'add', initialData = {}, onClose }) {
         try {
             const response = await addimportantNumber(formData);
             console.log('Number added successfully:', response);
+            onImportantNumberAdded()
             onClose();
         } catch (error) {
             console.log(error)

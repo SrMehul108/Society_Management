@@ -143,7 +143,6 @@ export const userRegistration = async (formdata) => {
   }
 };
 
-
 export const getUser = async () => {
   const token = AdminToken();
 
@@ -484,9 +483,9 @@ export const deleteExpense = async (expenseId) => {
   if (!expenseId) {
     console.error("Expense ID is undefined");
     return; // Prevent API call if ID is missing
-}
+  }
   try {
-    var token = AdminToken(); 
+    var token = AdminToken();
     const response = await axios.delete(
       `${API_URL}/auth/admin/expenses/deleteExpense/${expenseId}`,
       {
@@ -563,6 +562,39 @@ export const GetNotes = async () => {
   }
 };
 
+export const UpdateNote = async (data) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/note/editNote/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+};
+
 //Important Number
 
 export const addimportantNumber = async (formData) => {
@@ -611,6 +643,74 @@ export const getImportantnumber = async () => {
       success: false,
       message: error.response ? error.response.data : error.message,
       data: [],
+    };
+  }
+};
+
+export const UpdateImportantnumber = async (data) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/important/editImportant/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const DeleteImportantnumber = async (ImportantId) => {
+  if (!ImportantId) {
+    console.error("Important ID is undefined");
+    return; // Prevent API call if ID is missing
+  }
+  try {
+    var token = AdminToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/expenses/deleteExpense/${ImportantId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Income deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete income:", response.data.message);
+      return { success: false, message: "Failed to delete income" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting income:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
     };
   }
 };
@@ -664,6 +764,40 @@ export const getFacility = async () => {
       success: false,
       message: error.response ? error.response.data : error.message,
       data: [],
+    };
+  }
+};
+
+export const UpdateFacilty = async (data) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/facility/editFacility/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
     };
   }
 };
