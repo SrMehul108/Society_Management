@@ -50,7 +50,7 @@ module.exports.editComplaint = async (req, res) => {
         const { id } = req.params;
         if (id && req.body !== "") {
             req.body.societyId = req.user.societyId;
-            let updatedData = await Facility.findByIdAndUpdate(id, req.body, { new: true });
+            let updatedData = await Complaint.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
                 return res.status(200).json({ message: "Data Update Successfully", status: 1, data: updatedData });
             }
