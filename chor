@@ -366,3 +366,34 @@
           //   {isOpen && <ProfilePopup onClose={handleClose} />}
           // </div>
         // </header> */}
+
+
+        //      message: error.response?.data?.messmaintenanceled to
+//   try {
+//     const response = await fetch(`${API_URL}/auth/user/maintenance/insert`, {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({ maintenance }),
+//     });
+
+//     if (!token.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || "Failed to submit maintenance");
+//     }
+
+//     // Return the parsed JSON response
+//     return await response.json();
+//   } catch (error) {
+//     // Ensure consistent error response
+//     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }ns// e/     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }
+// };
