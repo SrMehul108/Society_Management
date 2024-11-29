@@ -32,7 +32,7 @@ module.exports.viewComplaint = async (req, res) => {
             }
             return res.status(400).json({ message: 'No data found with the given id', status: 0 });
         }
-        const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: req.body.type });
+        const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: req.params.type });
         if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
         return res.status(400).json({ message: 'No data found', status: 0 });
     } catch (error) {
