@@ -11,7 +11,9 @@ const complaintSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: function() {
+            return this.type === 'complaint';
+        },
     },
     wing: {
         type: String,
