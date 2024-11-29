@@ -9,8 +9,8 @@ const MobileChat = ({
     setNewMessage,
     sendMessage,
     backToUserList,
-    isSidebarVisible, // Track if sidebar is visible
-    toggleSidebarVisibility, // Function to toggle sidebar visibility
+    isSidebarVisible,
+    toggleSidebarVisibility,
 }) => {
     return (
         <div className="flex flex-col h-screen sm:flex-row">
@@ -20,14 +20,14 @@ const MobileChat = ({
                     isSidebarVisible ? "translate-x-0" : "-translate-x-full"
                 } sm:translate-x-0`}
             >
-                <h2 className="text-xl font-bold mb-4">Chats</h2>
+                <h2 className="text-xl font-bold mb-4 mt-10">Chats</h2>
                 <div className="space-y-3">
                     {users.map((user) => (
                         <div
                             key={user.id}
                             onClick={() => {
                                 handleUserSelection(user);
-                                toggleSidebarVisibility(); // Hide sidebar when user is selected
+                                if (window.innerWidth < 640) toggleSidebarVisibility(); // Hide sidebar on mobile
                             }}
                             className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer ${
                                 selectedUser?.id === user.id
@@ -38,7 +38,9 @@ const MobileChat = ({
                             <div className="h-10 w-10 bg-gray-300 rounded-full"></div>
                             <div>
                                 <p className="font-medium">{user.name}</p>
-                                <p className="text-sm text-gray-500 truncate">{user.lastMessage}</p>
+                                <p className="text-sm text-gray-500 truncate">
+                                    {user.lastMessage}
+                                </p>
                             </div>
                         </div>
                     ))}
@@ -46,26 +48,17 @@ const MobileChat = ({
             </div>
 
             {/* Chat Section */}
-            <div className="flex-1 bg-white flex flex-col">
+            <div className="flex-1 bg-white flex flex-col overflow-hidden">
                 {/* Chat Header */}
-                <div className="flex items-center p-4 bg-gray-100 shadow-sm border-b justify-between">
-                    {/* Toggle Sidebar Button for Mobile */}
-                    {!isSidebarVisible && (
-                        <button
-                            onClick={toggleSidebarVisibility}
-                            className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center sm:hidden"
-                        >
-                            <i className="fa-solid fa-bars"></i>
-                        </button>
-                    )}
+                <div className="flex items-center p-4 bg-gray-100 shadow-sm border-b">
                     {selectedUser && (
                         <>
                             <button
                                 onClick={() => {
                                     backToUserList();
-                                    toggleSidebarVisibility();
+                                    if (window.innerWidth < 640) toggleSidebarVisibility();
                                 }}
-                                className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center"
+                                className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center sm:hidden"
                             >
                                 <i className="fa-solid fa-arrow-left"></i>
                             </button>
@@ -83,6 +76,14 @@ const MobileChat = ({
                                 </div>
                             </div>
                         </>
+                    )}
+                    {!selectedUser && (
+                        <button
+                            onClick={toggleSidebarVisibility}
+                            className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center sm:hidden"
+                        >
+                            <i className="fa-solid fa-bars"></i>
+                        </button>
                     )}
                 </div>
 
@@ -110,7 +111,7 @@ const MobileChat = ({
                 </div>
 
                 {/* Message Input Section */}
-                <div className="bg-gray-100 p-4 border-t flex items-center space-x-2 sm:space-x-4">
+                <div className="bg-gray-100 p-1 border-t flex items-center space-x-2 sm:space-x-4">
                     <button className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                         <i className="fa-solid fa-smile"></i>
                     </button>
