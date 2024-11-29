@@ -124,7 +124,7 @@ export const CreactComplaint = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 bg-white">
+    <div className=" p-4 bg-white">
       <div className="flex justify-between items-center mb-4 rounded-md">
         <h1 className="text-xl font-bold">Complaints</h1>
         <button

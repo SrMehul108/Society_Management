@@ -124,7 +124,7 @@ export const RequestComplaint = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 bg-white rounded-lg">
+    <div className=" p-4 bg-white rounded-lg">
       <div className="flex justify-between items-center mb-4 rounded-md">
         <h1 className="text-xl font-bold">Request</h1>
         <button
