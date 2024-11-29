@@ -3,7 +3,7 @@ import { addincome } from "../../apis/api";
 import { useNavigate } from "react-router";
 import OtherIncome from "../../pages/User/PaymentPortal/OtherIncome";
 
-function OtherIncomePopup({ onClose }) {
+function OtherIncomePopup({ onClose ,onIncomeAdded}) {
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -34,8 +34,9 @@ function OtherIncomePopup({ onClose }) {
 
     try {
       const response = await addincome(formData);
+      onIncomeAdded()
+      onClose()
       console.log("Income added successfully:", response);
-      navigate(<OtherIncome/>)
     } catch (error) {
       console.error("Error adding income:", error);
       setError("Failed to add income. Please try again.");

@@ -1,57 +1,96 @@
-
-
 import React, { useState, useEffect } from "react";
+import { addExpense } from "../../../apis/api"; // Ensure this function is capable of handling FormData
 
-const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
+const AddExpanse = ({ isOpen, onClose, itemToEdit, onAddExpanse }) => {
   if (!isOpen) return null;
 
-  // State for form fields
-  const [formValues, setFormValues] = useState({
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
     amount: "",
+    uploadBill: null, // Initialize with null for file
   });
-
-  // State to track if Save button should be enabled
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Set form values if editing an existing item
   useEffect(() => {
     if (itemToEdit) {
-      setFormValues({
+      setFormData({
         title: itemToEdit.title,
         description: itemToEdit.description,
-        
         amount: itemToEdit.amount,
+        date: itemToEdit.date,
+        uploadBill: itemToEdit.uploadBill || null, // Add file handling if editing
       });
     } else {
-      setFormValues({
+      setFormData({
         title: "",
         description: "",
-       
         amount: "",
+        date: "",
+        uploadBill: null,
       });
     }
   }, [itemToEdit]);
 
-  // Handle input changes and enable Save button
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prevValues) => ({
+    const { name, value, type, files } = e.target;
+    setFormData((prevValues) => ({
       ...prevValues,
-      [name]: value,
+      [name]: type === "file" ? files[0] : value, // Handle file input
     }));
-    setIsSaveEnabled(true); // Enable Save button when there's a change
+  };
+
+  useEffect(() => {
+    const { title, description, date, amount, uploadBill } = formData;
+    setIsSaveEnabled(
+      title && description && date && amount && uploadBill // Ensure file is also considered
+    );
+  }, [formData]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    // Check for required fields, including file upload
+    if (
+      !formData.title ||
+      !formData.date ||
+      !formData.description ||
+      !formData.amount ||
+      !formData.uploadBill
+    ) {
+      setError("All fields are required!");
+      return;
+    }
+
+    // Create a FormData object to send the form data (including file)
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("date", formData.date);
+    formDataToSend.append("amount", formData.amount);
+    formDataToSend.append("uploadBill", formData.uploadBill);
+
+    try {
+      const response = await addExpense(formDataToSend); // Ensure addExpense handles FormData
+      onAddExpanse();
+      onClose();
+      console.log("Expense added successfully:", response);
+    } catch (error) {
+      console.error("Error adding expense:", error);
+      setError("Failed to add expense. Please try again.");
+    }
   };
 
   return (
     <div className="z-50 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative z-60"> {/* Ensure this has a higher z-index */}
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative z-60">
         <h2 className="text-2xl font-semibold mb-4 border-b-2 pb-2 border-opacity-10">
-          {itemToEdit ? "Edit Expenses Details" : "Add Expenses Details"}
+          {itemToEdit ? "Edit Expense Details" : "Add Expense Details"}
         </h2>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block font-medium">
               Title<span className="text-red-500">*</span>
@@ -59,7 +98,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
             <input
               type="text"
               name="title"
-              value={formValues.title}
+              value={formData.title}
               onChange={handleInputChange}
               placeholder="Enter Title"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -72,7 +111,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
             <input
               type="text"
               name="description"
-              value={formValues.description}
+              value={formData.description}
               onChange={handleInputChange}
               placeholder="Enter Description"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,7 +125,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
               <input
                 type="date"
                 name="date"
-                value={formValues.date}
+                value={formData.date}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -96,9 +135,9 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
                 Amount<span className="text-red-500">*</span>
               </label>
               <input
-                type="text"
+                type="number" // Changed to number for better validation
                 name="amount"
-                value={formValues.amount}
+                value={formData.amount}
                 onChange={handleInputChange}
                 placeholder="₹ 0000"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -108,13 +147,24 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit }) => {
           <div>
             <label className="block font-medium">Upload Bill</label>
             <div className="text-center items-center justify-center border-dashed border-2 border-gray-300 rounded-lg p-10">
-              <input type="file" className="hidden" id="file-upload" />
-              <label htmlFor="file-upload" className="text-blue-500 cursor-pointer hover:underline">
+              <input
+                type="file"
+                className="hidden"
+                id="file-upload"
+                name="uploadBill"
+                onChange={handleInputChange} // Handle file change
+              />
+              <label
+                htmlFor="file-upload"
+                className="text-blue-500 cursor-pointer hover:underline"
+              >
                 Upload a file or drag and drop
               </label>
               <p className="text-gray-500 text-sm">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
+
+          {error && <p className="text-red-500">{error}</p>}
           <div className="flex justify-between gap-2">
             <div className="w-1/2 justify-center flex">
               <button

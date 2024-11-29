@@ -316,7 +316,7 @@ export const deleteIncome = async ({ _id }) => {
       return { success: false, message: "Failed to delete income" };
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     console.error("Error deleting income:", error);
     return {
       success: false,
@@ -324,7 +324,6 @@ export const deleteIncome = async ({ _id }) => {
     };
   }
 };
-
 
 //Maintenance Page
 
@@ -425,15 +424,16 @@ export const viewmaintenance = async () => {
 
 //Expense API
 
-export const addExpense = async (data) => {
+export const addExpense = async (formData) => {
   try {
     var token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/user/expenses/insertExpense`,
+      `${API_URL}/auth/admin/expenses/insertExpense`,
       formData, // Pass income directly
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Add Authorization header
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -472,6 +472,73 @@ export const getExpense = async () => {
       success: false,
       message: error.response ? error.response.data : error.message,
       data: [],
+    };
+  }
+};
+
+export const updateExpense = async (data) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/expenses/editExpenses/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const deleteExpense = async (expenseId) => {
+  if (!expenseId) {
+    console.error("Expense ID is undefined");
+    return; // Prevent API call if ID is missing
+}
+  try {
+    var token = AdminToken(); 
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/expenses/deleteExpense/${expenseId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Income deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete income:", response.data.message);
+      return { success: false, message: "Failed to delete income" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting income:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
     };
   }
 };
@@ -629,5 +696,3 @@ export const getFacility = async () => {
     };
   }
 };
-
-

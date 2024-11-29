@@ -95,11 +95,14 @@ function OtherIncomeCard({ data, onView, onEdit, onDelete }) {
           Date: <span className="font-bold">{data.date}</span>
         </p>
         <p className="text-gray-500">
-          Due Date: <span className="font-bold">{new Date(data.dueDate).toLocaleDateString("en-IN", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-          })}</span>
+          Due Date:{" "}
+          <span className="font-bold">
+            {new Date(data.dueDate).toLocaleDateString("en-IN", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })}
+          </span>
         </p>
         <p className="text-gray-500">
           Description: <span className="font-bold">{data.description}</span>
@@ -136,7 +139,6 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
   );
 }
 
-
 export default function OtherIncomeContainer() {
   const [incomeData, setIncomeData] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -144,7 +146,7 @@ export default function OtherIncomeContainer() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+ 
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -159,9 +161,16 @@ export default function OtherIncomeContainer() {
       }
     };
 
-    fetchData();
+
+  useEffect(() => {
+    fetchData()
   }, []);
 
+  // Handle facility added in the popup form
+  const handleOtherIncomeAdded = () => {
+    fetchData(); // Re-fetch the facilities after a new one is added
+    closePopup(); // Close the popup
+  };
   const handleCreate = () => {
     setIsPopupOpen(true);
   };
@@ -211,13 +220,14 @@ export default function OtherIncomeContainer() {
           initialData={editingIndex !== null ? incomeData[editingIndex] : null}
           onClose={() => setIsPopupOpen(false)}
           onSave={handleSaveIncome}
+          onIncomeAdded={handleOtherIncomeAdded}
         />
       )}
       <OtherIncome
         incomeData={incomeData}
         onCreate={handleCreate}
         onEditIncome={handleEditIncome}
-        onDeleteIncome={handleDeleteIncome} // Pass the delete handler here
+        onDeleteIncome={handleDeleteIncome} 
       />
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}

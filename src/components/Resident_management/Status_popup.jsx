@@ -51,6 +51,7 @@ export const Statuspopup = ({ onClose }) => {
                 checked={status === "vacate"}
                 onChange={() => setStatus("vacate")}
                 className="form-radio text-orange-500"
+                disabled
               />
               <span className="ml-4">Vacate</span>
             </label>
