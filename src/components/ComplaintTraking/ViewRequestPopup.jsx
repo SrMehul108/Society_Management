@@ -16,14 +16,14 @@ function ViewRequestPopup({ data, closeModal }) {
             className="w-12 h-12 rounded-full mr-3"
           />
           <div>
-            <p className="text-lg font-medium">{data.name}</p>
+            <p className="text-lg font-medium">{data.complainerName}</p>
             <p className="text-sm text-gray-500">{data.date}</p>
           </div>
         </div>
 
         <div className="mb-4">
           <p className="text-sm font-medium text-gray-700">Request Name</p>
-          <p className="text-base">{data.requestName}</p>
+          <p className="text-base">{data.complainerName}</p>
         </div>
         <div className="mb-4">
           <p className="text-sm font-medium text-gray-700">Description</p>

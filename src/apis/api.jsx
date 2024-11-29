@@ -801,3 +801,244 @@ export const UpdateFacilty = async (data) => {
     };
   }
 };
+
+//Complaint
+export const AddComplaint = async (data) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/complaint/insertComplaint`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add complaint.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const GetComplaint = async (type) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.get(`${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200 && response.data.status === 1) {
+      if (response.data.data.length === 0) {
+        return { success: true, data: [], message: "No complaints found." };
+      }
+      return { success: true, data: response.data.data };
+    }
+
+    return { success: false, message: response.data.message || "Unknown error" };
+  } catch (error) {
+    console.error("Error:", error.message);
+    const message = error.response?.data?.message || `An error occurred: ${error.message}`;
+    return { success: false, message };
+  }
+};
+
+export const UpdateComplaint=async(data)=>{
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/complaint/editComplaint/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update complaint.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating complaint:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+}
+
+export const DeleteComplaint = async (DeleteId) => {
+  if (!DeleteId) {
+    console.error("Important ID (_id) is undefined");
+    return;
+  }
+  try {
+    var token = AdminToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/complaint/deleteComplaint/${DeleteId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Complaint deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete Complaint:", response.data.message);
+      return { success: false, message: "Failed to delete complaint" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting complaint:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+    };
+  }
+};
+
+
+//Request
+export const AddRequest = async (data) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/complaint/insertComplaint`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const GetRequest = async (type) => {
+  try {
+    const token = AdminToken();
+    const response = await axios.get(`${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200 && response.data.status === 1) {
+      if (response.data.data.length === 0) {
+        return { success: true, data: [], message: "No Request found." };
+      }
+      return { success: true, data: response.data.data };
+    }
+
+    return { success: false, message: response.data.message || "Unknown error" };
+  } catch (error) {
+    console.error("Error:", error.message);
+    const message = error.response?.data?.message || `An error occurred: ${error.message}`;
+    return { success: false, message };
+  }
+};
+
+export const UpdateRequest=async(data)=>{
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/complaint/editComplaint/${data._id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating Request:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+}
+
+export const DeleteRequest = async (DeleteId) => {
+  if (!DeleteId) {
+    console.error("Important ID (_id) is undefined");
+    return;
+  }
+  try {
+    var token = AdminToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/complaint/deleteComplaint/${DeleteId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Complaint deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete Request:", response.data.message);
+      return { success: false, message: "Failed to delete Request" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting Request:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+    };
+  }
+};
+
+

@@ -1,35 +1,14 @@
+import React, { useEffect, useState } from "react";
 
-import React, { useState } from 'react';
-
-import ComplaintForm from '../../../../components/ComplaintTraking/ComplaintFormPopup';
-import EditRequestForm from '../../../../components/ComplaintTraking/EditRequestForm';
-import ViewRequestPopup from '../../../../components/ComplaintTraking/ViewRequestPopup';
-import DeleteConfirmationPopup from '../../../../components/ComplaintTraking/DeleteRequestPopup';
-import Table from '../../../../components/ComplaintTraking/Table';
+import ComplaintForm from "../../../../components/ComplaintTraking/ComplaintFormPopup";
+import EditRequestForm from "../../../../components/ComplaintTraking/EditRequestForm";
+import ViewRequestPopup from "../../../../components/ComplaintTraking/ViewRequestPopup";
+import DeleteConfirmationPopup from "../../../../components/ComplaintTraking/DeleteRequestPopup";
+import Table from "../../../../components/ComplaintTraking/Table";
+import { GetComplaint } from "../../../../apis/api";
 
 export const CreactComplaint = () => {
-  const [complaints, setComplaints] = useState([
-    {
-      id: 1,
-      complainerName: 'Evelyn Harper',
-      complaintName: 'Unethical Behavior',
-      description: 'Providing false information or deliberately.',
-      unit: 'A',
-      unitNumber: '1001',
-      priority: 'Medium',
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      complainerName: 'Esther Howard',
-      complaintName: 'Preventive Measures',
-      description: 'Regular waste collection services.',
-      unit: 'B',
-      unitNumber: '1002',
-      priority: 'Low',
-      status: 'Open',
-    },
-  ]);
+  const [complaints, setComplaints] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState({
     create: false,
@@ -40,6 +19,28 @@ export const CreactComplaint = () => {
 
   const [selectedComplaint, setSelectedComplaint] = useState(null);
 
+  const fetchComplaint = async () => {
+    try {
+      const params = "complaint";
+      const response = await GetComplaint(params);
+      if (response.success) {
+        setComplaints(response.data);
+      } else {
+        console.error("Error fetching complaints:", response.message);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchComplaint();
+  }, []);
+
+  const handleComplaintAdded = () => {
+    fetchComplaint();
+  };
+
   const toggleModal = (type, complaint = null) => {
     setSelectedComplaint(complaint);
     setIsModalOpen((prev) => ({
@@ -49,29 +50,34 @@ export const CreactComplaint = () => {
   };
 
   const columns = [
-    { header: 'Complainer Name', accessor: 'complainerName' },
-    { header: 'Complaint Name', accessor: 'complaintName' },
-    { header: 'Description', accessor: 'description' },
+    { header: "Complainer Name", accessor: "complainerName" },
+    { header: "Complaint Name", accessor: "complaintName" },
+    { header: "Description", accessor: "description" },
     {
-      header: 'Unit Number',
-      accessor: 'unit',
+      header: "Unit Number",
+      accessor: "unit",
       render: (value, row) => (
-        <span>
-          <span className="text-green-600 font-bold">{value}</span> {row.unitNumber}
+        <span className="flex gap-3">
+          <span className="rounded-full bg-slate-300 flex justify-center h-6 w-6 text-blue-500">
+            {row.wing}
+          </span>
+          <span className="text-black font-medium">
+            {value} {row.unitNumber}{" "}
+          </span>
         </span>
       ),
     },
     {
-      header: 'Priority',
-      accessor: 'priority',
+      header: "Priority",
+      accessor: "priority",
       render: (value) => (
         <span
           className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === 'High'
-              ? 'bg-red-200 text-white'
-              : value === 'Medium'
-              ? 'bg-blue-500 text-white '
-              : 'bg-green-500 text-white px-6'
+            value === "high"
+              ? "bg-[#E74C3C] text-white"
+              : value === "medium"
+              ? "bg-[#5678E9] text-white" // Custom blue color for Medium
+              : "bg-green-500 text-white"
           }`}
         >
           {value}
@@ -79,16 +85,18 @@ export const CreactComplaint = () => {
       ),
     },
     {
-      header: 'Status',
-      accessor: 'status',
+      header: "Status",
+      accessor: "status",
       render: (value) => (
         <span
           className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === 'Pending'
-              ? 'bg-yellow-100 text-yellow-800'
-              : value === 'Open'
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-green-100 text-green-800'
+            value === "pending"
+              ? "bg-[#FFC3131A] text-[#FFC313]"
+              : value === "solved"
+              ? "bg-[#39973D1A] text-[#39973D]"
+              : value === "open"
+              ? "bg-[#5678E91A] text-[#5678E9]"
+              : "bg-green-100 text-green-800" // Default fallback if needed
           }`}
         >
           {value}
@@ -99,19 +107,19 @@ export const CreactComplaint = () => {
 
   const actions = [
     {
-      className: 'text-green-500 hover:text-green-700',
+      className: "text-green-500 hover:text-green-700",
       icon: <i className="fa-regular fa-pen-to-square"></i>,
-      onClick: (row) => toggleModal('edit', row),
+      onClick: (row) => toggleModal("edit", row),
     },
     {
-      className: 'text-blue-500 hover:text-blue-700',
+      className: "text-blue-500 hover:text-blue-700",
       icon: <i className="fas fa-eye"></i>,
-      onClick: (row) => toggleModal('view', row),
+      onClick: (row) => toggleModal("view", row),
     },
     {
-      className: 'text-red-500 hover:text-red-700',
+      className: "text-red-500 hover:text-red-700",
       icon: <i className="fas fa-trash"></i>,
-      onClick: (row) => toggleModal('delete', row),
+      onClick: (row) => toggleModal("delete", row),
     },
   ];
 
@@ -121,18 +129,40 @@ export const CreactComplaint = () => {
         <h1 className="text-xl font-bold">Complaints</h1>
         <button
           className="bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white py-2 px-4 rounded-xl"
-          onClick={() => toggleModal('create')}
+          onClick={() => toggleModal("create")}
         >
           Create Complaint
         </button>
-        {isModalOpen.create && <ComplaintForm closeModal={() => toggleModal('create')} />}
+        {isModalOpen.create && (
+          <ComplaintForm
+            closeModal={() => toggleModal("create")}
+            onComplaintAdd={handleComplaintAdded}
+          />
+        )}
       </div>
 
       <Table columns={columns} data={complaints} actions={actions} />
 
-      {isModalOpen.edit && <EditRequestForm data={selectedComplaint} closeModal={() => toggleModal('edit')} />}
-      {isModalOpen.view && <ViewRequestPopup data={selectedComplaint} closeModal={() => toggleModal('view')} />}
-      {isModalOpen.delete && <DeleteConfirmationPopup data={selectedComplaint} closeModal={() => toggleModal('delete')} />}
+      {isModalOpen.edit && (
+        <EditRequestForm
+          data={selectedComplaint}
+          closeModal={() => toggleModal("edit")}
+          onComplaintAdd={handleComplaintAdded}
+        />
+      )}
+      {isModalOpen.view && (
+        <ViewRequestPopup
+          data={selectedComplaint}
+          closeModal={() => toggleModal("view")}
+        />
+      )}
+      {isModalOpen.delete && (
+        <DeleteConfirmationPopup
+          data={selectedComplaint}
+          closeModal={() => toggleModal("delete")}
+          onComplaintAdd={handleComplaintAdded}
+        />
+      )}
     </div>
   );
 };

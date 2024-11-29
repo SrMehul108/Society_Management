@@ -6,17 +6,17 @@ const Table = ({ columns, data, actions }) => {
     <div className="overflow-x-auto border rounded-t-2xl">
       <table className="min-w-full bg-white shadow">
         <thead>
-          <tr className="bg-gray-100 border-b">
+          <tr className="border-b" style={{backgroundColor:"#eef1fd"}}>
             {columns.map((column, index) => (
               <th
                 key={index}
-                className="p-3 text-left font-semibold text-sm text-gray-600"
+                className="p-3 text-left font-semibold text-sm text-black"
               >
                 {column.header}
               </th>
             ))}
             {actions && (
-              <th className="p-3 text-left font-semibold text-sm text-gray-600">
+              <th className="p-3 text-left font-semibold text-sm text-black">
                 Actions
               </th>
             )}
