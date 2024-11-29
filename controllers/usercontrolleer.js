@@ -325,8 +325,6 @@ module.exports.addNewSecurity = async (req, res) => {
                 email: req.body.email,
                 age: req.body.age,
                 gender: req.body.gender,
-                wing: "-",
-                unit: req.body.unit || -1,
                 shift: req.body.shift,
                 shiftDate: req.body.shiftDate,
                 shiftTime: req.body.shiftTime,
