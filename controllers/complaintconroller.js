@@ -25,14 +25,18 @@ module.exports.insertComplaint = async (req, res) => {
 module.exports.viewComplaint = async (req, res) => {
     try {
         const { id } = req.query;
+        const { type } = req.query;
+        if (!type) {
+            return res.status(400).json({ message: "Type is required", status: 0 });
+        }
         if (id) {
-            const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: req.params.type });
+            const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: type });
             if (data) {
                 return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
             }
             return res.status(400).json({ message: 'No data found with the given id', status: 0 });
         }
-        const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: req.params.type });
+        const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: type });
         if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
         return res.status(400).json({ message: 'No data found', status: 0 });
     } catch (error) {
