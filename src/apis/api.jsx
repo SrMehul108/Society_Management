@@ -334,7 +334,7 @@ export const getMaintenance = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/admin/maintanace/maintenanceDetail`,
+      `${API_URL}/auth/admin/maintanace/getMaintance`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -365,7 +365,7 @@ export const viewmaintenance = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
-      `${API_URL}/auth/admin/maintanace/getMaintance`,
+      `${API_URL}/auth/admin/maintanace/maintenanceDetail`,
       {
         headers: {
           "Content-Type": "application/json",

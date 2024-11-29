@@ -36,7 +36,7 @@ function FinancialManagement() {
   const openViewPopup = () => {
     const getdata = async () => {
       const item = await viewmaintenance();
-      setItemDetails(item[0]);
+      setItemDetails(item);
       console.log(item);
     };
     getdata()
@@ -50,6 +50,7 @@ function FinancialManagement() {
       try {
         const data = await getMaintenance();
         setMaintenanceData(data);
+        console.log("Maintenance",maintenanceData)
       } catch (error) {
         console.error("Error fetching maintenance data:", error);
       }
