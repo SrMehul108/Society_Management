@@ -11,7 +11,6 @@ const complaintSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        unique: true,
         required: true
     },
     wing: {

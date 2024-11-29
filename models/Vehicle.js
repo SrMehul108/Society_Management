@@ -13,7 +13,6 @@ const vehicleSchema = new mongoose.Schema({
     vehicleNumber: {
         type: String,
         required: true,
-        unique: true
     },
     UserId: {
         type: mongoose.Schema.Types.ObjectId,

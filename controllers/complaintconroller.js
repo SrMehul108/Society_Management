@@ -68,7 +68,7 @@ module.exports.deleteComplaint = async (req, res) => {
         const { id } = req.params;
         if (id && req.body !== "") {
             req.body.isActive = false;
-            let updatedData = await Note.findByIdAndUpdate(id, req.body, { new: true });
+            let updatedData = await Complaint.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
                 return res.status(200).json({ message: "Data Delete Successfully", status: 1, data: updatedData });
             }
