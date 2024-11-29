@@ -74,10 +74,10 @@ export const RequestComplaint = () => {
         <span
           className={`px-2 py-1 rounded-full text-xs font-semibold ${
             value === "high"
-              ? "bg-[#E74C3C] text-white"
+              ? "bg-[#E74C3C] text-white px-5"
               : value === "medium"
               ? "bg-[#5678E9] text-white" // Custom blue color for Medium
-              : "bg-green-500 text-white"
+              : "bg-green-500 text-white px-6"
           }`}
         >
           {value}
@@ -124,7 +124,7 @@ export const RequestComplaint = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 bg-white rounded-lg">
+    <div className=" p-4 bg-white rounded-lg">
       <div className="flex justify-between items-center mb-4 rounded-md">
         <h1 className="text-xl font-bold">Request</h1>
         <button
