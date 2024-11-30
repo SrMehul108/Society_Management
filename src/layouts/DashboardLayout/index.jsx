@@ -105,7 +105,7 @@ export const DashboardLayout = ({ items }) => {
 
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-auto max-h-screen">
+        <main className="flex-1 p-4 overflow-y-hidden max-h-screen">
           <Outlet />
         </main>
       </div>
