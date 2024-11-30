@@ -3,14 +3,14 @@ import NoteEditPopup from "../../../../components/Financial/Note/NoteEdit";
 import CreateAdd from "../../../../components/Financial/Note/NoteCreact";
 import { GetNotes } from "../../../../apis/api";
 
-export const AddNote = () => {
+const AddNote = () => {
   const [menuVisible, setMenuVisible] = useState(null);
   const [noteData, setNoteData] = useState([]);
 
   // States for popups
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupEdit, setIsPopupEdit] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null); // For storing the note being edited
+  const [selectedNote, setSelectedNote] = useState(null); 
 
   // Toggle menu visibility
   const toggleMenu = (id) => {
@@ -28,9 +28,9 @@ export const AddNote = () => {
 
   // Open Edit Note Popup
   const editPopup = (note) => {
-    setSelectedNote(note); // Set the selected note to edit
+    setSelectedNote(note); 
     setIsPopupEdit(true);
-    setMenuVisible(null); // Close the dropdown when Edit is clicked
+    setMenuVisible(null); 
   };
 
   const EditclosePopup = () => {
@@ -60,8 +60,8 @@ export const AddNote = () => {
 
   // Handle editing note
   const handleNoteEdited = () => {
-    fetchData(); // Refresh the notes list
-    EditclosePopup(); // Close the edit popup after editing
+    fetchData(); 
+    EditclosePopup(); 
   };
 
   return (
@@ -95,7 +95,7 @@ export const AddNote = () => {
                   <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => editPopup(note)} // Pass the note to edit
+                      onClick={() => editPopup(note)} 
                     >
                       Edit
                     </button>
@@ -113,10 +113,12 @@ export const AddNote = () => {
           <NoteEditPopup
             note={selectedNote}
             onClose={EditclosePopup}
-            onNoteEdited={handleNoteEdited} // Refresh the notes list on edit
+            onNoteEdited={handleNoteEdited}
           />
         )}
       </div>
     </div>
   );
 };
+
+export default AddNote;

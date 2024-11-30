@@ -16,7 +16,6 @@ import { Announcement, FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
 import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
 import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
-import { AddNote } from "../pages/Admin/FinancialMaintenance/Note";
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
@@ -32,6 +31,9 @@ import { Owner } from "../components/Resident_management/Owner";
 import Tenant from "../components/Resident_management/Tenant";
 import AccessForums from "../pages/User/Community/AccessForums/Index";
 import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
+import { lazy } from "react";
+
+const AddNote = lazy(() => import('../pages/Admin/FinancialMaintenance/Note'));
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
