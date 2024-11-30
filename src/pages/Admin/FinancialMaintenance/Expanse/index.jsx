@@ -5,7 +5,7 @@ import ExpenseView from "../../../../components/Financial/Expense/ExpenseView";
 import { getExpense } from "../../../../apis/api";
 import { Icons } from "../../../../constants";
 
-export default function Expanse() {
+export  function Expanse() {
   // Modal and state management
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -172,3 +172,5 @@ export default function Expanse() {
     </div>
   );
 }
+
+export default Expanse;

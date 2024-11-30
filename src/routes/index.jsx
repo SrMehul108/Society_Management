@@ -11,11 +11,11 @@ import {
   ResetPassword,
   Userlogin
 } from "@/pages";
-import FinancialManagement from "@/pages/Admin/FinancialMaintenance/Income";
+
 import { Announcement, FacilityManagement } from "../pages";
 import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
 import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
-import Expanse from "../pages/Admin/FinancialMaintenance/Expanse";
+
 import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
 import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
 import SecurityGuard from "../pages/Admin/SecurityGuard";
@@ -34,6 +34,8 @@ import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion
 import { lazy } from "react";
 
 const AddNote = lazy(() => import('../pages/Admin/FinancialMaintenance/Note'));
+const FinancialManagement = lazy(() => import('../pages/Admin/FinancialMaintenance/Income'));
+const Expanse = lazy(() => import('../pages/Admin/FinancialMaintenance/Expanse'));
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
