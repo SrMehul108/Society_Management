@@ -14,7 +14,7 @@ import {
   PendingButton,
   SolveButton,
 } from "../../../components/Button/Button";
-import { getImportantnumber } from "../../../apis/api";
+import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 
 export const Dashboard = () => {
@@ -101,34 +101,38 @@ export const Dashboard = () => {
     {
       header: "Priority",
       accessor: "priority",
-      render: (value) =>
-        value === "High" ? (
-          <HighButton />
-        ) : value === "Medium" ? (
-          <MediumButton />
-        ) : value === "Low" ? (
-          <LowButton />
-        ) : (
-          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
-            {value}
-          </span>
-        ),
+      render: (value) => (
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            value === "high"
+              ? "bg-[#E74C3C] text-white px-5"
+              : value === "medium"
+              ? "bg-[#5678E9] text-white" // Custom blue color for Medium
+              : "bg-green-500 text-white px-6"
+          }`}
+        >
+          {value}
+        </span>
+      ),
     },
     {
       header: "Status",
       accessor: "status",
-      render: (value) =>
-        value === "Pending" ? (
-          <PendingButton />
-        ) : value === "Open" ? (
-          <OpenButton />
-        ) : value === "Solve" ? (
-          <SolveButton />
-        ) : (
-          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-black">
-            {value}
-          </span>
-        ),
+      render: (value) => (
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            value === "pending"
+              ? "bg-[#FFC3131A] text-[#FFC313]"
+              : value === "solved"
+              ? "bg-[#39973D1A] text-[#39973D]"
+              : value === "open"
+              ? "bg-[#5678E91A] text-[#5678E9]"
+              : "bg-green-100 text-green-800" // Default fallback if needed
+          }`}
+        >
+          {value}
+        </span>
+      ),
     },
   ];
 
@@ -165,68 +169,29 @@ export const Dashboard = () => {
     }));
   };
 
-  const [complaintsTable, setcomplaintsTable] = useState([
-    {
-      id: 1,
-      complainerName: "Evelyn Harper",
-      complaintName: "Unethical Behavior",
-      description: "Providing false information or deliberately.",
-      unit: "A",
-      unitNumber: "1001",
-      priority: "Medium",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      complainerName: "Esther Howard",
-      complaintName: "Preventive Measures",
-      description: "Regular waste collection services.",
-      unit: "B",
-      unitNumber: "1002",
-      priority: "Low",
-      status: "Open",
-    },
-    {
-      id: 3,
-      complainerName: "Esther Howard",
-      complaintName: "Preventive Measures",
-      description: "Regular waste collection services.",
-      unit: "B",
-      unitNumber: "1005",
-      priority: "High",
-      status: "Solve",
-    },
-    {
-      id: 3,
-      complainerName: "Esther Howard",
-      complaintName: "Preventive Measures",
-      description: "Regular waste collection services.",
-      unit: "B",
-      unitNumber: "1005",
-      priority: "High",
-      status: "Solve",
-    },
-    {
-      id: 3,
-      complainerName: "Esther Howard",
-      complaintName: "Preventive Measures",
-      description: "Regular waste collection services.",
-      unit: "B",
-      unitNumber: "1005",
-      priority: "High",
-      status: "Solve",
-    },
-    {
-      id: 3,
-      complainerName: "Esther Howard",
-      complaintName: "Preventive Measures",
-      description: "Regular waste collection services.",
-      unit: "B",
-      unitNumber: "1006",
-      priority: "High",
-      status: "Solve",
-    },
-  ]);
+  const [complaintsTable, setcomplaintsTable] = useState([]);
+  const fetchComplaint = async () => {
+    try {
+      const params = "complaint";
+      const response = await GetComplaint(params);
+      if (response.success) {
+        setcomplaintsTable(response.data);
+      } else {
+        console.error("Error fetching complaints:", response.message);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchComplaint();
+  }, []);
+
+  const handleComplaintAdded = () => {
+    fetchComplaint();
+  };
+
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState("add");
@@ -460,6 +425,7 @@ export const Dashboard = () => {
               <EditRequestForm
                 data={selectedComplaint}
                 closeModal={() => toggleModal("edit")}
+                onComplaintAdd={handleComplaintAdded}
               />
             )}
             {isModalOpen.view && (
@@ -472,6 +438,7 @@ export const Dashboard = () => {
               <DeleteConfirmationPopup
                 data={selectedComplaint}
                 closeModal={() => toggleModal("delete")}
+                onComplaintAdd={handleComplaintAdded}
               />
             )}
           </div>
