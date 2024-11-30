@@ -6,7 +6,7 @@ import AddSecurity from "../../../components/SecurityGuard/AddSecurity";
 import ViewSecurity from "../../../components/SecurityGuard/ViewSecurity";
 import DeleteSecurity from "../../../components/SecurityGuard/DeleteSecurity";
 
-export default function SecurityGuard() {
+function SecurityGuard() {
   // Modal and form state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null); // Tracks the item to be edited
@@ -158,4 +158,5 @@ export default function SecurityGuard() {
     </>
   );
 }
+export default  SecurityGuard;
 

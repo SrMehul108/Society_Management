@@ -3,7 +3,7 @@ import FacilityPopup from "@/components/Facility/CreactFacility";
 import EditPopup from "@/components/Facility/EditFacility";
 import { getFacility } from "@/apis/api";
 
-export const FacilityManagement = () => {
+ const FacilityManagement = () => {
   const [menuVisible, setMenuVisible] = useState(null);
   const [facilities, setFacilities] = useState([]);
   const [error, SetError] = useState(null);
@@ -42,8 +42,8 @@ export const FacilityManagement = () => {
 
   // Handle facility added in the popup form
   const handleFacilityAdded = () => {
-    fetchFacilities(); // Re-fetch the facilities after a new one is added
-    closePopup(); // Close the popup
+    fetchFacilities(); 
+    closePopup(); 
   };
 
   return (
@@ -118,3 +118,5 @@ export const FacilityManagement = () => {
     </div>
   );
 };
+
+export default FacilityManagement;

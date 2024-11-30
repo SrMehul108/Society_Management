@@ -7,7 +7,7 @@ import Table from "../../../../components/ComplaintTraking/Table";
 import {  GetRequest } from "../../../../apis/api";
 import RequestForm from "../../../../components/ComplaintTraking/RequestTracking/RequestForm";
 
-export const RequestComplaint = () => {
+ const RequestComplaint = () => {
   const [complaints, setComplaints] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState({
@@ -166,3 +166,5 @@ export const RequestComplaint = () => {
     </div>
   );
 };
+
+export default RequestComplaint;

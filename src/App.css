@@ -24,17 +24,4 @@
   border-radius: 5px;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-  height: 50px;
-}
 
-::-webkit-scrollbar-track {
-  background: #f4f4f4;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #202224;
-  border-radius: 10px;
-}

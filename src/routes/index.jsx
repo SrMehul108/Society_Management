@@ -12,13 +12,6 @@ import {
   Userlogin
 } from "@/pages";
 
-import { Announcement, FacilityManagement } from "../pages";
-import { CreactComplaint } from "../pages/Admin/ComplaintTracking/CreateComplaint";
-import SecurityManagement from "../pages/Admin/SecurityManagement/SecurityProtocols";
-
-import { RequestComplaint } from "../pages/Admin/ComplaintTracking/RequestTracking";
-import VisitorLog from "../pages/Admin/SecurityManagement/VisitorLogs";
-import SecurityGuard from "../pages/Admin/SecurityGuard";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
 import ParticipationTabs from "../pages/User/EventsParticipate";
@@ -36,6 +29,13 @@ import { lazy } from "react";
 const AddNote = lazy(() => import('../pages/Admin/FinancialMaintenance/Note'));
 const FinancialManagement = lazy(() => import('../pages/Admin/FinancialMaintenance/Income'));
 const Expanse = lazy(() => import('../pages/Admin/FinancialMaintenance/Expanse'));
+const FacilityManagement = lazy(() => import('../pages/Admin/FacilityManagement'));
+const CreactComplaint = lazy(() => import('../pages/Admin/ComplaintTracking/CreateComplaint'));
+const RequestComplaint = lazy(() => import('../pages/Admin/ComplaintTracking/RequestTracking'));
+const SecurityManagement = lazy(() => import('../pages/Admin/SecurityManagement/SecurityProtocols'));
+const VisitorLog = lazy(() => import('../pages/Admin/SecurityManagement/VisitorLogs'));
+const SecurityGuard = lazy(() => import('../pages/Admin/SecurityGuard'));
+const Announcement = lazy(() => import('../pages/Admin/Announcement'));
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */

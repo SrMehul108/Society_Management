@@ -166,3 +166,5 @@ export const CreactComplaint = () => {
     </div>
   );
 };
+
+export default CreactComplaint;

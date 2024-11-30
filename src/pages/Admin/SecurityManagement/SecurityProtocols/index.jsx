@@ -1,8 +1,4 @@
 
-
-
-
-// ComplaintTable.js
 import React, { useState } from 'react';
 import SecurityProtocols from '../../../../components/SecurityManagement/Protocols/SecurityProtocols';
 import SecurityEdit from '../../../../components/SecurityManagement/Protocols/SecurityEdit';

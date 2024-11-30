@@ -60,7 +60,7 @@ const note = [
   },
 ];
 
-export const Announcement = () => {
+const Announcement = () => {
   const [menuVisible, setMenuVisible] = useState(null);
 
   const toggleMenu = (id) => {
@@ -186,3 +186,5 @@ const closeViewModal = () => setIsViewOpen(false);
     </div>
   );
 };
+
+export default Announcement;
