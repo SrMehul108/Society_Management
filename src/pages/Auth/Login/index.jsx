@@ -27,8 +27,13 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData);
-      if (response.status == 1) {
+      console.log(response.userData)
+      if (response.role === "admin") {
         navigate("/admin/dashboard");
+      }else if(response.role === "user"){
+        navigate("/user/")
+      }else{
+        navigate("/security/VisitorTracking")
       }
     } catch (error) {
       console.error("Login failed:", error);

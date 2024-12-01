@@ -55,7 +55,7 @@ export const login = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
     localStorage.setItem("admintoken", response.data.data);
-    LoginData(); // This can be removed or used for logging, it is not needed for the flow
+    LoginData();
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
@@ -157,7 +157,7 @@ export const getUser = async () => {
       },
     });
 
-    console.log("Response:", response);
+    console.log(response.data.data);
 
     if (response.status === 200 && response.data.status === 1) {
       return response.data.data;
