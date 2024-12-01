@@ -5,5 +5,5 @@ const {insert, viewImportnat, editImportant, deleteImportant} = require('../cont
 router.post('/insertImportant', insert);
 router.get('/getImportant', viewImportnat);
 router.post('/editImportant/:id', editImportant);
-router.delete('deleteImportant/:id', deleteImportant);
+router.delete('/deleteImportant/:id', deleteImportant);
 module.exports = router;
