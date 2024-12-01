@@ -192,32 +192,38 @@ export const Dashboard = () => {
     fetchComplaint();
   };
 
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState("add");
+  const [editid, setEditid] = useState();
   const [editData, setEditData] = useState(null);
+
+  
 
   const handleAddClick = () => {
     setPopupMode("add");
     setEditData(null);
     setIsPopupOpen(true);
   };
-
-  const handleEditClick = (important) => {
+  const handleEditClick = (important, id) => {
     setPopupMode("edit");
     setSelectedNumberData({
       fullName: important.fullName,
-      phoneNo: important.phoneNo,  // Ensure this is properly set
+      phoneNo: important.phoneNo,
       work: important.work,
     });
+    setEditid(id);
     setIsPopupOpen(true);
   };
-  
-  
+
+  const openPopup=()=>{
+    setIsPopupOpen(true)
+  }
 
   const [isDeleteData, setIsDeleteData] = useState(false);
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (id) => {
+    setEditid(id);
     setIsDeleteData(true);
+    openPopup()
   };
 
   const closePopup = () => {
@@ -307,8 +313,9 @@ export const Dashboard = () => {
               {/* Popup for Adding or Editing Numbers */}
               {isPopupOpen && (
                 <AddNumberPopup
-                  mode={popupMode} // To indicate add or edit mode
-                  initialData={selectedNumberData} // Pass selectedNumberData here
+                  mode={popupMode}
+                  initialData={selectedNumberData}
+                  editid={editid}
                   onClose={closePopup}
                   onImportantNumberAdded={handleImportantNumberAdded}
                 />
@@ -344,16 +351,23 @@ export const Dashboard = () => {
                       <div className="flex space-x-3">
                         <button
                           className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() => handleDeleteClick(important.id)}
+                          onClick={() => handleDeleteClick(important._id)}
                         >
                           {Icons.Delete}
                         </button>
                         {isDeleteData && (
-                          <DeletePopup onClose={() => setIsDeleteData(false)} />
+                          <DeletePopup
+                            onClick={() => setIsDeleteData(false)}
+                            editid={editid}
+                            onClose={closePopup}
+                            onImportantNumberAdded={handleImportantNumberAdded}
+                          />
                         )}
                         <button
                           className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() => handleEditClick(important)}
+                          onClick={() =>
+                            handleEditClick(important, important._id)
+                          }
                         >
                           {Icons.Pen}
                         </button>

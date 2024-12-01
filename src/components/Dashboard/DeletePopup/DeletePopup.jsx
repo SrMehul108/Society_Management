@@ -1,10 +1,15 @@
-function DeletePopup({ onClose, onDelete, selectedNumberData }) {
-  const handleDelete = () => {
-    if (selectedNumberData === undefined || selectedNumberData === null) {
-      console.log("Error: No number selected for deletion.");
-      return;
-    }
-    onDelete();  // Call the onDelete function passed via props
+import { DeleteImportantnumber } from "../../../apis/api";
+
+function DeletePopup({ onClose, editid,onImportantNumberAdded }) {
+  const handleDelete = async() => {
+    try {
+      const response=await DeleteImportantnumber(editid)
+      onImportantNumberAdded()
+      onClose()
+      console.log("success")
+    } catch (error) {
+      console.log(error)
+    } 
   };
 
   return (

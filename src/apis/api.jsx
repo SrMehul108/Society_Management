@@ -647,11 +647,11 @@ export const getImportantnumber = async () => {
   }
 };
 
-export const UpdateImportantnumber = async (data) => {
+export const UpdateImportantnumber = async (data,id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/admin/important/editImportant/${data._id}`,
+      `${API_URL}/auth/admin/important/editImportant/${id}`,
       data,
       {
         headers: {
@@ -681,15 +681,12 @@ export const UpdateImportantnumber = async (data) => {
   }
 };
 
-export const DeleteImportantnumber = async (ImportantId) => {
-  if (!ImportantId) {
-    console.error("Important ID is undefined");
-    return; // Prevent API call if ID is missing
-  }
+export const DeleteImportantnumber = async (id) => {
+
   try {
     var token = AdminToken();
     const response = await axios.delete(
-      `${API_URL}/auth/admin/expenses/deleteExpense/${ImportantId}`,
+      `${API_URL}/auth/admin/important/deleteImportant/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -697,21 +694,8 @@ export const DeleteImportantnumber = async (ImportantId) => {
         },
       }
     );
-
-    if (response.status === 200 && response.data.status === 1) {
-      console.log("Income deleted successfully:", response.data);
-      return response.data;
-    } else {
-      console.error("Failed to delete income:", response.data.message);
-      return { success: false, message: "Failed to delete income" };
-    }
   } catch (error) {
     console.log(error);
-    console.error("Error deleting income:", error);
-    return {
-      success: false,
-      message: error.response ? error.response.data : error.message,
-    };
   }
 };
 
