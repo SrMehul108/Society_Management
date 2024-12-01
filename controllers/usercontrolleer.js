@@ -390,14 +390,14 @@ module.exports.viewSecurity = async (req, res) => {
     try {
         const { id } = req.query;
         if (id) {
-            const userdata = await User.findOne({ _id: id, societyId: req.user.societyId, role: "security" });
+            const userdata = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: "security" });
             if (userdata) {
                 return res.status(200).json({ message: "Security Guard fetched Succesfully", status: 1, data: userdata });
             } else {
                 return res.status(400).json({ message: "User not found", status: 0, data: [] });
             }
         }
-        const userData = await User.find({ societyId: req.user.societyId, isActive: true, role: 'security' });
+        const userData = await UserModel.find({ societyId: req.user.societyId, isActive: true, role: 'security' });
         if (userData && userData.length > 0) {
             return res.status(200).json({ message: "Gaurd data fetched succesfully", status: 1, data: formattedData });
         } else {
