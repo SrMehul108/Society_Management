@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Passport = require("passport");
-const Admin = require("../models/Admin");
+const UserModel = require("../models/UserData");
 const jwt = require("passport-jwt");
 const jwtStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
@@ -12,7 +12,7 @@ const opts = {
 
 Passport.use(new jwtStrategy(opts, async (record, done) => {
     try {
-        let data = await Admin.findById(record.userData._id);
+        let data = await UserModel.findById(record.userData._id);
         if (data && data.role === 'admin') {
             return done(null, data);
         } else {
@@ -28,6 +28,6 @@ Passport.serializeUser((user, done) => {
 });
 
 Passport.deserializeUser(async (id, done) => {
-    let reCheck = await Admin.findById(id);
+    let reCheck = await UserModel.findById(id);
     reCheck ? done(null, reCheck) : done(null, false);
 });

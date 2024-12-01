@@ -1,4 +1,4 @@
-const Admin = require('../models/Admin');
+const UserModel = require('../models/UserData');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -8,13 +8,13 @@ module.exports.registerUser = async (req, res) => {
     try {
         if (req.body !== "") {
             if (req.body.password !== "" && req.body.password === req.body.confirmPassword) {
-                let checkmail = await Admin.findOne({ email: req.body.email });
+                let checkmail = await UserModel.findOne({ email: req.body.email });
                 if (checkmail) {
                     return res.status(400).json({ message: "Email Already Exists", status: 0 });
                 } else {
                     let pass = await bcrypt.hash(req.body.password, 10);
                     req.body.password = pass;
-                    let newUser = new Admin(req.body);
+                    let newUser = new UserModel(req.body);
                     await newUser.save();
                     if (newUser) {
                         const transporter = nodemailer.createTransport({
@@ -53,7 +53,7 @@ module.exports.registerUser = async (req, res) => {
 module.exports.loginUser = async (req, res) => {
     try {
         if (req.body !== "") {
-            let checkmail = await Admin.findOne({ email: req.body.email });
+            let checkmail = await UserModel.findOne({ email: req.body.email });
             if (checkmail) {
                 let pass = await bcrypt.compare(req.body.password, checkmail.password);
                 if (pass) {
@@ -79,7 +79,7 @@ module.exports.forgotPassword = async (req, res) => {
         if (!req.body.email) {
             return res.status(400).json({ message: "Email is required", status: 0 });
         }
-        const checkmail = await Admin.findOne({ email: req.body.email });
+        const checkmail = await UserModel.findOne({ email: req.body.email });
         if (!checkmail) {
             return res.status(400).json({ message: "Email is incorrect", status: 0 });
         }
@@ -136,7 +136,7 @@ module.exports.verifyOtp = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
     try {
         if (req.body !== "") {
-            let checkmail = await Admin.findOne({ email: req.body.email });
+            let checkmail = await UserModel.findOne({ email: req.body.email });
             if (checkmail) {
                 const isSamePassword = await bcrypt.compare(req.body.password, checkmail.password);
                 if (isSamePassword) {
@@ -145,7 +145,7 @@ module.exports.resetPassword = async (req, res) => {
                     if (req.body.password !== "" && req.body.password === req.body.confirmPassword) {
                         let pass = await bcrypt.hash(req.body.password, 10);
                         req.body.password = pass;
-                        await Admin.findByIdAndUpdate(checkmail._id, req.body);
+                        await UserModel.findByIdAndUpdate(checkmail._id, req.body);
                         return res.status(200).json({ message: "Password Reset Successfully 🎉", status: 1 });
                     } else {
                         return res.status(400).json({ message: "Password and Confirm Password is Not Matched", status: 0 });
@@ -166,20 +166,20 @@ module.exports.resetPassword = async (req, res) => {
 module.exports.editProfile = async (req, res) => {
     try {
         if (req.user) {
-            let olddata = await Admin.findOne({ _id: req.user._id });
+            let olddata = await UserModel.findOne({ _id: req.user._id });
             if (req.body == '') {
                 return res.status(400).json({ message: 'Something went wrong', status: 0 });
             }
             if (req.files) {
-                if (req.files?.admin_image?.[0]?.path) {
-                    if (olddata.admin_image) {
-                        const publicId = olddata.admin_image.split('/').pop().split('.')[0];
+                if (req.files?.profile_image?.[0]?.path) {
+                    if (olddata.profile_image) {
+                        const publicId = olddata.profile_image.split('/').pop().split('.')[0];
                         await cloudinaryConfig.uploader.destroy(`adminImages/${publicId}`);
                     }
-                    req.body.admin_image = req.files.admin_image[0].path;
+                    req.body.profile_image = req.files.profile_image[0].path;
                 }
             }
-            const updatedData = await Admin.findByIdAndUpdate(req.user._id, req.body, { new: true });
+            const updatedData = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
             if (updatedData) {
                 return res.status(200).json({ message: 'Data Updated Succesfully', status: 1, data: updatedData })
             }

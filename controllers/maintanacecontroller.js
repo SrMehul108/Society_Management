@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const UserModel = require('../models/UserData');
 const Payment = require('../models/Payment');
 const Maintenance = require('../models/Maintenance');
 
@@ -13,7 +13,7 @@ module.exports.insert = async (req, res) => {
             const newMaintenance = new Maintenance(req.body);
             await newMaintenance.save();
             if (newMaintenance) {
-                const userIds = await User.find({ societyId: req.user.societyId }).select('_id');
+                const userIds = await UserModel.find({ societyId: req.user.societyId }).select('_id');
                 const paymentPromises = userIds.map(userId => {
                     const paymentData = {
                         type: 'maintenance',
@@ -58,7 +58,7 @@ module.exports.maintenanceDetail = async (req, res) => {
 
         if (societyId) {
             // Retrieve user data for the society
-            const userData = await User.find({ societyId: societyId });
+            const userData = await UserModel.find({ societyId: societyId });
             if (userData && userData.length > 0) {
                 const userIds = userData.map(user => user._id);
 

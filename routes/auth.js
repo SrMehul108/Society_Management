@@ -11,5 +11,5 @@ router.post('/reset-password', resetPassword);
 router.use('/admin', (req, res, next) => {
     Passport.authenticate('jwt', (err, user, info) => { if (err || !user) { return res.status(403).json({ message: 'Authorization failed' }); } req.user = user; next(); })(req, res, next);
 }, require('./admin'));
-router.post('/edit-profile', Passport.authenticate('jwt', { failureMessage: 'You are not logged in' }), upload.fields([{ name: 'admin_image', maxCount: 1 }]), editProfile);
+router.post('/edit-profile', Passport.authenticate('jwt', { failureMessage: 'You are not logged in' }), upload.fields([{ name: 'profile_image', maxCount: 1 }]), editProfile);
 module.exports = router;

@@ -12,9 +12,6 @@ const storage = new CloudinaryStorage({
       case 'uploadBill' :
         folderName = 'expenseBill';
         break;
-      case 'admin_image':
-        folderName = 'adminImages';
-        break;
       case 'profile_image':
         folderName = 'profileImages';
         break;
