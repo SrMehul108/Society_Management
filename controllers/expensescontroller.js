@@ -10,7 +10,6 @@ module.exports.insertExpense = async (req, res) => {
                 }
             }
             req.body.societyId = req.user.societyId;
-
             const newExpense = new Expenses(req.body);
             await newExpense.save();
             if (newExpense) {

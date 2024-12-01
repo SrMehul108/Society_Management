@@ -58,7 +58,7 @@ module.exports.loginUser = async (req, res) => {
                 let pass = await bcrypt.compare(req.body.password, checkmail.password);
                 if (pass) {
                     let token = await jwt.sign({ userData: checkmail }, process.env.JWT_SECRET_ADMIN, { expiresIn: '1d' });
-                    return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token });
+                    return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token, role : checkmail.role });
                 } else {
                     return res.status(400).json({ message: "Incorrect password", status: 0 });
                 }

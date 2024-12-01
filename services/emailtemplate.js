@@ -21,7 +21,7 @@ module.exports.regestration = (fullname, email, password) => {
                     <p>If you have any questions or need assistance, feel free to contact our support team.</p>
                 </div>
                 <div style="background-color: #f4f4f4; color: #666; text-align: center; padding: 15px; font-size: 0.8em;">
-                    <p style="margin: 0;">&copy; 2024 Your Company Name. All rights reserved.</p>
+                    <p style="margin: 0;">&copy; 2024 Team 1. All rights reserved.</p>
                     <p style="margin: 0;">1234 Street, City, State, 56789</p>
                 </div>
             </div>

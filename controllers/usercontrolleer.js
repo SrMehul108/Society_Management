@@ -328,8 +328,8 @@ module.exports.addNewSecurity = async (req, res) => {
             if (existingUser) {
                 return res.status(400).json({ message: 'Email already exists', status: 0 });
             }
-            var password = req.body.fullName?.replace(/\s+/g, '') + "#@" + req.body.age;
-            let pass = await bcrypt.hash(password, 10);
+            const password = crypto.randomBytes(8).toString('hex');
+            const hashedPassword = await bcrypt.hash(password, 10);
             const data = {
                 fullName: req.body.fullName,
                 phoneNo: req.body.phoneNo,
