@@ -69,6 +69,8 @@ module.exports.editImportant = async (req, res) => {
 
 module.exports.deleteImportant = async (req, res) => {
     try {
+        console.log('hiii');
+        
         const { id } = req.params;
         if (id) {
             let data = await Important.findOne({ _id: id });
