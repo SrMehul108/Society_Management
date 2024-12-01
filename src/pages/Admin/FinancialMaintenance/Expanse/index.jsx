@@ -4,17 +4,18 @@ import ExpenseDelete from "../../../../components/Financial/Expense/ExpenseDelet
 import ExpenseView from "../../../../components/Financial/Expense/ExpenseView";
 import { getExpense } from "../../../../apis/api";
 import { Icons } from "../../../../constants";
+import EditExpenses from "../../../../components/Financial/Expense/EditExpenses";
 
-  function Expanse() {
-  // Modal and state management
+function Expanse() {
+  // State management
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
-
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [viewItem, setViewItem] = useState(null);
   const [expense, setExpense] = useState([]);
-  const [deleteItemId, setDeleteItemId] = useState(null); // Store the expense ID to delete
+  const [deleteItemId, setDeleteItemId] = useState(null);
 
   // Fetch expenses
   const fetchExpense = async () => {
@@ -31,14 +32,17 @@ import { Icons } from "../../../../constants";
   }, []);
 
   // Modal Handlers
-  const openModal = (item = null) => {
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const openEditModal = (item) => {
     setEditingItem(item);
-    setIsModalOpen(true);
+    setIsEditOpen(true);
   };
 
-  const closeModal = () => {
+  const closeEditModal = () => {
     setEditingItem(null);
-    setIsModalOpen(false);
+    setIsEditOpen(false);
   };
 
   const openViewModal = (item) => {
@@ -52,14 +56,20 @@ import { Icons } from "../../../../constants";
   };
 
   const openDeleteModal = (id) => {
-    setDeleteItemId(id); // Set the expense ID to delete
+    setDeleteItemId(id);
     setIsDeleteOpen(true);
   };
+
   const closeDeleteModal = () => setIsDeleteOpen(false);
 
   const handleExpenseAdded = () => {
     fetchExpense();
     closeModal();
+  };
+
+  const handleExpenseUpdated = () => {
+    fetchExpense();
+    closeEditModal();
   };
 
   return (
@@ -69,7 +79,6 @@ import { Icons } from "../../../../constants";
         <AddExpanse
           isOpen={isModalOpen}
           onClose={closeModal}
-          itemToEdit={editingItem}
           onAddExpanse={handleExpenseAdded}
         />
       )}
@@ -81,8 +90,17 @@ import { Icons } from "../../../../constants";
       {isDeleteOpen && (
         <ExpenseDelete
           closeModal={closeDeleteModal}
-          expenseId={deleteItemId} // Pass the ID of the expense to delete
-          fetchExpense={fetchExpense} // Optionally call fetchExpense after delete
+          expenseId={deleteItemId}
+          fetchExpense={fetchExpense}
+        />
+      )}
+
+      {isEditOpen && editingItem && (
+        <EditExpenses
+          isOpen={isEditOpen}
+          onClose={closeEditModal}
+          itemToEdit={editingItem}
+          onUpdateExpanse={handleExpenseUpdated}
         />
       )}
 
@@ -90,10 +108,10 @@ import { Icons } from "../../../../constants";
       <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-700">
-            Add Expense Details
+            Expense Details
           </h2>
           <button
-            onClick={() => openModal()}
+            onClick={openModal}
             className="flex items-center gap-2 p-2 bg-orange-500 text-white rounded-lg shadow hover:bg-orange-600 transition"
           >
             <span>{Icons.Add}</span>
@@ -105,21 +123,16 @@ import { Icons } from "../../../../constants";
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
-                {[
-                  "Title",
-                  "Description",
-                  "Date",
-                  "Amount",
-                  "Bill Format",
-                  "Action",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-4 py-2 text-left text-black font-semibold"
-                  >
-                    {heading}
-                  </th>
-                ))}
+                {["Title", "Description", "Date", "Amount", "Bill Format", "Action"].map(
+                  (heading) => (
+                    <th
+                      key={heading}
+                      className="px-4 py-2 text-left text-black font-semibold"
+                    >
+                      {heading}
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -144,12 +157,11 @@ import { Icons } from "../../../../constants";
                   </td>
                   <td className="flex space-x-2 px-4 py-3">
                     <button
-                      onClick={() => openModal(item)} // Pass current expense item to edit
+                      onClick={() => openEditModal(item)}
                       className="text-green-500 hover:text-green-700"
                     >
                       <i className="fa-regular fa-pen-to-square"></i>
                     </button>
-
                     <button
                       onClick={() => openViewModal(item)}
                       className="text-blue-500 hover:text-blue-700"
@@ -157,7 +169,7 @@ import { Icons } from "../../../../constants";
                       <i className="fas fa-eye"></i>
                     </button>
                     <button
-                      onClick={() => openDeleteModal(item._id)} // Pass _id to delete
+                      onClick={() => openDeleteModal(item._id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <i className="fas fa-trash"></i>

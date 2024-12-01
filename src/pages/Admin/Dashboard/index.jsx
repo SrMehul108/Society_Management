@@ -6,14 +6,6 @@ import DeleteConfirmationPopup from "../../../components/ComplaintTraking/Delete
 import { FaPlus, FaUser } from "react-icons/fa";
 import AddNumberPopup from "../../../components/Dashboard/AddNumberPopup/AddNumberPopup";
 import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
-import {
-  HighButton,
-  LowButton,
-  MediumButton,
-  OpenButton,
-  PendingButton,
-  SolveButton,
-} from "../../../components/Button/Button";
 import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 
@@ -23,13 +15,13 @@ export const Dashboard = () => {
     useState("Last month");
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
     useState("Last month");
-  const [importantnumber, setImporytantnumber] = useState([]);
+  const [importantnumber, setImportantnumber] = useState([]);
   const [selectedNumberData, setSelectedNumberData] = useState(null);
 
   const fetchImportantNumber = async () => {
     try {
       const data = await getImportantnumber();
-      setImporytantnumber(data);
+      setImportantnumber(data);
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +32,8 @@ export const Dashboard = () => {
 
   // Handle facility added in the popup form
   const handleImportantNumberAdded = () => {
-    fetchImportantNumber(); // Re-fetch the facilities after a new one is added
-    closePopup(); // Close the popup
+    fetchImportantNumber();
+    closePopup();
   };
 
   const balanceData = [
@@ -107,7 +99,7 @@ export const Dashboard = () => {
             value === "high"
               ? "bg-[#E74C3C] text-white px-5"
               : value === "medium"
-              ? "bg-[#5678E9] text-white" // Custom blue color for Medium
+              ? "bg-[#5678E9] text-white" 
               : "bg-green-500 text-white px-6"
           }`}
         >
@@ -127,7 +119,7 @@ export const Dashboard = () => {
               ? "bg-[#39973D1A] text-[#39973D]"
               : value === "open"
               ? "bg-[#5678E91A] text-[#5678E9]"
-              : "bg-green-100 text-green-800" // Default fallback if needed
+              : "bg-green-100 text-green-800"
           }`}
         >
           {value}

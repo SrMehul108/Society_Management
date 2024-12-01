@@ -446,11 +446,11 @@ export const getExpense = async () => {
   }
 };
 
-export const updateExpense = async (data) => {
+export const updateExpense = async (data,id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/admin/expenses/editExpenses/${data._id}`,
+      `${API_URL}/auth/admin/expenses/editExpenses/${id}`,
       data,
       {
         headers: {
