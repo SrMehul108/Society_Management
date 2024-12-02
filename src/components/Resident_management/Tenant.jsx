@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Bell, ChevronDown, Container, LogOut, Upload } from 'lucide-react'
 import tenant from '../../assets/image/tenant.jpg'
 import { UploadIcon } from './UploadIcon';
@@ -108,20 +108,45 @@ const Tenant = () => {
         setOwner({ ...owner, [field]: value });
     };
 
+    // image add 
+    const [photo, setPhoto] = useState(null);
+
+    const fileInputRef = useRef(null);
+
+
+    // Handle photo upload
+    const handlePhotoChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setPhoto(reader.result);
+
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // Trigger the file input dialog on button click
+    const handleAddPhotoClick = () => {
+        fileInputRef.current.click();
+
+    };
+
 
     return (
 
         <>
-            <div className="container mx-auto">
+            <div className="">
                 <div className="flex  bg-gray-100">
                     {/* Main content */}
-                    <main className="flex-1 p-8">
-                        
-                        <div className="flex mb-4">
+                    <main className="flex-1 ">
+
+                        <div className="flex ">
                             <Link to={"/admin/residents/OwnerForm"} className=" bg-gray-200 text-gray-700 px-4 py-2 rounded-tl-md rounded-bl-md">Owner</Link>
                             <button className="bg-orange-500 text-white px-4 py-2 rounded-tr-md rounded-br-md">Tenant</button>
                         </div>
-                        <div className="bg-white shadow-md rounded-lg p-6 mt-3 mb-3">
+                        <div className="bg-white shadow-md rounded-lg p-6  mb-3">
                             <h2 className="text-xl font-semibold text-gray-800 mb-4">Owner Information</h2>
                             <div className="flex gap-4">
                                 <div className="flex flex-col w-1/3">
@@ -157,15 +182,33 @@ const Tenant = () => {
                             </div>
                         </div>
 
-
-
-
-
                         <div className="bg-white shadow-md rounded-lg p-6">
                             <div className='flex w-full m-0'>
-                                <div>
-                                <img src={tenant} alt="" />
+                                <div className="mr-6 flex flex-col items-center">
+                                    <div className='relative'>
+                                        <img
+                                            src={photo || "https://via.placeholder.com/100"} // Default placeholder if no photo is uploaded
+                                            alt="User"
+                                            className="w-24 h-24 rounded-full border object-cover"
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="text-blue-500 mt-2 text-sm"
+                                        onClick={handleAddPhotoClick}
+                                    >
+                                        Add Photo
+                                    </button>
+                                    {/* Hidden File Input */}
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        accept="image/*"
+                                        onChange={handlePhotoChange}
+                                        className="hidden"
+                                    />
                                 </div>
+
                                 <div className="w-full">
                                     <form className="w-full">
                                         <div className="flex  gap-6">
