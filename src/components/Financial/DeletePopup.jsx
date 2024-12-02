@@ -12,20 +12,27 @@ function DeletePopup({ itemTitle = "item", onClose, onDelete }) {
           be undone.
         </p>
         <div className="flex justify-between">
-          <button
-            type="button"
-            className="px-6 py-2 border border-gray-300 rounded-md"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="px-6 py-2 bg-red-500 text-white rounded-md"
-            onClick={onDelete}
-          >
-            Delete
-          </button>
+         <div className="flex items-center w-full gap-2">
+         <div className="w-1/2">
+            <button
+              type="button"
+              className="px-6 py-2 border border-gray-300 rounded-md w-full"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+          </div>
+          <div className="w-1/2">
+
+            <button
+              type="button"
+              className="px-6 py-2 bg-red-500 text-white rounded-md w-full"
+              onClick={onDelete}
+            >
+              Delete
+            </button>
+          </div>
+         </div>
         </div>
       </div>
     </div>
