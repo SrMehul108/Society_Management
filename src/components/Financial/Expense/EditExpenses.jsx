@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { updateExpense } from "../../../apis/api";
 
-export const EditExpenses = ({ itemToEdit, onClose, onExpenseUpdated }) => {
+const EditExpenses = ({ itemToEdit, onClose, onExpenseUpdated }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -62,7 +62,7 @@ export const EditExpenses = ({ itemToEdit, onClose, onExpenseUpdated }) => {
       <div className="z-50 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative z-60">
           <h2 className="text-2xl font-semibold mb-4 border-b-2 pb-2 border-opacity-10">
-            {itemToEdit ? "Edit Expense Details" : "Add Expense Details"}
+            {itemToEdit ? "Edit Expense Details MG" : "Add Expense Details"}
           </h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
@@ -176,3 +176,4 @@ export const EditExpenses = ({ itemToEdit, onClose, onExpenseUpdated }) => {
     </>
   );
 };
+export default EditExpenses

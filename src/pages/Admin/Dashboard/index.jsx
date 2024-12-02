@@ -6,14 +6,6 @@ import DeleteConfirmationPopup from "../../../components/ComplaintTraking/Delete
 import { FaPlus, FaUser } from "react-icons/fa";
 import AddNumberPopup from "../../../components/Dashboard/AddNumberPopup/AddNumberPopup";
 import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
-import {
-  HighButton,
-  LowButton,
-  MediumButton,
-  OpenButton,
-  PendingButton,
-  SolveButton,
-} from "../../../components/Button/Button";
 import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 
@@ -23,13 +15,13 @@ export const Dashboard = () => {
     useState("Last month");
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
     useState("Last month");
-  const [importantnumber, setImporytantnumber] = useState([]);
+  const [importantnumber, setImportantnumber] = useState([]);
   const [selectedNumberData, setSelectedNumberData] = useState(null);
 
   const fetchImportantNumber = async () => {
     try {
       const data = await getImportantnumber();
-      setImporytantnumber(data);
+      setImportantnumber(data);
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +32,8 @@ export const Dashboard = () => {
 
   // Handle facility added in the popup form
   const handleImportantNumberAdded = () => {
-    fetchImportantNumber(); // Re-fetch the facilities after a new one is added
-    closePopup(); // Close the popup
+    fetchImportantNumber();
+    closePopup();
   };
 
   const balanceData = [
@@ -107,7 +99,7 @@ export const Dashboard = () => {
             value === "high"
               ? "bg-[#E74C3C] text-white px-5"
               : value === "medium"
-              ? "bg-[#5678E9] text-white" // Custom blue color for Medium
+              ? "bg-[#5678E9] text-white" 
               : "bg-green-500 text-white px-6"
           }`}
         >
@@ -127,7 +119,7 @@ export const Dashboard = () => {
               ? "bg-[#39973D1A] text-[#39973D]"
               : value === "open"
               ? "bg-[#5678E91A] text-[#5678E9]"
-              : "bg-green-100 text-green-800" // Default fallback if needed
+              : "bg-green-100 text-green-800"
           }`}
         >
           {value}
@@ -192,32 +184,38 @@ export const Dashboard = () => {
     fetchComplaint();
   };
 
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState("add");
+  const [editid, setEditid] = useState();
   const [editData, setEditData] = useState(null);
+
+  
 
   const handleAddClick = () => {
     setPopupMode("add");
     setEditData(null);
     setIsPopupOpen(true);
   };
-
-  const handleEditClick = (important) => {
+  const handleEditClick = (important, id) => {
     setPopupMode("edit");
     setSelectedNumberData({
       fullName: important.fullName,
-      phoneNo: important.phoneNo,  // Ensure this is properly set
+      phoneNo: important.phoneNo,
       work: important.work,
     });
+    setEditid(id);
     setIsPopupOpen(true);
   };
-  
-  
+
+  const openPopup=()=>{
+    setIsPopupOpen(true)
+  }
 
   const [isDeleteData, setIsDeleteData] = useState(false);
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (id) => {
+    setEditid(id);
     setIsDeleteData(true);
+    openPopup()
   };
 
   const closePopup = () => {
@@ -307,8 +305,9 @@ export const Dashboard = () => {
               {/* Popup for Adding or Editing Numbers */}
               {isPopupOpen && (
                 <AddNumberPopup
-                  mode={popupMode} // To indicate add or edit mode
-                  initialData={selectedNumberData} // Pass selectedNumberData here
+                  mode={popupMode}
+                  initialData={selectedNumberData}
+                  editid={editid}
                   onClose={closePopup}
                   onImportantNumberAdded={handleImportantNumberAdded}
                 />
@@ -344,16 +343,23 @@ export const Dashboard = () => {
                       <div className="flex space-x-3">
                         <button
                           className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() => handleDeleteClick(important.id)}
+                          onClick={() => handleDeleteClick(important._id)}
                         >
                           {Icons.Delete}
                         </button>
                         {isDeleteData && (
-                          <DeletePopup onClose={() => setIsDeleteData(false)} />
+                          <DeletePopup
+                            onClick={() => setIsDeleteData(false)}
+                            editid={editid}
+                            onClose={closePopup}
+                            onImportantNumberAdded={handleImportantNumberAdded}
+                          />
                         )}
                         <button
                           className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() => handleEditClick(important)}
+                          onClick={() =>
+                            handleEditClick(important, important._id)
+                          }
                         >
                           {Icons.Pen}
                         </button>
@@ -405,7 +411,7 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 min-h-11">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 min-h-11 pb-4">
           {/* Complaint List */}
           <div className="bg-white rounded-lg shadow-md p-3 overflow-x-auto lg:col-span-3 h-72">
             <div className="flex justify-between items-center mb-4">

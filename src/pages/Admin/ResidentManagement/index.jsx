@@ -113,9 +113,9 @@ export const ResidentManagement = () => {
                   <td className="py-3 px-4 border-b ">
                     <div className="flex gap-4">
                       <div className="rounded-full bg-slate-300 flex justify-center h-6 w-6 text-blue-500">
-                        {resident.wing}
+                        {resident.metaData.wing}
                       </div>
-                      <div>{resident.unit}</div>
+                      <div>{resident.metaData.unit}</div>
                     </div>
                   </td>
 
@@ -123,9 +123,9 @@ export const ResidentManagement = () => {
                     {resident.isActive ? <OccupiedButton /> : <VacateButton />}
                   </td>
                   <td className="py-3 px-4 border-b">
-                    {resident.type === "owner" ? (
+                    {resident.metaData.type === "owner" ? (
                       <OwnerButton />
-                    ) : resident.type === "tenant" ? (
+                    ) : resident.metaData.type === "tenant" ? (
                       <TenantButton />
                     ) : (
                       <EmptyButton />

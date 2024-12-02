@@ -55,7 +55,7 @@ export const login = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
     localStorage.setItem("admintoken", response.data.data);
-    LoginData(); // This can be removed or used for logging, it is not needed for the flow
+    LoginData();
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
@@ -157,7 +157,7 @@ export const getUser = async () => {
       },
     });
 
-    console.log("Response:", response);
+    console.log(response.data.data);
 
     if (response.status === 200 && response.data.status === 1) {
       return response.data.data;
@@ -446,11 +446,11 @@ export const getExpense = async () => {
   }
 };
 
-export const updateExpense = async (data) => {
+export const updateExpense = async (data,id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/admin/expenses/editExpenses/${data._id}`,
+      `${API_URL}/auth/admin/expenses/editExpenses/${id}`,
       data,
       {
         headers: {
@@ -647,11 +647,11 @@ export const getImportantnumber = async () => {
   }
 };
 
-export const UpdateImportantnumber = async (data) => {
+export const UpdateImportantnumber = async (data,id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/admin/important/editImportant/${data._id}`,
+      `${API_URL}/auth/admin/important/editImportant/${id}`,
       data,
       {
         headers: {
@@ -681,15 +681,12 @@ export const UpdateImportantnumber = async (data) => {
   }
 };
 
-export const DeleteImportantnumber = async (ImportantId) => {
-  if (!ImportantId) {
-    console.error("Important ID is undefined");
-    return; // Prevent API call if ID is missing
-  }
+export const DeleteImportantnumber = async (id) => {
+
   try {
     var token = AdminToken();
     const response = await axios.delete(
-      `${API_URL}/auth/admin/expenses/deleteExpense/${ImportantId}`,
+      `${API_URL}/auth/admin/important/deleteImportant/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -697,21 +694,8 @@ export const DeleteImportantnumber = async (ImportantId) => {
         },
       }
     );
-
-    if (response.status === 200 && response.data.status === 1) {
-      console.log("Income deleted successfully:", response.data);
-      return response.data;
-    } else {
-      console.error("Failed to delete income:", response.data.message);
-      return { success: false, message: "Failed to delete income" };
-    }
   } catch (error) {
     console.log(error);
-    console.error("Error deleting income:", error);
-    return {
-      success: false,
-      message: error.response ? error.response.data : error.message,
-    };
   }
 };
 
