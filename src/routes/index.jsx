@@ -9,7 +9,7 @@ import {
   ForgetPassword,
   OtpPage,
   ResetPassword,
-  Userlogin
+  Userlogin,
 } from "@/pages";
 
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
@@ -26,16 +26,32 @@ import AccessForums from "../pages/User/Community/AccessForums/Index";
 import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
 import { lazy } from "react";
 
-const AddNote = lazy(() => import('../pages/Admin/FinancialMaintenance/Note'));
-const FinancialManagement = lazy(() => import('../pages/Admin/FinancialMaintenance/Income'));
-const Expanse = lazy(() => import('../pages/Admin/FinancialMaintenance/Expanse'));
-const FacilityManagement = lazy(() => import('../pages/Admin/FacilityManagement'));
-const CreactComplaint = lazy(() => import('../pages/Admin/ComplaintTracking/CreateComplaint'));
-const RequestComplaint = lazy(() => import('../pages/Admin/ComplaintTracking/RequestTracking'));
-const SecurityManagement = lazy(() => import('../pages/Admin/SecurityManagement/SecurityProtocols'));
-const VisitorLog = lazy(() => import('../pages/Admin/SecurityManagement/VisitorLogs'));
-const SecurityGuard = lazy(() => import('../pages/Admin/SecurityGuard'));
-const Announcement = lazy(() => import('../pages/Admin/Announcement'));
+const AddNote = lazy(() => import("../pages/Admin/FinancialMaintenance/Note"));
+const FinancialManagement = lazy(() =>
+  import("../pages/Admin/FinancialMaintenance/Income")
+);
+const Expanse = lazy(() =>
+  import("../pages/Admin/FinancialMaintenance/Expanse")
+);
+const FacilityManagement = lazy(() =>
+  import("../pages/Admin/FacilityManagement")
+);
+const CreactComplaint = lazy(() =>
+  import("../pages/Admin/ComplaintTracking/CreateComplaint")
+);
+const RequestComplaint = lazy(() =>
+  import("../pages/Admin/ComplaintTracking/RequestTracking")
+);
+const SecurityManagement = lazy(() =>
+  import("../pages/Admin/SecurityManagement/SecurityProtocols")
+);
+const VisitorLog = lazy(() =>
+  import("../pages/Admin/SecurityManagement/VisitorLogs")
+);
+const SecurityGuard = lazy(() => import("../pages/Admin/SecurityGuard"));
+const Announcement = lazy(() => import("../pages/Admin/Announcement"));
+
+
 
 const DashStackRoute = createBrowserRouter(
   /* All Paths */
@@ -75,7 +91,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "CommunityDiscussion",
-                      element: <CommunityDiscussionPage/>,
+                      element: <CommunityDiscussionPage />,
                     },
                   ],
                 },
@@ -96,7 +112,6 @@ const DashStackRoute = createBrowserRouter(
                   path: "SecurityProtocols",
                   element: <SecurityProtocolsTable />,
                 },
-                
               ],
             },
           ],
@@ -106,7 +121,7 @@ const DashStackRoute = createBrowserRouter(
           path: "admin",
           children: [
             {
-              element: <DashboardLayout items={AdminSidbar} />,
+              element:<DashboardLayout items={AdminSidbar} />,
               children: [
                 {
                   path: "dashboard",
@@ -203,7 +218,7 @@ const DashStackRoute = createBrowserRouter(
           path: "user",
           children: [
             {
-              element: <DashboardLayout items={UserSidebar} />,
+              element:<DashboardLayout items={UserSidebar} />,
               children: [
                 {
                   index: true,
@@ -247,7 +262,7 @@ const DashStackRoute = createBrowserRouter(
         // Security
         {
           path: "security",
-          element: <DashboardLayout items={SecuritySidebar} />,
+          element:<DashboardLayout items={SecuritySidebar} />,
           children: [
             {
               index: true,
@@ -283,7 +298,6 @@ const DashStackRoute = createBrowserRouter(
               path: "reset-password",
               element: <ResetPassword />,
             },
-           
           ],
         },
       ],
@@ -293,10 +307,11 @@ const DashStackRoute = createBrowserRouter(
       /* Default Route (404) */
       path: "*",
       element: <>404 - Page Not Found</>,
-    },{
-      path:"/OtherIncome",
-      element:<OtherIncome/>
-    }
+    },
+    {
+      path: "/OtherIncome",
+      element: <OtherIncome />,
+    },
   ],
   {
     /* Base URL */

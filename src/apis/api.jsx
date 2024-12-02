@@ -4,19 +4,44 @@ import { jwtDecode } from "jwt-decode";
 var API_URL = import.meta.env.VITE_API_URL;
 
 export const AdminToken = () => {
-  const admintoken = localStorage.getItem("admintoken");
+  const admintoken = sessionStorage.getItem("admintoken");
   if (!admintoken) {
     return "Token is Missing";
   }
   return admintoken;
 };
 
+export const UserToken = () => {
+  const usertoken = sessionStorage.getItem("usertoken");
+  if (!usertoken) {
+    return "Token is Missing";
+  }
+  return usertoken;
+};
+
+export const SecurityToken = () => {
+  const securitytoken = sessionStorage.getItem("securitytoken");
+  if (!securitytoken) {
+    return "Token is Missing";
+  }
+  return securitytoken;
+};
+
+
 export const LoginData = () => {
-  const admintoken = localStorage.getItem("admintoken");
-  if (admintoken) {
-    const decodedToken = jwtDecode(admintoken);
+  // Check all possible role-based tokens
+  const admintoken = sessionStorage.getItem("admintoken");
+  const usertoken = sessionStorage.getItem("usertoken");
+  const securitytoken = sessionStorage.getItem("securitytoken");
+
+  let activeToken = admintoken || usertoken || securitytoken;
+
+  if (activeToken) {
+    const decodedToken = jwtDecode(activeToken);
     return decodedToken.userData;
   }
+
+  return null; // No token found
 };
 
 export const Registration = async (data) => {
@@ -54,8 +79,21 @@ export const CreateSociety = async (societyData) => {
 export const login = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
-    localStorage.setItem("admintoken", response.data.data);
-    LoginData();
+    const token = response.data.data;
+
+    // Decode the token to extract user data
+    const decodedToken = jwtDecode(token);
+    const userRole = decodedToken.userData.role;
+
+    // Save the token in sessionStorage based on role
+    if (userRole === "admin") {
+      sessionStorage.setItem("admintoken", token);
+    } else if (userRole === "user") {
+      sessionStorage.setItem("usertoken", token);
+    } else if (userRole === "security") {
+      sessionStorage.setItem("securitytoken", token);
+    }
+
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error("Network Error");
@@ -446,7 +484,7 @@ export const getExpense = async () => {
   }
 };
 
-export const updateExpense = async (data,id) => {
+export const updateExpense = async (data, id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -647,7 +685,7 @@ export const getImportantnumber = async () => {
   }
 };
 
-export const UpdateImportantnumber = async (data,id) => {
+export const UpdateImportantnumber = async (data, id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -682,7 +720,6 @@ export const UpdateImportantnumber = async (data,id) => {
 };
 
 export const DeleteImportantnumber = async (id) => {
-
   try {
     var token = AdminToken();
     const response = await axios.delete(
@@ -817,11 +854,14 @@ export const AddComplaint = async (data) => {
 export const GetComplaint = async (type) => {
   try {
     const token = AdminToken();
-    const response = await axios.get(`${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.status === 200 && response.data.status === 1) {
       if (response.data.data.length === 0) {
         return { success: true, data: [], message: "No complaints found." };
@@ -829,15 +869,19 @@ export const GetComplaint = async (type) => {
       return { success: true, data: response.data.data };
     }
 
-    return { success: false, message: response.data.message || "Unknown error" };
+    return {
+      success: false,
+      message: response.data.message || "Unknown error",
+    };
   } catch (error) {
     console.error("Error:", error.message);
-    const message = error.response?.data?.message || `An error occurred: ${error.message}`;
+    const message =
+      error.response?.data?.message || `An error occurred: ${error.message}`;
     return { success: false, message };
   }
 };
 
-export const UpdateComplaint=async(data)=>{
+export const UpdateComplaint = async (data) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -869,7 +913,7 @@ export const UpdateComplaint=async(data)=>{
       message: error.response?.data?.message || error.message,
     };
   }
-}
+};
 
 export const DeleteComplaint = async (DeleteId) => {
   if (!DeleteId) {
@@ -905,7 +949,6 @@ export const DeleteComplaint = async (DeleteId) => {
   }
 };
 
-
 //Request
 export const AddRequest = async (data) => {
   try {
@@ -937,11 +980,14 @@ export const AddRequest = async (data) => {
 export const GetRequest = async (type) => {
   try {
     const token = AdminToken();
-    const response = await axios.get(`${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/auth/admin/complaint/viewComplaint/?type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response.status === 200 && response.data.status === 1) {
       if (response.data.data.length === 0) {
         return { success: true, data: [], message: "No Request found." };
@@ -949,15 +995,19 @@ export const GetRequest = async (type) => {
       return { success: true, data: response.data.data };
     }
 
-    return { success: false, message: response.data.message || "Unknown error" };
+    return {
+      success: false,
+      message: response.data.message || "Unknown error",
+    };
   } catch (error) {
     console.error("Error:", error.message);
-    const message = error.response?.data?.message || `An error occurred: ${error.message}`;
+    const message =
+      error.response?.data?.message || `An error occurred: ${error.message}`;
     return { success: false, message };
   }
 };
 
-export const UpdateRequest=async(data)=>{
+export const UpdateRequest = async (data) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -989,7 +1039,7 @@ export const UpdateRequest=async(data)=>{
       message: error.response?.data?.message || error.message,
     };
   }
-}
+};
 
 export const DeleteRequest = async (DeleteId) => {
   if (!DeleteId) {
@@ -1024,5 +1074,3 @@ export const DeleteRequest = async (DeleteId) => {
     };
   }
 };
-
-
