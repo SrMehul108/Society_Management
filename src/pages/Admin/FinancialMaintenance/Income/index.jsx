@@ -86,7 +86,7 @@ function FinancialManagement() {
 
           <button
             onClick={openModal}
-            className="w-full md:w-auto mt-4 md:mt-0 px-6 py-2  text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition"
+            className=" md:w-auto mt-4 md:mt-0 px-6 py-2  text-white font-semibold rounded-lg shadow-md bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition"
           >
             Set Maintenance
           </button>
