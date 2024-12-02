@@ -16,7 +16,7 @@ const vehicleSchema = new mongoose.Schema({
     },
     UserId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'UserModel'
     }
 });
 

@@ -27,6 +27,22 @@ const societySchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 6
     },
+    wings: [
+        {
+            wing: {
+                type: String,
+                required: true
+            },
+            flats: [
+                {
+                    unit: {
+                        type: String,
+                        required: true
+                    }
+                }
+            ]
+        }
+    ],
     isActive: {
         type: Boolean,
         required: true,
@@ -42,9 +58,5 @@ const societySchema = new mongoose.Schema({
         required: true,
         default: new Date().toLocaleDateString()
     },
-    userIds: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
 });
 module.exports = mongoose.model('Society', societySchema);

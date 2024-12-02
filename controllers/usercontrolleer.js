@@ -2,19 +2,20 @@ const UserModel = require('../models/UserData');
 const mongoose = require('mongoose');
 const Member = require('../models/Member');
 const Vehicle = require('../models/Vehicle');
+const Maintenance = require('../models/Maintenance');
+const { regestration } = require('../services/emailtemplate');
+const { validateRequest } = require('../services/validation');
+const { sendResponse } = require('../services/responseHandler');
+const cloudinaryConfig = require('../config/cloudinaryConfig');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const cloudinaryConfig = require('../config/cloudinaryConfig');
-const { regestration } = require('../services/emailtemplate');
+
 
 module.exports.insertUser = async (req, res) => {
     try {
-        if (!req.body || Object.keys(req.body).length === 0) {
-            return res.status(400).json({ message: "Request body is empty", status: 0 });
-        }
-        // Check for existing user
-        const existingUser = await UserModel.findOne({ email: req.body.email});
+        validateRequest(req, res);
+        const existingUser = await UserModel.findOne({ email: req.body.email });
         if (existingUser) {
             const wingValidation = await UserModel.findOne({
                 societyId: req.user.societyId,
@@ -24,9 +25,9 @@ module.exports.insertUser = async (req, res) => {
                 _id: { $ne: existingUser._id }
             });
             if (wingValidation) {
-                return res.status(400).json({ message: "On selected Wing & unit, there is already a resident", status: 0 });
+                return sendResponse(res, 400, "On selected Wing & unit, there is already a resident", 0);
             }
-            return res.status(400).json({ message: 'Email already exists', status: 0 });
+            return sendResponse(res, 400, "Email already exists", 0);
         }
         // Generate secure password
         const password = crypto.randomBytes(8).toString('hex');
@@ -50,11 +51,23 @@ module.exports.insertUser = async (req, res) => {
         // Parse JSON inputs
         let members, vehicles, owner;
         try {
-            if (req.body.members) members = JSON.parse(req.body.members);
-            if (req.body.vehicles) vehicles = JSON.parse(req.body.vehicles);
+            if (req.body.members) {
+                try {
+                    members = JSON.parse(req.body.members);
+                } catch (err) {
+                    return sendResponse(res, 400, "Invalid JSON format for members", 0);
+                }
+            }
+            if (req.body.vehicles) {
+                try {
+                    vehicles = JSON.parse(req.body.vehicles);
+                } catch (err) {
+                    return sendResponse(res, 400, "Invalid JSON format for members", 0);
+                }
+            }
             if (req.body.owner && data.metaData.type === 'tenant') owner = JSON.parse(req.body.owner);
         } catch (err) {
-            return res.status(400).json({ message: "Invalid JSON format", status: 0 });
+            return sendResponse(res, 400, "Invalid JSON format for members", 0);
         }
         if (owner) data.metaData.owner = owner;
         // File uploads
@@ -70,7 +83,15 @@ module.exports.insertUser = async (req, res) => {
         session.startTransaction();
 
         const newUser = await UserModel.create([data], { session });
-
+        const maintenanceData = await Maintenance.findOne({ societyId: req.user.societyId });
+        if (maintenanceData) {
+            const insertPayment = {
+                type: 'maintenance',
+                amount: maintenanceData.amount,
+                UserId: newUser[0]._id,
+            }
+            await Maintenance.create(insertPayment);
+        }
         if (members) {
             const insertedMembers = await Member.insertMany(
                 members.map(m => ({ ...m, userId: newUser[0]._id })),
@@ -107,15 +128,14 @@ module.exports.insertUser = async (req, res) => {
                 html: htmlMessage
             });
         } catch (emailError) {
-            console.error("Email sending failed:", emailError);
+            return sendResponse(res, 500, "User registered, but email sending failed", 0);
         }
-        return res.status(200).json({ message: "User Registered Successfully", status: 1, data: newUser[0] });
+        return sendResponse(res, 200, "User Registered Successfully", 1, newUser[0]);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 };
-
 
 module.exports.viewUser = async (req, res) => {
     try {
@@ -134,9 +154,9 @@ module.exports.viewUser = async (req, res) => {
                         vehicles: userdata.metaData.vehicles?.map((vehicle) => ({ id: vehicle._id, model: vehicle.model, registrationNo: vehicle.registrationNo })),
                     },
                 };
-                return res.status(200).json({ message: "User fetched successfully", status: 1, data: formattedData, });
+                return sendResponse(res, 200, "User fetched successfully", 1, formattedData);
             } else {
-                return res.status(400).json({ message: "User not found", status: 0, data: [], });
+                return sendResponse(res, 400, "User not found", 0, []);
             }
         }
 
@@ -149,13 +169,13 @@ module.exports.viewUser = async (req, res) => {
                 members: user.metaData.members?.length || 0,
                 vehicles: user.metaData.vehicles?.length || 0,
             }));
-            return res.status(200).json({ message: "User data fetched successfully", status: 1, data: formattedData, });
+            return sendResponse(res, 200, "User fetched successfully", 1, formattedData);
         } else {
-            return res.status(400).json({ message: "No users found", status: 0, data: [], });
+            return sendResponse(res, 400, "User not found", 0, []);
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 };
 
@@ -164,18 +184,18 @@ module.exports.editUser = async (req, res) => {
         const { id } = req.params;
         if (id) {
             if (req.body) {
-                const existingData = await User.findOne({ _id: id, societyId: req.user.societyId, role: 'user' });
+                const existingData = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: 'user' });
                 if (existingData) {
                     if (req.body.wing && req.body.unit &&
                         (req.body.wing !== existingData.wing || req.body.unit !== existingData.unit)) {
-                        const wingValidation = await User.findOne({
+                        const wingValidation = await UserModel.findOne({
                             societyId: req.user.societyId,
                             role: 'user',
                             wing: req.body.wing,
                             unit: req.body.unit
                         });
                         if (wingValidation && existingData._id !== wingValidation._id) {
-                            return res.status(400).json({ message: "On selected Wing & unit, there is already a resident" });
+                            return sendResponse(res, 400, "On selected Wing & unit, there is already a resident", 0);
                         }
                     }
                     const data = {
@@ -198,7 +218,7 @@ module.exports.editUser = async (req, res) => {
                         try {
                             owner = JSON.parse(req.body.owner);
                         } catch (err) {
-                            return res.status(400).json({ message: "Invalid owner data", status: 0 });
+                            return sendResponse(res, 400, "Invalid owner data", 0);
                         }
                     }
                     if (owner) data.metaData.owner = owner;
@@ -280,22 +300,22 @@ module.exports.editUser = async (req, res) => {
                     }
                     const updatedUser = await UserModel.findByIdAndUpdate(id, data, { new: true });
                     if (updatedUser) {
-                        return res.status(200).json({ message: "User updated successfully", status: 1, data: updatedUser });
+                        return sendResponse(res, 400, "User updated successfully", 1, updatedUser);
                     } else {
-                        return res.status(400).json({ message: "User data Not updated", status: 0 });
+                        return sendResponse(res, 400, "User data Not Found", 0);
                     }
                 } else {
-                    return res.status(404).json({ message: "User data Not Found", status: 0 });
+                    return sendResponse(res, 400, "User data Not Found", 0);
                 }
             } else {
-                return res.status(400).json({ message: "Data is Missing", status: 0 });
+                return sendResponse(res, 400, "Data is Missing", 0);
             }
         } else {
-            return res.status(400).json({ message: "Parameter id is Missing", status: 0 });
+            return sendResponse(res, 400, "Parameter id is Missing", 0);
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 };
 
@@ -303,16 +323,16 @@ module.exports.deleteUser = async (req, res) => {
     try {
         var { id } = req.params;
         if (id) {
-            const userData = await User.findOne({ _id: id, societyId: req.user.societyId, role: 'user' });
+            const userData = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: 'user' });
             if (userData) {
                 userData.isActive = false;
-                const updateData = await User.findByIdAndUpdate(id, userData, { new: true });
+                const updateData = await UserModel.findByIdAndUpdate(id, userData, { new: true });
                 if (updateData) {
-                    return res.status(200).json({ message: "User Vacate Successfully", status: 1 });
+                    return sendResponse(res, 200, "User Vacate Successfully", 1);
                 }
-                return res.status(400).json({ message: "data Not Updated", status: 0 });
+                return sendResponse(res, 200, "data Not Updated", 0);
             }
-            return res.status(404).json({ message: "User data Not Found", status: 0 });
+            return sendResponse(res, 404, "User data Not Found", 0);
         }
         return res.status(400).json({ message: "Parameter(id) is Missing", status: 0 });
     } catch (error) {
@@ -324,7 +344,7 @@ module.exports.deleteUser = async (req, res) => {
 module.exports.addNewSecurity = async (req, res) => {
     try {
         if (req.body !== "") {
-            const existingUser = await UserModel.findOne({ email: req.body.email});
+            const existingUser = await UserModel.findOne({ email: req.body.email });
             if (existingUser) {
                 return res.status(400).json({ message: 'Email already exists', status: 0 });
             }
@@ -343,7 +363,7 @@ module.exports.addNewSecurity = async (req, res) => {
                 },
                 societyId: req.user.societyId,
                 role: req.body.role ? req.body.role : 'security',
-                password: pass,
+                password: hashedPassword,
                 metaData: {}
             };
 
@@ -375,7 +395,7 @@ module.exports.addNewSecurity = async (req, res) => {
                     text: `Hello ${req.body.fullname}, You've Successfully Registered. You can now log in with Email: ${req.body.email}, Password: ${password}.`,
                     html: htmlMessage,
                 });
-                return res.status(200).json({ message: "Security Guard Registered Successfully", status: 1, data: newUser });
+                return sendResponse(res, 200, "Security Guard Registered Successfully", 1, newUser);
             }
             return res.status(400).json({ message: "Something went wrong", status: 0 });
         }
@@ -414,7 +434,7 @@ module.exports.editSecurity = async (req, res) => {
         const { id } = req.params;
         if (id) {
             if (req.body) {
-                const existingData = await User.findOne({ _id: id, societyId: req.user.societyId, role: 'security' });
+                const existingData = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: 'security' });
                 if (existingData) {
                     const data = {
                         fullName: req.body.fullName,
@@ -442,7 +462,7 @@ module.exports.editSecurity = async (req, res) => {
                             data.aadharImage_front = req.files.aadharImage_front[0].path;
                         }
                     }
-                    const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+                    const updatedUser = await UserModel.findByIdAndUpdate(id, data, { new: true });
                     if (updatedUser) {
                         return res.status(200).json({ message: "Data updated successfully", status: 1, data: updatedUser });
                     }
@@ -463,10 +483,10 @@ module.exports.deleteSecurity = async (req, res) => {
     try {
         var { id } = req.params;
         if (id) {
-            const userData = await User.findOne({ _id: id, societyId: req.user.societyId, role: 'security' });
+            const userData = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: 'security' });
             if (userData) {
                 userData.isActive = false;
-                const updateData = await User.findByIdAndUpdate(id, userData, { new: true });
+                const updateData = await UserModel.findByIdAndUpdate(id, userData, { new: true });
                 if (updateData) {
                     return res.status(200).json({ message: "gaurd Delete Succesfukky", status: 1 });
                 }
