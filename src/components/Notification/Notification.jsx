@@ -6,7 +6,7 @@ const Notification = ({ isVisible, message, type, onClose }) => {
     if (isVisible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 100000); // Hide after 3 seconds
+      }, 3000); // Hide after 3 seconds
       return () => clearTimeout(timer);
     }
   }, [isVisible, onClose]);
