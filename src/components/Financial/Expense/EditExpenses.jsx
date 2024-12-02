@@ -168,6 +168,7 @@ const EditExpenses = ({ itemToEdit, onClose, onExpenseUpdated }) => {
                 >
                   Save
                 </button>
+                
               </div>
             </div>
           </form>
