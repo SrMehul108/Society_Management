@@ -27,7 +27,7 @@ export const DashboardLayout = ({ items }) => {
   const handleClose = () => setIsOpen(false);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-y-auto">
       {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full bg-gray-800 z-40 transform ${
@@ -105,7 +105,7 @@ export const DashboardLayout = ({ items }) => {
 
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-y-hidden max-h-screen">
+        <main className="flex-1 p-4 overflow-y-auto max-h-screen">
           <Outlet />
         </main>
       </div>
