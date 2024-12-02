@@ -42,6 +42,44 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
     }
   };
 
+  const [wingCount, setWingCount] = useState(1);
+  const [wings, setWings] = useState(
+    Array.from({ length: 1 }, () => ({
+      flore: '',
+      flat: '',
+
+    }))
+  );
+
+  const handleWingCountChange = (event) => {
+    const count = Number(event.target.value);
+    setWingCount(count);
+
+    // Adjust the number of members in the array
+    setWings((prevWings) => {
+      if (count > prevWings.length) {
+        return [
+          ...prevWings,
+          ...Array.from({ length: count - prevWings.length }, () => ({
+            flore: '',
+            flat: '',
+
+          }))
+        ];
+      } else {
+        return prevWings.slice(0, count);
+      }
+    });
+  };
+
+  const handleInputChange = (index, field, value) => {
+    setWings((prevWings) => {
+      const updatedWings = [...prevWings];
+      updatedWings[index][field] = value;
+      return updatedWings;
+    });
+  };
+
   return (
     <>
       {isOpenDrop && (
@@ -83,6 +121,57 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                     />
                   </div>
 
+                  <div className=" mt-3">
+                    <div className="">
+                      <div className=" ">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-xl font-semibold text-gray-800">Wing Counting: </h2>
+                          <div className="flex items-center">
+                            <label className="mr-2 text-gray-600">How Many Wing</label>
+                            <select
+                              value={wingCount}
+                              onChange={handleWingCountChange}
+                              className="border border-gray-300 p-2 rounded-md"
+                            >
+                              {[...Array(10).keys()].map((num) => (
+                                <option key={num + 1} value={num + 1}>
+                                  {num + 1}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        {wings.map((wings, index) => (
+                          <div key={index} className="flex flex-wrap     space-y-4 sm:space-y-0 p-1 ">
+                            <div className="flex flex-col w-full  sm:w-1/2 px-1">
+                              <label className="text-gray-600 font-semibold">How Many Flore Flat<span className="text-red-500">*</span></label>
+                              <input
+                                type="text"
+                                placeholder="How Many Flore Flat"
+                                className="border border-gray-300 p-2 rounded-md"
+                                value={wings.flore}
+                                onChange={(e) => handleInputChange(index, 'flore', e.target.value)}
+                              />
+                            </div>
+                            <div className="flex flex-col w-full  sm:w-1/2  ">
+                              <label className="text-gray-600 font-semibold">How Many  Flat per Flore<span className="text-red-500">*</span></label>
+                              <input
+                                type="number"
+                                placeholder="How Many  Flat per Flore"
+                                className="border border-gray-300 p-2 rounded-md"
+                                value={wings.flat}
+                                onChange={(e) => handleInputChange(index, 'flat', e.target.value)}
+                              />
+                            </div>
+
+
+
+
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div>
                       <label htmlFor="country" className="block text-sm font-medium text-gray-700">
@@ -164,7 +253,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                       style={{
                         width: '170px',
                         height: '51px',
-                        color:"#ffffff",
+                        color: "#ffffff",
                         background: isFormComplete
                           ? 'linear-gradient(90deg, #FE512E 0%, #F09619 100%)'
                           : 'rgb(229 231 235)' // default gray color

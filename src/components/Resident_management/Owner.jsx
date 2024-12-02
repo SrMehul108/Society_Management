@@ -104,10 +104,10 @@ export const Owner = () => {
 
     };
     // image add 
-    const [photo, setPhoto] = useState(null); 
-    
-    const fileInputRef = useRef(null); 
-    
+    const [photo, setPhoto] = useState(null);
+
+    const fileInputRef = useRef(null);
+
 
     // Handle photo upload
     const handlePhotoChange = (event) => {
@@ -115,8 +115,8 @@ export const Owner = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setPhoto(reader.result); 
-                
+                setPhoto(reader.result);
+
             };
             reader.readAsDataURL(file);
         }
@@ -124,8 +124,8 @@ export const Owner = () => {
 
     // Trigger the file input dialog on button click
     const handleAddPhotoClick = () => {
-        fileInputRef.current.click(); 
-        
+        fileInputRef.current.click();
+
     };
 
     return (
