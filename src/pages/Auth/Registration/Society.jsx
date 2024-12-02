@@ -141,8 +141,8 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                             </select>
                           </div>
                         </div>
-                        {wings.map((wings, index) => (
-                          <div key={index} className="flex flex-wrap     space-y-4 sm:space-y-0 p-1 ">
+                        {/* {wings.map((wings, index) => ( */}
+                          <div  className="flex flex-wrap     space-y-4 sm:space-y-0 p-1 ">
                             <div className="flex flex-col w-full  sm:w-1/2 px-1">
                               <label className="text-gray-600 font-semibold">How Many Flore Flat<span className="text-red-500">*</span></label>
                               <input
@@ -168,7 +168,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
 
 
                           </div>
-                        ))}
+                        {/* ))} */}
                       </div>
                     </div>
                   </div>
