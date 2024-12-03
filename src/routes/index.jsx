@@ -25,6 +25,7 @@ import Tenant from "../components/Resident_management/Tenant";
 import AccessForums from "../pages/User/Community/AccessForums/Index";
 import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
 import { lazy } from "react";
+import PageNotFound from "../components/PageNotFound/PageNotFound";
 
 const AddNote = lazy(() => import("../pages/Admin/FinancialMaintenance/Note"));
 const FinancialManagement = lazy(() =>
@@ -306,7 +307,7 @@ const DashStackRoute = createBrowserRouter(
     {
       /* Default Route (404) */
       path: "*",
-      element: <>404 - Page Not Found</>,
+      element: <PageNotFound/>,
     },
     {
       path: "/OtherIncome",
