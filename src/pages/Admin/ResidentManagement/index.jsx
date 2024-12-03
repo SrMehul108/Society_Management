@@ -17,11 +17,14 @@ export const ResidentManagement = () => {
   const [residents, setResidents] = useState([]);
   const [loading, setLoading] = useState(true); // for loading state
   const [error, setError] = useState(null); // for error handling
-
-  
   // // edit status popup logic
   const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
- 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Control ViewOwner sidebar visibility
+  const [selectedResident, setSelectedResident] = useState(null);
+  const handleViewOwner = (resident) => {
+    setSelectedResident(resident); // Pass the selected resident's details
+    setIsSidebarOpen(true);
+  };
 
   useEffect(() => {
     // Fetch user data on component mount
@@ -146,14 +149,14 @@ export const ResidentManagement = () => {
                   <td className="py-3 px-4 border-b text-center">
                     <button
                       className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2"
-                       onClick={()=> setIsEditStatusModalOpen(true)}
+                      onClick={() => setIsEditStatusModalOpen(true)}
                     >
                       <i className="fas fa-edit"></i>
                     </button>
                     {isEditStatusModalOpen && <EditStatusModal onClose={() => setIsEditStatusModalOpen(false)} />}
                     <button
                       className="bg-blue-500 text-white p-2 rounded-lg text-xs hover:bg-blue-600"
-                      onClick={handleView}
+                      onClick={() => handleViewOwner(resident)}
                     >
                       <i className="fas fa-eye"></i>
                     </button>
@@ -163,6 +166,12 @@ export const ResidentManagement = () => {
 
             </tbody>
           </table>
+          {/* ViewOwner Sidebar */}
+          <ViewOwner
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            residentDetails={selectedResident}
+          />
 
           {/* Mobile Card View */}
           <div className="md:hidden">
