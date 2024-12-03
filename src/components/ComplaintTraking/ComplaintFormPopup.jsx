@@ -145,7 +145,7 @@ function ComplaintForm({ closeModal, onComplaintAdd }) {
                 />
                 High
               </label>
-              <label className="border ps-6 pr-6 pt-2 pb-2 rounded-lg">
+              <label className="border ps-6 pr-6 pt-2 pb-2 rounded-lg peer-checked:bg-green-500">
                 <input
                   type="radio"
                   name="priority"
@@ -216,7 +216,7 @@ function ComplaintForm({ closeModal, onComplaintAdd }) {
               <button
                 type="button"
                 onClick={closeModal}
-                className="px-4 py-2 border rounded-md w-full"
+                className="px-4 py-2 border rounded-xl w-full"
               >
                 Cancel
               </button>
@@ -224,7 +224,7 @@ function ComplaintForm({ closeModal, onComplaintAdd }) {
             <div className="flex justify-center gap-4 mt-4 w-1/2">
               <button
                 type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-md w-full"
+                className="bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white py-2 px-4 rounded-xl w-full"
                 disabled={isSaving}
               >
                 {isSaving ? "Saving..." : "Create"}
