@@ -56,8 +56,8 @@ function ExpenseView({ closeModal, item }) {
 
               {/* File Details */}
               <div className="ml-3 flex-1">
-                <p className="text-black text-sm font-medium break-all">
-                  {item.uploadBill}
+                <p className="text-black text-center text-sm font-medium break-all">
+                  {item.title}
                 </p>
               </div>
 

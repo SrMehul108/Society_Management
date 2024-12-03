@@ -3,7 +3,7 @@ import FacilityPopup from "@/components/Facility/CreactFacility";
 import EditPopup from "@/components/Facility/EditFacility";
 import { getFacility } from "@/apis/api";
 
- const FacilityManagement = () => {
+const FacilityManagement = () => {
   const [menuVisible, setMenuVisible] = useState(null);
   const [facilities, setFacilities] = useState([]);
   const [error, SetError] = useState(null);
@@ -22,8 +22,13 @@ import { getFacility } from "@/apis/api";
   const editPopup = (facility) => {
     setEditFacility(facility); // Set the facility to be edited
     setIsPopupEdit(true);
+    setMenuVisible(null); // Close the dropdown when editing starts
   };
-  const EditclosePopup = () => setIsPopupEdit(false);
+
+  const EditclosePopup = () => {
+    setIsPopupEdit(false);
+    setEditFacility(null);
+  };
 
   const fetchFacilities = async () => {
     try {
@@ -40,10 +45,12 @@ import { getFacility } from "@/apis/api";
     fetchFacilities();
   }, []);
 
+  const EditData = (data) => {};
+
   // Handle facility added in the popup form
   const handleFacilityAdded = () => {
-    fetchFacilities(); 
-    closePopup(); 
+    fetchFacilities();
+    closePopup();
   };
 
   return (
@@ -60,7 +67,10 @@ import { getFacility } from "@/apis/api";
           Create Facility
         </button>
         {isPopupOpen && (
-          <FacilityPopup onClose={closePopup} onFacilityAdded={handleFacilityAdded} />
+          <FacilityPopup
+            onClose={closePopup}
+            onFacilityAdded={handleFacilityAdded}
+          />
         )}
       </div>
 
@@ -113,7 +123,15 @@ import { getFacility } from "@/apis/api";
         ) : (
           <div>No facilities found.</div>
         )}
-        {isPopupEdit && <EditPopup onClose={EditclosePopup} facility={editFacility} />}
+        {isPopupEdit && (
+          <EditPopup
+            onClose={EditclosePopup} 
+            facility={editFacility}
+            facilityId={editFacility._id} 
+            EditData={EditData} 
+            onFacilityAdded={handleFacilityAdded}
+          />
+        )}
       </div>
     </div>
   );

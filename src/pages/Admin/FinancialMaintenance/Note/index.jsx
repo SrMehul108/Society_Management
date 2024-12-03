@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import NoteEditPopup from "../../../../components/Financial/Note/NoteEdit";
 import CreateAdd from "../../../../components/Financial/Note/NoteCreact";
 import { GetNotes } from "../../../../apis/api";
 
 const AddNote = () => {
-  const [menuVisible, setMenuVisible] = useState(null);
   const [noteData, setNoteData] = useState([]);
+  const [menuVisible, setMenuVisible] = useState(null);
 
   // States for popups
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupEdit, setIsPopupEdit] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null); 
+  const [selectedNote, setSelectedNote] = useState(null);
+
+  // Ref for managing dropdowns
+  const menuRef = useRef({});
 
   // Toggle menu visibility
   const toggleMenu = (id) => {
-    setMenuVisible((prev) => (prev === id ? null : id));
+    setMenuVisible(prev => prev === id ? null : id);
   };
 
   // Open Create Note Popup
@@ -28,9 +31,9 @@ const AddNote = () => {
 
   // Open Edit Note Popup
   const editPopup = (note) => {
-    setSelectedNote(note); 
+    setSelectedNote(note);
     setIsPopupEdit(true);
-    setMenuVisible(null); 
+    setMenuVisible(null); // Close the dropdown
   };
 
   const EditclosePopup = () => {
@@ -60,8 +63,8 @@ const AddNote = () => {
 
   // Handle editing note
   const handleNoteEdited = () => {
-    fetchData(); 
-    EditclosePopup(); 
+    fetchData();
+    EditclosePopup();
   };
 
   return (
@@ -84,7 +87,7 @@ const AddNote = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {noteData?.map((note) => (
           <div key={note._id} className="rounded-lg border relative">
-            <div className="bg-blue-500 rounded-t-lg flex justify-between items-center p-3">
+            <div className="rounded-t-lg flex justify-between items-center p-3" style={{backgroundColor:"#5678e9"}}>
               <h2 className="font-semibold text-xl text-white">{note.title}</h2>
               <div className="relative">
                 <i
@@ -92,10 +95,13 @@ const AddNote = () => {
                   onClick={() => toggleMenu(note._id)}
                 ></i>
                 {menuVisible === note._id && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
+                  <div
+                    className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10"
+                    ref={(el) => (menuRef.current[note._id] = el)}
+                  >
                     <button
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => editPopup(note)} 
+                      className="block w-full text-left px-4 py-2 text-sm text-black font-bold hover:bg-gray-100"
+                      onClick={() => editPopup(note)}
                     >
                       Edit
                     </button>

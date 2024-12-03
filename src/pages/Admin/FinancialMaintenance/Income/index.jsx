@@ -68,7 +68,7 @@ function FinancialManagement() {
           <div className="flex">
             <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-green-500 rounded-lg shadow-sm">
               <div>
-                <p className="text-sm text-gray-600">Maintenance Amount</p>
+                <p className="text-sm text-black font-semibold">Maintenance Amount</p>
                 <p className="text-lg font-bold text-green-500">
                   ₹ {maintenanceAmount}
                 </p>
@@ -76,7 +76,7 @@ function FinancialManagement() {
             </div>
             <div className="flex items-center justify-center w-1/2 md:w-auto p-4 m-2 bg-white border-l-4 border-red-500 rounded-lg shadow-sm">
               <div>
-                <p className="text-sm text-gray-600 w-36">Penalty Amount</p>
+                <p className="text-sm text-black font-semibold w-36">Penalty Amount</p>
                 <p className="text-lg font-bold text-red-500">
                   ₹ {penaltyAmount}
                 </p>
@@ -130,7 +130,7 @@ function FinancialManagement() {
             className="bg-white p-4 overflow-hidden"
             style={{ height: "680px" }}
           >
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            <h2 className="text-xl font-bold text-black mb-4">
               Maintenance Details
             </h2>
             <div
@@ -176,15 +176,15 @@ function FinancialManagement() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="bg-blue-100 text-blue-600 px-2 p-1 rounded-full">
-                          {item.wing}
+                          {item.metaData.wing}
                         </span>
                         <span className="text-black px-2 py-1">
-                          {item.unit}
+                          {item.metaData.unit}
                         </span>
                       </td>
-                      <td className="px-4 py-3">{item.date}</td>
+                      <td className="px-4 py-3">{item.createdDate}</td>
                       <td className="px-4 py-3">
-                        {item.type === "owner" ? (
+                        {item.metaData.type === "owner" ? (
                           <OwnerButton />
                         ) : item.type === "tenant" ? (
                           <TenantButton />
