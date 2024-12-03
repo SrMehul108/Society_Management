@@ -3,6 +3,8 @@ import { jwtDecode } from "jwt-decode";
 
 var API_URL = import.meta.env.VITE_API_URL;
 
+//Token
+
 export const AdminToken = () => {
   const admintoken = sessionStorage.getItem("admintoken");
   if (!admintoken) {
@@ -181,6 +183,8 @@ export const userRegistration = async (formdata) => {
   }
 };
 
+//Resident API
+
 export const getUser = async () => {
   const token = AdminToken();
 
@@ -214,6 +218,8 @@ export const getUser = async () => {
     };
   }
 };
+
+export const deleteUser=async=>{}
 
 //OtherIncome Page
 
