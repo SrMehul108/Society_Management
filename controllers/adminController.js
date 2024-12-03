@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const cloudinaryConfig = require('../config/cloudinaryConfig');
+const { sendResponse } = require('../services/responseHandler');
 this.OTP = '';
 module.exports.registerUser = async (req, res) => {
     try {
