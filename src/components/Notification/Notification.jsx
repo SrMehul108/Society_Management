@@ -14,11 +14,11 @@ const Notification = ({ isVisible, message, type, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed  right-32 p-4 rounded-md shadow-lg w-80 
-    ${type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+    <div className={`fixed  right-36 top-[6%] p-4 rounded-md shadow-lg w-96 h-96 z-50 
+    ${type === 'success' ? 'bg-slate-100 text-black' : 'bg-red-500 text-black'}`}>
       <div className="flex items-center justify-between">
         <span>{message}</span>
-        <button onClick={onClose} className="ml-4 text-white font-bold focus:outline-none">
+        <button onClick={onClose} className="ml-4 text-black font-bold focus:outline-none">
           &times;
         </button>
       </div>

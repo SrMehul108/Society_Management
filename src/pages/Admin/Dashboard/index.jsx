@@ -8,9 +8,10 @@ import AddNumberPopup from "../../../components/Dashboard/AddNumberPopup/AddNumb
 import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
 import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
+import BalanceChart from "../../../components/Dashboard/Chart/Chart";
 
 export const Dashboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState("Last month");
+ 
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
@@ -221,6 +222,15 @@ export const Dashboard = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+  //chart
+  const [selectedMonth, setSelectedMonth] = useState("Last month");
+
+  // Define datasets for different periods
+  const chartData = {
+    "Last week": [5, 8, 10, 6, 7, 9, 10],
+    "Last month": [20, 15, 12, 18, 25, 55, 30, 40, 35, 45, 50, 40],
+    "Last year": [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750],
+  };
 
   return (
     <>
@@ -267,7 +277,7 @@ export const Dashboard = () => {
         {/* Chart, Contacts, and Maintenance */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Chart Section */}
-          <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
+          {/* <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Total Balance</h2>
               <select
@@ -280,11 +290,27 @@ export const Dashboard = () => {
                 <option>Last year</option>
               </select>
             </div>
-            <div className="bg-gray-200 flex items-center justify-center rounded-lg h-64 lg:h-96">
-              <p className="text-gray-500">Chart Placeholder</p>
+            <div className=" flex items-center justify-center rounded-lg h-64 lg:h-96">
+              <BalanceChart/>
             </div>
-          </div>
-
+          </div> */}
+<div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">Total Balance</h2>
+        <select
+          className="border border-gray-300 rounded-lg p-1"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+        >
+          <option value="Last week">Last week</option>
+          <option value="Last month">Last month</option>
+          <option value="Last year">Last year</option>
+        </select>
+      </div>
+      <div className="flex items-center justify-center rounded-lg h-64 lg:h-96">
+        <BalanceChart data={chartData[selectedMonth]} />
+      </div>
+    </div>
           <div
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden rounded-lg"
             style={{ height: "475px" }}
