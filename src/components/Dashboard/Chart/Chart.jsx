@@ -69,7 +69,7 @@ const BalanceChart = ({ data }) => {
   };
 
   return (
-    <div className="h-64 w-full">
+    <div className="h-full w-full">
       <Line data={chartData} options={options} />
     </div>
   );

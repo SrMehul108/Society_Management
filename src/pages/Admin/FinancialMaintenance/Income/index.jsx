@@ -61,7 +61,7 @@ function FinancialManagement() {
   
 
   return (
-    <div className="p-4 bg-gray-100">
+    <div className=" bg-gray-100">
       {/* Header Section */}
       {!showOtherIncome && (
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">

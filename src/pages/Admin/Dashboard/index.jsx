@@ -11,11 +11,10 @@ import { Icons } from "../../../constants/icons";
 import BalanceChart from "../../../components/Dashboard/Chart/Chart";
 
 export const Dashboard = () => {
- 
+
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
-  const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
-    useState("Last month");
+  
   const [importantnumber, setImportantnumber] = useState([]);
   const [selectedNumberData, setSelectedNumberData] = useState(null);
 
@@ -68,14 +67,23 @@ export const Dashboard = () => {
     { name: "Roger Lubin", status: "2 Month Pending", amount: "₹ 5,000" },
   ];
 
-  const activities = [
-    {
-      event: "Society Meeting",
-      date: "24-09-2024",
-      time: "8:00 PM to 10:00 PM",
-    },
-    { event: "Holi Festival", date: "24-09-2024", time: "8:00 PM to 10:00 PM" },
+  // activities
+  const [UpcomingselectedMonth, setUpcomingSelectedMonth] = useState("Last week");
+  
+  // Example activities data
+  const allActivities = [
+    { event: "Yoga Session", time: "10:00 AM", date: "2023-12-01", category: "Last week" },
+    { event: "Board Meeting", time: "02:00 PM", date: "2023-11-15", category: "Last month" },
+    { event: "Annual Gala", time: "06:00 PM", date: "2023-01-01", category: "Last year" },
+    { event: "Community Cleanup", time: "09:00 AM", date: "2023-12-05", category: "Last week" },
   ];
+
+  // Filter activities based on selected category
+  const filteredActivities = allActivities.filter(
+    (activity) => activity.category === UpcomingselectedMonth
+  );
+
+
 
   const columns = [
     { header: "Complainer Name", accessor: "complainerName" },
@@ -96,13 +104,12 @@ export const Dashboard = () => {
       accessor: "priority",
       render: (value) => (
         <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === "high"
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === "high"
               ? "bg-[#E74C3C] text-white px-5"
               : value === "medium"
-              ? "bg-[#5678E9] text-white" 
-              : "bg-green-500 text-white px-6"
-          }`}
+                ? "bg-[#5678E9] text-white"
+                : "bg-green-500 text-white px-6"
+            }`}
         >
           {value}
         </span>
@@ -113,15 +120,14 @@ export const Dashboard = () => {
       accessor: "status",
       render: (value) => (
         <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === "pending"
+          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === "pending"
               ? "bg-[#FFC3131A] text-[#FFC313]"
               : value === "solved"
-              ? "bg-[#39973D1A] text-[#39973D]"
-              : value === "open"
-              ? "bg-[#5678E91A] text-[#5678E9]"
-              : "bg-green-100 text-green-800"
-          }`}
+                ? "bg-[#39973D1A] text-[#39973D]"
+                : value === "open"
+                  ? "bg-[#5678E91A] text-[#5678E9]"
+                  : "bg-green-100 text-green-800"
+            }`}
         >
           {value}
         </span>
@@ -190,7 +196,7 @@ export const Dashboard = () => {
   const [editid, setEditid] = useState();
   const [editData, setEditData] = useState(null);
 
-  
+
 
   const handleAddClick = () => {
     setPopupMode("add");
@@ -208,7 +214,7 @@ export const Dashboard = () => {
     setIsPopupOpen(true);
   };
 
-  const openPopup=()=>{
+  const openPopup = () => {
     setIsPopupOpen(true)
   }
 
@@ -277,7 +283,8 @@ export const Dashboard = () => {
         {/* Chart, Contacts, and Maintenance */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Chart Section */}
-          {/* <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
+        
+          <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Total Balance</h2>
               <select
@@ -285,32 +292,15 @@ export const Dashboard = () => {
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
               >
-                <option>Last week</option>
-                <option>Last month</option>
-                <option>Last year</option>
+                <option value="Last week">Last week</option>
+                <option value="Last month">Last month</option>
+                <option value="Last year">Last year</option>
               </select>
             </div>
-            <div className=" flex items-center justify-center rounded-lg h-64 lg:h-96">
-              <BalanceChart/>
+            <div className="flex items-center justify-center rounded-lg h-64 lg:h-96">
+              <BalanceChart data={chartData[selectedMonth]} />
             </div>
-          </div> */}
-<div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Total Balance</h2>
-        <select
-          className="border border-gray-300 rounded-lg p-1"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-        >
-          <option value="Last week">Last week</option>
-          <option value="Last month">Last month</option>
-          <option value="Last year">Last year</option>
-        </select>
-      </div>
-      <div className="flex items-center justify-center rounded-lg h-64 lg:h-96">
-        <BalanceChart data={chartData[selectedMonth]} />
-      </div>
-    </div>
+          </div>
           <div
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-hidden rounded-lg"
             style={{ height: "475px" }}
@@ -476,7 +466,7 @@ export const Dashboard = () => {
           </div>
 
           {/* Upcoming Activities */}
-          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+          {/* <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Upcoming Activity</h2>
               <select
@@ -500,7 +490,36 @@ export const Dashboard = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
+  <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">Upcoming Activity</h2>
+        <select
+          className="border border-gray-300 rounded-lg p-1"
+          value={UpcomingselectedMonth}
+          onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
+        >
+          <option>Last week</option>
+          <option>Last month</option>
+          <option>Last year</option>
+        </select>
+      </div>
+      <ul className="space-y-3">
+        {filteredActivities.length > 0 ? (
+          filteredActivities.map((activity, index) => (
+            <li key={index} className="flex justify-between items-center">
+              <div>
+                <p className="font-medium">{activity.event}</p>
+                <p className="text-sm text-gray-500">{activity.time}</p>
+              </div>
+              <p className="text-gray-500">{activity.date}</p>
+            </li>
+          ))
+        ) : (
+          <p className="text-gray-500">No activities found for {UpcomingselectedMonth}.</p>
+        )}
+      </ul>
+    </div>
         </div>
       </div>
     </>

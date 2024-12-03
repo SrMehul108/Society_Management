@@ -31,8 +31,8 @@ function FacilityPopup({ onClose, onFacilityAdded }) {
     setIsSaving(true);
     try {
       const response = await addFacility(formData);
-      onFacilityAdded(); 
-      onClose(); 
+      onFacilityAdded();
+      onClose();
     } catch (error) {
       console.error("Error adding facility:", error);
       setError("Failed to add facility. Please try again.");
@@ -109,21 +109,26 @@ function FacilityPopup({ onClose, onFacilityAdded }) {
             </select>
           </div>
 
-          <div className="flex justify-end space-x-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg"
-              disabled={isSaving}
-            >
-              {isSaving ? "Saving..." : "Save"}
-            </button>
+          <div className="flex  space-x-2">
+            <div className="w-1/2">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg w-full"
+              >
+                Cancel
+              </button>
+
+            </div>
+            <div className="w-1/2">
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-500 text-white rounded-lg w-full"
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
