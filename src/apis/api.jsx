@@ -789,11 +789,11 @@ export const getFacility = async () => {
   }
 };
 
-export const UpdateFacilty = async (data) => {
+export const UpdateFacilty = async (data,id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
-      `${API_URL}/auth/admin/facility/editFacility/${data._id}`,
+      `${API_URL}/auth/admin/facility/editFacility/${id}`,
       data,
       {
         headers: {
