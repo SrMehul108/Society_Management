@@ -1,4 +1,5 @@
 const Complaint = require('../models/Complaint');
+const { sendResponse } = require('../services/responseHandler');
 
 module.exports.insertComplaint = async (req, res) => {
     try {
@@ -10,15 +11,15 @@ module.exports.insertComplaint = async (req, res) => {
                 if (newData) {
                     return res.status(200).json({ message: "Complaint Raised successfully", status: 1, data: newData });
                 }
-                return res.status(400).json({ message: 'There was an error while saving data', status: 0 });
+                return sendResponse(res,400,"There was an error while saving data",0)
             }
-            return res.status(400).json({ message: "Unauthorized", data: 0 });
+            return sendResponse(res,400,"Unauthorized",0)
         } else {
-            return res.status(400).json({ message: "Something went wrong", data: 0 });
+            return sendResponse(res,400,"Something went wrong",0)
         }
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error",0)
     }
 }
 
@@ -27,21 +28,21 @@ module.exports.viewComplaint = async (req, res) => {
         const { id } = req.query;
         const { type } = req.query;
         if (!type) {
-            return res.status(400).json({ message: "Type is required", status: 0 });
+            return sendResponse(res,400,"Type is required",0)
         }
         if (id) {
             const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: type });
             if (data) {
                 return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
             }
-            return res.status(400).json({ message: 'No data found with the given id', status: 0 });
+            return sendResponse(res,400,"No data found with the given id",0)
         }
         const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: type });
         if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
-        return res.status(400).json({ message: 'No data found', status: 0 });
+        return sendResponse(res,400,"No data found",0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error",0)
     }
 }
 
@@ -54,12 +55,12 @@ module.exports.editComplaint = async (req, res) => {
             if (updatedData) {
                 return res.status(200).json({ message: "Data Update Successfully", status: 1, data: updatedData });
             }
-            return res.status(400).json({ message: "Data not updated", status: 0 });
+            return sendResponse(res,400,"Data not updated",0)
         }
-        return res.status(400).json({ message: "Parameter (id) is missing", status: 0 });
+        return sendResponse(res,400,"Parameter (id) is missing",0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error",0)
     }
 }
 
@@ -72,11 +73,11 @@ module.exports.deleteComplaint = async (req, res) => {
             if (updatedData) {
                 return res.status(200).json({ message: "Data Delete Successfully", status: 1, data: updatedData });
             }
-            return res.status(400).json({ message: "Data not deleted", status: 0 });
+            return sendResponse(res,400,"Data not deleted",0)
         }
-        return res.status(400).json({ message: "Parameter (id) is missing", status: 0 });
+        return sendResponse(res,400,"Parameter (id) is missing",0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error",0)
     }
 }
