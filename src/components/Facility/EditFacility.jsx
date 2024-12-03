@@ -105,19 +105,24 @@ function EditFacility({ onClose, facility, facilityId, EditData, onFacilityAdded
           </div>
 
           <div className="flex justify-end space-x-2">
+            <div className="w-1/2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+              className="px-4 py-2 w-full bg-gray-300 text-gray-700 rounded-lg"
             >
               Cancel
             </button>
+            
+            </div>
+            <div className="w-1/2">
             <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg"
-            >
-              Save
-            </button>
+                type="submit"
+                className="px-4 py-2 w-full bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white rounded-md"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </form>
       </div>

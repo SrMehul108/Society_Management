@@ -102,11 +102,11 @@ function RequestEdit({ closeModal }) {
             </div>
             <div className="flex justify-center gap-4 mt-4 w-1/2">
             <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md w-full"
-            >
-              Save
-            </button>
+                type="submit"
+                className="px-4 py-2 w-full bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white rounded-md"
+              >
+                Save 
+              </button>
             </div>
           </div>
         </form>
