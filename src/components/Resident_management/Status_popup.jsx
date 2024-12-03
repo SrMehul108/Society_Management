@@ -80,7 +80,7 @@ export const Statuspopup = ({ onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 w-full text-center font-semibold text-white bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 rounded-lg"
+              className="px-4 py-2 w-full text-center font-semibold text-white bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 rounded-lg"
             >
               Save
             </button>
