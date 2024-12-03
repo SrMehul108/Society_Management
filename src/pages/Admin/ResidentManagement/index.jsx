@@ -10,6 +10,8 @@ import {
 } from "../../../components/Button/Button";
 import { Statuspopup } from "../../../components/Resident_management/Status_popup";
 import { getUser } from "../../../apis/api";
+import EditStatusModal from "../../../components/Resident_management/EditStatus_modal";
+
 
 export const ResidentManagement = () => {
   const [residents, setResidents] = useState([]);
@@ -49,6 +51,12 @@ export const ResidentManagement = () => {
   if (error) {
     return <div>{error}</div>; // Show error message if data fails to load
   }
+
+  // edit status popup logic
+  const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
+  const openEditStatusModal = () => setIsEditStatusModalOpen(true);
+  const closeEditStatusModal = () => setIsEditStatusModalOpen(false);
+
 
   return (
     <>
@@ -139,9 +147,11 @@ export const ResidentManagement = () => {
                     {resident.vehicles}
                   </td>
                   <td className="py-3 px-4 border-b text-center">
-                    <button className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2">
+                    <button className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2"
+                    onClick={openEditStatusModal}>
                       <i className="fas fa-edit"></i>
                     </button>
+                    {isEditStatusModalOpen && <EditStatusModal onClose={closeEditStatusModal} />}
                     <button
                       className="bg-blue-500 text-white p-2 rounded-lg text-xs hover:bg-blue-600"
                       onClick={handleView}
