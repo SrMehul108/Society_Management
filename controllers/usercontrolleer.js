@@ -10,6 +10,7 @@ const cloudinaryConfig = require('../config/cloudinaryConfig');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const Payment = require('../models/Payment');
 
 
 module.exports.insertUser = async (req, res) => {
@@ -90,7 +91,7 @@ module.exports.insertUser = async (req, res) => {
                 amount: maintenanceData.amount,
                 UserId: newUser[0]._id,
             }
-            await Maintenance.create(insertPayment);
+            await Payment.create(insertPayment);
         }
         if (members) {
             const insertedMembers = await Member.insertMany(

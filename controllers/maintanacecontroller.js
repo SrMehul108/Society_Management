@@ -56,13 +56,15 @@ module.exports.maintenanceDetail = async (req, res) => {
     try {
         const currentDate = new Date();
 
-        if (societyId) {
-            const isMaintenace = await Maintenance.findOne({ societyId: req.user.societyId });
+        if (req.user.societyId) {
+            const isMaintenace = await Maintenance.find({ societyId: req.user.societyId });
             if (!isMaintenace) {
                 return sendResponse(res, 400, "No Maintenance found", 0);
             }
+            console.log(isMaintenace);
+            
             // Retrieve user data for the society
-            const userData = await UserModel.find({ societyId: societyId });
+            const userData = await UserModel.find({ societyId: req.user.societyId });
             if (userData && userData.length > 0) {
                 const userIds = userData.map(user => user._id);
 
@@ -118,7 +120,7 @@ module.exports.editMaintenance = async (req, res) => {
         const { id } = req.params;
         if (id && req.body !== "") {
             const existingData = await Maintenance.findById({ _id: id, societyId: req.user.societyId });
-            if(!existingData && existingData == ''){
+            if (!existingData && existingData == '') {
                 return sendResponse(res, 400, "Maintenance data not found", 0);
             }
             const updateData = await Maintenance.findByIdAndUpdate(id, req.body, { new: true });
