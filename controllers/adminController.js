@@ -32,21 +32,21 @@ module.exports.registerUser = async (req, res) => {
                             subject: "Registration Successful ✔",
                             text: `Hello ${req.body.name}`,
                             html: `<p>You've Successfully Registered</p><br><p>You can now log in with your email address.</p>`,
-                        })
-                        return res.status(200).json({ message: "Admin Registered Successfully", status: 1, data: newUser });
+                        });
+                        return sendResponse(res, 200, "Admin Registered Successfully", 1, newUser);
                     } else {
-                        return res.status(400).json({ message: "Something Wrong", status: 0 });
+                        return sendResponse(res, 400, "Something went wrong", 0);
                     }
                 }
             } else {
-                return res.status(400).json({ message: "Password and Confirm Password is Not Matched", status: 0 });
+                return sendResponse(res, 400, "Password and Confirm Password is Not Matched", 0);
             }
         } else {
-            return res.status(400).json({ message: "Data Not Found", status: 0 });
+            return sendResponse(res, 400, "Data Not Found", 0);
         }
     } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -70,7 +70,7 @@ module.exports.loginUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(400).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -109,7 +109,7 @@ module.exports.forgotPassword = async (req, res) => {
         return res.status(200).json({ message: "OTP Sent Successfully 🎉", status: 1 });
     } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -129,7 +129,7 @@ module.exports.verifyOtp = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(400).json({ message: "Something Wrong", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -159,7 +159,7 @@ module.exports.resetPassword = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(400).json({ message: "Something Wrong", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -188,6 +188,6 @@ module.exports.editProfile = async (req, res) => {
         return res.status(400).json({ message: 'UnAuthorized', status: 0 });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
