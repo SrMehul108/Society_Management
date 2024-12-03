@@ -74,7 +74,7 @@ function Expanse() {
   };
 
   return (
-    <div className="p-4 bg-gray-100">
+    <div className=" bg-gray-100">
       {/* Modals */}
       {isModalOpen && (
         <AddExpanse
