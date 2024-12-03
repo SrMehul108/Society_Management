@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ViewOwner } from "../../../components/Resident_management/ViewOwner";
 import {
@@ -18,14 +18,21 @@ export const ResidentManagement = () => {
   const [loading, setLoading] = useState(true); // for loading state
   const [error, setError] = useState(null); // for error handling
 
+  
+  // // edit status popup logic
+  const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
+ 
+
   useEffect(() => {
     // Fetch user data on component mount
     const fetchResidents = async () => {
       try {
         const data = await getUser();
-        setResidents(data); // Set the fetched data to residents state
-        setLoading(false); // Set loading to false once data is fetched
+        console.log("Fetched data:", data); // Check what data is being returned
+        setResidents(data);
+        setLoading(false);
       } catch (err) {
+        console.error("Error fetching data:", err);
         setError("Failed to load resident data.");
         setLoading(false);
       }
@@ -52,11 +59,8 @@ export const ResidentManagement = () => {
     return <div>{error}</div>; // Show error message if data fails to load
   }
 
-  // edit status popup logic
-  const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
-  const openEditStatusModal = () => setIsEditStatusModalOpen(true);
-  const closeEditStatusModal = () => setIsEditStatusModalOpen(false);
 
+  console.log("residents", residents);
 
   return (
     <>
@@ -110,48 +114,43 @@ export const ResidentManagement = () => {
                 <tr key={index} className="text-gray-700">
                   <td className="py-3 px-4 border-b flex items-center space-x-3">
                     <img
-                      src={
-                        resident.profile_image ? resident.profile_image : "img"
-                      }
+                      src={resident?.profile_image ? resident.profile_image : "img"}
                       alt="Profile"
                       className="w-10 h-10 rounded-full"
                     />
-                    <span>{resident.fullName}</span>
+                    <span>{resident?.fullName}</span>
                   </td>
-                  <td className="py-3 px-4 border-b ">
+                  <td className="py-3 px-4 border-b">
                     <div className="flex gap-4">
                       <div className="rounded-full bg-slate-300 flex justify-center h-6 w-6 text-blue-500">
-                        {resident.metaData.wing}
+                        {resident?.metaData?.wing}
                       </div>
-                      <div>{resident.metaData.unit}</div>
+                      <div>{resident?.metaData?.unit}</div>
                     </div>
                   </td>
-
                   <td className="py-3 px-4 border-b">
-                    {resident.isActive ? <OccupiedButton /> : <VacateButton />}
+                    {resident?.isActive ? <OccupiedButton /> : <VacateButton />}
                   </td>
                   <td className="py-3 px-4 border-b">
-                    {resident.metaData.type === "owner" ? (
+                    {resident?.metaData?.type === "owner" ? (
                       <OwnerButton />
-                    ) : resident.metaData.type === "tenant" ? (
+                    ) : resident?.metaData?.type === "tenant" ? (
                       <TenantButton />
                     ) : (
                       <EmptyButton />
                     )}
                   </td>
-                  <td className="py-3 px-4 border-b">{resident.phoneNo}</td>
+                  <td className="py-3 px-4 border-b">{resident?.phoneNo}</td>
+                  <td className="py-3 px-4 border-b text-center">{resident?.members}</td>
+                  <td className="py-3 px-4 border-b text-center">{resident?.vehicles}</td>
                   <td className="py-3 px-4 border-b text-center">
-                    {resident.members}
-                  </td>
-                  <td className="py-3 px-4 border-b text-center">
-                    {resident.vehicles}
-                  </td>
-                  <td className="py-3 px-4 border-b text-center">
-                    <button className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2"
-                    onClick={openEditStatusModal}>
+                    <button
+                      className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2"
+                       onClick={()=> setIsEditStatusModalOpen(true)}
+                    >
                       <i className="fas fa-edit"></i>
                     </button>
-                    {isEditStatusModalOpen && <EditStatusModal onClose={closeEditStatusModal} />}
+                    {isEditStatusModalOpen && <EditStatusModal onClose={() => setIsEditStatusModalOpen(false)} />}
                     <button
                       className="bg-blue-500 text-white p-2 rounded-lg text-xs hover:bg-blue-600"
                       onClick={handleView}
@@ -161,6 +160,7 @@ export const ResidentManagement = () => {
                   </td>
                 </tr>
               ))}
+
             </tbody>
           </table>
 
@@ -199,11 +199,10 @@ export const ResidentManagement = () => {
                   <div>
                     <span className="font-semibold">Status:</span>
                     <span
-                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
-                        resident.unitStatus === "Occupied"
-                          ? "bg-teal-200 text-teal-800"
-                          : "bg-purple-200 text-purple-800"
-                      }`}
+                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.unitStatus === "Occupied"
+                        ? "bg-teal-200 text-teal-800"
+                        : "bg-purple-200 text-purple-800"
+                        }`}
                     >
                       {resident.unitStatus}
                     </span>
@@ -211,11 +210,10 @@ export const ResidentManagement = () => {
                   <div>
                     <span className="font-semibold">Resident:</span>
                     <span
-                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
-                        resident.residentStatus === "Tenant"
-                          ? "bg-pink-200 text-pink-800"
-                          : "bg-indigo-200 text-indigo-800"
-                      }`}
+                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.residentStatus === "Tenant"
+                        ? "bg-pink-200 text-pink-800"
+                        : "bg-indigo-200 text-indigo-800"
+                        }`}
                     >
                       {resident.residentStatus}
                     </span>
