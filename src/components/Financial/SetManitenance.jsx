@@ -14,7 +14,7 @@ export const Modal = ({ isOpen, onClose }) => {
 
     try {
       const response = await submitMaintenance(password);
-      alert(`Response: ${response.message}`); 
+      alert(`Response: ${response.message}`);
       onClose();
     } catch (err) {
       setError(err.message || "An error occurred.");
@@ -27,7 +27,7 @@ export const Modal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4">
         <h2 className="text-xl font-semibold mb-4 pb-3 border-b-2">Set Maintenance</h2>
-        
+
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Password<span className="text-red-500">*</span>
@@ -59,25 +59,29 @@ export const Modal = ({ isOpen, onClose }) => {
             </button>
           </div>
         </div>
-        
+
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        
-        <div className="flex justify-between pt-4">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className={`px-4 py-2 ${
-              loading ? "bg-gray-400" : "bg-gradient-to-r from-orange-400 to-orange-600"
-            } text-white font-semibold rounded-lg hover:from-orange-500 hover:to-orange-700 transition`}
-          >
-            {loading ? "Processing..." : "Continue"}
-          </button>
+
+        <div className="flex justify-between pt-4 gap-2">
+          <div className="w-1/2">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 w-full"
+            >
+              Cancel
+            </button>
+
+          </div >
+          <div className="w-1/2">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className={`px-4 py-2 w-full ${loading ? "bg-gray-400" : "bg-gradient-to-r from-orange-600 to-yellow-500  "
+                } text-white font-semibold rounded-lg hover:from-orange-500 hover:to-yellow-500 transition`}
+            >
+              {loading ? "Processing..." : "Continue"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

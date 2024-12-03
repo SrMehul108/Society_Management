@@ -3,7 +3,7 @@ import { addincome } from "../../apis/api";
 import { useNavigate } from "react-router";
 import OtherIncome from "../../pages/User/PaymentPortal/OtherIncome";
 
-function OtherIncomePopup({ onClose ,onIncomeAdded}) {
+function OtherIncomePopup({ onClose, onIncomeAdded }) {
   const [formData, setFormData] = useState({
     title: "",
     date: "",
@@ -13,7 +13,7 @@ function OtherIncomePopup({ onClose ,onIncomeAdded}) {
   });
 
   const [error, setError] = useState(null);
-  const navigate =useNavigate()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,20 +116,25 @@ function OtherIncomePopup({ onClose ,onIncomeAdded}) {
             />
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          <div className="flex justify-between">
-            <button
-              type="button"
-              className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-            >
-              Save
-            </button>
+          <div className="flex  gap-2">
+            <div className="w-1/2">
+              <button
+                type="button"
+                className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 w-full"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+
+            </div>
+            <div className="w-1/2">
+              <button
+                type="submit"
+                className="px-4 py-2 text-white rounded-md bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 w-full"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </form>
       </div>

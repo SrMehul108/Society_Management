@@ -181,7 +181,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit, onAddExpanse }) => {
                 disabled={!isSaveEnabled}
                 className={`px-4 py-2 rounded-md w-full transition duration-300 ${
                   isSaveEnabled
-                    ? "bg-gradient-to-r from-orange-400 to-orange-600 text-white hover:from-orange-500 hover:to-orange-700"
+                    ? " text-white  bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500"
                     : "bg-gray-300 text-white cursor-not-allowed"
                 }`}
               >

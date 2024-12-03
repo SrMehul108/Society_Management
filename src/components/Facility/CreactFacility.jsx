@@ -123,7 +123,7 @@ function FacilityPopup({ onClose, onFacilityAdded }) {
             <div className="w-1/2">
               <button
                 type="submit"
-                className="px-4 py-2 bg-orange-500 text-white rounded-lg w-full"
+                className="px-4 py-2 bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white rounded-lg w-full"
                 disabled={isSaving}
               >
                 {isSaving ? "Saving..." : "Save"}

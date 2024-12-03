@@ -114,7 +114,7 @@ function Expanse() {
           </h2>
           <button
             onClick={openModal}
-            className="flex items-center gap-2 p-2 bg-orange-500 text-white rounded-lg shadow hover:bg-orange-600 transition"
+            className="flex items-center gap-2 p-2 text-white rounded-lg shadow bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 transition"
           >
             <span>{Icons.Add}</span>
             Add New Expense Details
