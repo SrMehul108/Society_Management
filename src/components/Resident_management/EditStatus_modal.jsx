@@ -10,7 +10,7 @@ export const EditStatusModal = ({ onClose }) => {
     event.preventDefault();
     if (isAgreed) {
       alert(`Form submitted with status: ${status}`);
-      navigate("/admin/residents/OwnerForm");
+     
       onClose(); // Close the popup after successful submission
     } else {
       alert("You must agree to submit the form.");
@@ -52,7 +52,7 @@ export const EditStatusModal = ({ onClose }) => {
                 checked={status === "vacate"}
                 onChange={() => setStatus("vacate")}
                 className="form-radio text-orange-500"
-                disabled
+                
               />
               <span className="ml-4">Vacate</span>
             </label>
