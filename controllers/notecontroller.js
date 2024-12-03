@@ -1,4 +1,5 @@
 const Note = require('../models/Note');
+const {sendResponse} = require("../services/responseHandler")
 
 module.exports.insertNote = async (req, res) => {
     try {
@@ -10,15 +11,15 @@ module.exports.insertNote = async (req, res) => {
                 if (newData) {
                     return res.status(200).json({ message: "Note added successfully", status: 1, data: newData });
                 }
-                return res.status(400).json({ message: 'There was an error while saving data', status: 0 });
+                return sendResponse(res,400,"There was an error while saving data" ,0)
             }
-            return res.status(400).json({ message: "Unauthorized", data: 0 });
+            return sendResponse(res,400,"Unauthorized" ,0)
         } else {
-            return res.status(400).json({ message: "Something went wrong", data: 0 });
+            return sendResponse(res,400,"Invalid request" ,0)
         }
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error" ,0)
     }
 }
 
@@ -30,14 +31,14 @@ module.exports.viewNote = async (req, res) => {
             if (data) {
                 return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
             }
-            return res.status(400).json({ message: 'No data found with the given id', status: 0 });
+            return sendResponse(res,400,"Data not found" ,0)
         }
         const allData = await Note.find({ societyId: req.user.societyId, isActive: true });
         if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
-        return res.status(400).json({ message: 'No data found', status: 0 });
+        return sendResponse(res,400,"Data not found" ,0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error" ,0)
     }
 }
 
@@ -51,12 +52,12 @@ module.exports.editNote = async (req, res) => {
             if (updatedData) {
                 return res.status(200).json({ message: "Data Update Successfully", status: 1, data: updatedData });
             }
-            return res.status(400).json({ message: "Data not updated", status: 0 });
+            return sendResponse(res,400,"Data not found" ,0)
         }
-        return res.status(400).json({ message: "Parameter (id) is missing", status: 0 });
+        return sendResponse(res,400,"Parameter (id) is missing" ,0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error" ,0)
     }
 }
 
@@ -69,11 +70,11 @@ module.exports.deleteNote = async (req, res) => {
             if (updatedData) {
                 return res.status(200).json({ message: "Data Delete Successfully", status: 1, data: updatedData });
             }
-            return res.status(400).json({ message: "Data not deleted", status: 0 });
+            return sendResponse(res,400,"Data not found" ,0)
         }
-        return res.status(400).json({ message: "Parameter (id) is missing", status: 0 });
+        return sendResponse(res,400,"Parameter (id) is missing" ,0)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res,500,"Internal Server Error" ,0)
     }
 }

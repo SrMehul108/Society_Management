@@ -34,11 +34,11 @@ module.exports.insertSociety = async (req, res) => {
         if (society) {
             return res.status(200).json({ message: "Society added successfully", status: 1, data: society });
         } else {
-            return res.status(400).json({ message: "Failed to add society", status: 0 });
+            return sendResponse (res, 400, "Failed to add society", 0);
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
 
@@ -49,18 +49,18 @@ module.exports.getSociety = async (req, res) => {
             if (society) {
                 return res.status(200).json({ message: "Society fetched successfully", status: 1, data: society });
             } else {
-                return res.status(400).json({ message: "Society not found", status: 0 });
+                return sendResponse(res, 400, "No society found", 0);
             }
         } else {
             const society = await Society.findById(req.params.id);
             if (society) {
                 return res.status(200).json({ message: "Society fetched successfully", status: 1, data: society });
             } else {
-                return res.status(400).json({ message: "Society not found", status: 0 });
+                return sendResponse(res, 400, "No society found", 0);
             }
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal Server Error", status: 0 });
+        return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }

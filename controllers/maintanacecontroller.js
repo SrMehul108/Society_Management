@@ -9,7 +9,7 @@ module.exports.insert = async (req, res) => {
             req.body.societyId = req.user.societyId;
             let existingMaintance = await Maintenance.findOne({ societyId: req.body.societyId, isActive: true });
             if (existingMaintance) {
-                return res.status(400).json({ message: "Maintenance is already in place for this society" });
+                return sendResponse(res, 400, 'Maintenance already exists for this society',0);
             }
             const newMaintenance = new Maintenance(req.body);
             await newMaintenance.save();
@@ -42,7 +42,7 @@ module.exports.viewMaintance = async (req, res) => {
             if (maintance) {
                 return res.status(200).json({ message: "Maintance Detailed fetched succesfully", status: 1, data: maintance });
             }
-            return res.status(400).json({ message: "There is no Maintenance", status: 0 });
+            return sendResponse(res, 400, "No Maintance found for this society", 0);
         }
         return sendResponse(res, 400, "Something went wrong", 0);
     } catch (error) {
@@ -104,10 +104,10 @@ module.exports.maintenanceDetail = async (req, res) => {
                 });
                 return sendResponse(res, 200, "Maintenance Detail fetched successfully", 1, result);
             } else {
-                return res.status(404).json({ message: "No users found", status: 0 });
+                return sendResponse(res, 400, "No User found", 0);
             }
         } else {
-            return res.status(400).json({ message: "Society ID not provided", status: 0 });
+            return sendResponse(res, 400, "No Maintenance found", 0);
         }
     } catch (error) {
         console.log(error);
