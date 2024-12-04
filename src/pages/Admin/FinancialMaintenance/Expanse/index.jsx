@@ -148,7 +148,7 @@ function Expanse() {
                   <td className="">{item.title}</td>
                   <td className="">{item.description}</td>
                   <td className="">{item.date}</td>
-                  <td className=" text-green-500 font-bold">
+                  <td className=" text-green-500  font-bold">
                     ₹{item.amount}
                   </td>
                   <td className="">
