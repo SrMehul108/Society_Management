@@ -8,3 +8,5 @@ router.post('/createAnnouncement', createAnnouncement);
 router.get('/viewAnnouncement', viewAnnouncement);
 router.post('/editAnnouncement/:id', editAnnouncement);
 router.delete('/deleteAnnouncement/:id', deleteAnnouncement);
+
+module.exports = router;
