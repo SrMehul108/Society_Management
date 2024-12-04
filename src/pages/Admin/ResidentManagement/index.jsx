@@ -13,6 +13,7 @@ import { getUser } from "../../../apis/api";
 import EditStatusModal from "../../../components/Resident_management/EditStatus_modal";
 
 
+
 export const ResidentManagement = () => {
   const [residents, setResidents] = useState([]);
   const [loading, setLoading] = useState(true); // for loading state
@@ -55,7 +56,9 @@ export const ResidentManagement = () => {
   const StatusclosePopup = () => setIsPopupStatus(false);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading text until data is fetched
+    return <div>
+      {/* <Loader/> */}
+    </div>; // Show loading text until data is fetched
   }
 
   if (error) {
