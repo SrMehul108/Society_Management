@@ -1,21 +1,18 @@
 const OtherIncome = require("../models/OtherIncome");
 const { sendResponse } = require("../services/responseHandler");
+const { validateRequest } = require("../services/validation");
 
 module.exports.insertIncome = async (req, res) => {
   try {
-    if (req.body) {
-      if (req.user.societyId) {
-        req.body.societyId = req.user.societyId;
-        const newData = new OtherIncome(req.body);
-        await newData.save();
-        if (newData) {
-          return sendResponse(res, 200, "Income inserted successfully", 1, newData);
-        }
-        return sendResponse(res, 400, "There was an error while saving data", 0);
+    validateRequest(req, res);
+    if (req.user.societyId) {
+      req.body.societyId = req.user.societyId;
+      const newData = new OtherIncome(req.body);
+      await newData.save();
+      if (newData) {
+        return sendResponse(res, 200, "Income inserted successfully", 1, newData);
       }
-      return sendResponse(res, 400, "Unauthorized", 0);
-    } else {
-      return sendResponse(res, 400, "Something went wrong", 0);
+      return sendResponse(res, 400, "There was an error while saving data", 0); Response(res, 400, "Something went wrong", 0);
     }
   } catch (error) {
     console.log(error);
@@ -44,8 +41,9 @@ module.exports.viewIncome = async (req, res) => {
 
 module.exports.editIncome = async (req, res) => {
   try {
+    validateRequest(req, res);
     const { id } = req.params;
-    if (id && req.body !== "") {
+    if (id) {
       req.body.societyId = req.user.societyId;
       let updatedData = await OtherIncome.findByIdAndUpdate(id, req.body, { new: true, });
       if (updatedData) {

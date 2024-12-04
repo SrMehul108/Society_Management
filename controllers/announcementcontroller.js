@@ -1,21 +1,18 @@
 const Announcement = require('../models/Announcement');
 const { sendResponse } = require('../services/responseHandler');
+const { validateRequest } = require('../services/validation');
 
 module.exports.createAnnouncement = async (req, res) => {
     try {
-        if (req.body) {
-            if (req.user.societyId) {
-                req.body.societyId = req.user.societyId;
-                const newData = new Announcement(req.body);
-                await newData.save();
-                if (newData) {
-                    return sendResponse(res, 200, "Announcement created successfully", 1, newData);
-                }
-                return sendResponse(res, 400, "There was an error while saving data", 0)
+        validateRequest(req, res);
+        if (req.user.societyId) {
+            req.body.societyId = req.user.societyId;
+            const newData = new Announcement(req.body);
+            await newData.save();
+            if (newData) {
+                return sendResponse(res, 200, "Announcement created successfully", 1, newData);
             }
-            return sendResponse(res, 400, "Unauthorized", 0)
-        } else {
-            return sendResponse(res, 400, "Something went wrong", 0)
+            return sendResponse(res, 400, "There was an error while saving data", 0)
         }
     } catch (error) {
         console.log(error);
@@ -44,6 +41,7 @@ module.exports.viewAnnouncement = async (req, res) => {
 
 module.exports.editAnnouncement = async (req, res) => {
     try {
+        validateRequest(req, res);
         const { id } = req.params;
         if (id && req.body !== "") {
             req.body.societyId = req.user.societyId;

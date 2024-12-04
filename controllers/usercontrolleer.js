@@ -87,7 +87,7 @@ module.exports.insertUser = async (req, res) => {
       societyId: req.user.societyId,
     });
     if (maintenanceData) {
-      const insertPayment = { type: "maintenance", amount: maintenanceData.amount, UserId: newUser[0]._id,};
+      const insertPayment = { type: "maintenance", amount: maintenanceData.amount, UserId: newUser[0]._id, };
       await Payment.create(insertPayment);
     }
     if (members) {
@@ -117,11 +117,7 @@ module.exports.insertUser = async (req, res) => {
         secure: true,
         auth: { user: process.env.EMAIL, pass: process.env.PASSWORD },
       });
-      const htmlMessage = regestration(
-        req.body.fullName,
-        req.body.email,
-        password
-      );
+      const htmlMessage = regestration(req.body.fullName, req.body.email, password);
       await transporter.sendMail({
         from: process.env.EMAIL,
         to: req.body.email,
@@ -145,13 +141,7 @@ module.exports.viewUser = async (req, res) => {
 
     if (id) {
       // Fetching user by ID
-      const userdata = await UserModel.findOne({
-        _id: id,
-        societyId: req.user.societyId,
-        role: "user",
-      })
-        .populate(["metaData.members", "metaData.vehicles"])
-        .exec();
+      const userdata = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: "user" }).populate(["metaData.members", "metaData.vehicles"]).exec();
 
       if (userdata) {
         const formattedData = {
@@ -177,11 +167,7 @@ module.exports.viewUser = async (req, res) => {
     }
 
     // Fetch all users
-    const userData = await UserModel.find({
-      societyId: req.user.societyId,
-      isActive: true,
-      role: "user",
-    });
+    const userData = await UserModel.find({ societyId: req.user.societyId, isActive: true, role: "user" });
 
     if (userData && userData.length > 0) {
       const formattedData = userData.map((user) => ({
@@ -201,184 +187,162 @@ module.exports.viewUser = async (req, res) => {
 
 module.exports.editUser = async (req, res) => {
   try {
+    validateRequest(req, res);
     const { id } = req.params;
     if (id) {
-      if (req.body) {
-        const existingData = await UserModel.findOne({
-          _id: id,
+      const existingData = await UserModel.findOne({ _id: id, societyId: req.user.societyId, role: "user" });
+      if (existingData) {
+        if (req.body.wing && req.body.unit && (req.body.wing !== existingData.wing || req.body.unit !== existingData.unit)) {
+          const wingValidation = await UserModel.findOne({ societyId: req.user.societyId, role: "user", wing: req.body.wing, unit: req.body.unit });
+          if (wingValidation && existingData._id !== wingValidation._id) {
+            return sendResponse(res, 400, "On selected Wing & unit, there is already a resident", 0);
+          }
+        }
+        const data = {
+          fullName: req.body.fullName,
+          phoneNo: req.body.phoneNo,
+          email: req.body.email,
+          age: req.body.age,
+          gender: req.body.gender,
           societyId: req.user.societyId,
+          password: hashedPassword,
           role: "user",
-        });
-        if (existingData) {
-          if (
-            req.body.wing &&
-            req.body.unit &&
-            (req.body.wing !== existingData.wing ||
-              req.body.unit !== existingData.unit)
-          ) {
-            const wingValidation = await UserModel.findOne({
-              societyId: req.user.societyId,
-              role: "user",
-              wing: req.body.wing,
-              unit: req.body.unit,
-            });
-            if (wingValidation && existingData._id !== wingValidation._id) {
-              return sendResponse(
-                res,
-                400,
-                "On selected Wing & unit, there is already a resident",
-                0
+          metaData: {
+            wing: req.body.wing || existingData.metaData.wing,
+            unit: req.body.unit || existingData.metaData.unit,
+            type: req.body.type || existingData.metaData.type,
+          },
+        };
+        let owner;
+        if (req.body.owner && data.metaData.type === "tenant") {
+          try {
+            owner = JSON.parse(req.body.owner);
+          } catch (err) {
+            return sendResponse(res, 400, "Invalid owner data", 0);
+          }
+        }
+        if (owner) data.metaData.owner = owner;
+
+        if (req.body.members && req.body.members.length > 0) {
+          const members = JSON.parse(req.body.members);
+          const updatedMemberIds = [];
+          for (let member of members) {
+            if (member._id) {
+              await Member.findByIdAndUpdate(member._id, member);
+              updatedMemberIds.push(member._id);
+            } else {
+              const existingMember = await Member.findOne({ email: member.email });
+              if (existingMember) {
+                return sendResponse(400, "Member already exists", 0);
+              }
+              const newMember = new Member({ ...member, UserId: id });
+              const savedMember = await newMember.save();
+              updatedMemberIds.push(savedMember._id);
+            }
+          }
+          data.metaData.members = updatedMemberIds;
+        }
+        if (req.body.vehicles && req.body.vehicles.length > 0) {
+          const vehicles = JSON.parse(req.body.vehicles);
+          const updatedVehicleIds = [];
+          for (let vehicle of vehicles) {
+            if (vehicle._id) {
+              await Vehicle.findByIdAndUpdate(vehicle._id, vehicle);
+              updatedVehicleIds.push(vehicle._id);
+            } else {
+              const existingVehicle = await Vehicle.findOne({ vehicleNumber: vehicle.vehicleNumber, });
+              if (existingVehicle) {
+                return sendResponse(400, "Vehicle already exists", 0);
+              }
+              const newVehicle = new Vehicle({ ...vehicle, UserId: id });
+              const savedVehicle = await newVehicle.save();
+              updatedVehicleIds.push(savedVehicle._id);
+            }
+          }
+          data.metaData.vehicles = updatedVehicleIds;
+        }
+        if (req.files) {
+          if (req.files?.profile_image?.[0]?.path) {
+            if (existingData.metaData.profile_image) {
+              const publicId = existingData.profile_image
+                .split("/")
+                .pop()
+                .split(".")[0];
+              await cloudinaryConfig.uploader.destroy(
+                `profileImages/${publicId}`
               );
             }
+            data.profile_image = req.files.profile_image[0].path;
           }
-          const data = {
-            fullName: req.body.fullName,
-            phoneNo: req.body.phoneNo,
-            email: req.body.email,
-            age: req.body.age,
-            gender: req.body.gender,
-            societyId: req.user.societyId,
-            password: hashedPassword,
-            role: "user",
-            metaData: {
-              wing: req.body.wing || existingData.metaData.wing,
-              unit: req.body.unit || existingData.metaData.unit,
-              type: req.body.type || existingData.metaData.type,
-            },
-          };
-          let owner;
-          if (req.body.owner && data.metaData.type === "tenant") {
-            try {
-              owner = JSON.parse(req.body.owner);
-            } catch (err) {
-              return sendResponse(res, 400, "Invalid owner data", 0);
+          if (req.files?.aadharImage_front?.[0]?.path) {
+            if (existingData.metaData.aadharImage_front) {
+              const publicId = existingData.aadharImage_front
+                .split("/")
+                .pop()
+                .split(".")[0];
+              await cloudinaryConfig.uploader.destroy(
+                `aadharImages/${publicId}`
+              );
             }
+            data.metaData.aadharImage_front =
+              req.files.aadharImage_front[0].path;
           }
-          if (owner) data.metaData.owner = owner;
-
-          if (req.body.members && req.body.members.length > 0) {
-            const members = JSON.parse(req.body.members);
-            const updatedMemberIds = [];
-            for (let member of members) {
-              if (member._id) {
-                await Member.findByIdAndUpdate(member._id, member);
-                updatedMemberIds.push(member._id);
-              } else {
-                const existingMember = await Member.findOne({ email: member.email });
-                if (existingMember) {
-                  return sendResponse(400, "Member already exists", 0);
-                }
-                const newMember = new Member({ ...member, UserId: id });
-                const savedMember = await newMember.save();
-                updatedMemberIds.push(savedMember._id);
-              }
+          if (req.files?.aadharImage_back?.[0]?.path) {
+            if (existingData.metaData.aadharImage_back) {
+              const publicId = existingData.aadharImage_back
+                .split("/")
+                .pop()
+                .split(".")[0];
+              await cloudinaryConfig.uploader.destroy(
+                `aadharImages/${publicId}`
+              );
             }
-            data.metaData.members = updatedMemberIds;
+            data.metaData.aadharImage_back =
+              req.files.aadharImage_back[0].path;
           }
-          if (req.body.vehicles && req.body.vehicles.length > 0) {
-            const vehicles = JSON.parse(req.body.vehicles);
-            const updatedVehicleIds = [];
-            for (let vehicle of vehicles) {
-              if (vehicle._id) {
-                await Vehicle.findByIdAndUpdate(vehicle._id, vehicle);
-                updatedVehicleIds.push(vehicle._id);
-              } else {
-                const existingVehicle = await Vehicle.findOne({ vehicleNumber: vehicle.vehicleNumber, });
-                if (existingVehicle) {
-                  return sendResponse(400, "Vehicle already exists", 0);
-                }
-                const newVehicle = new Vehicle({ ...vehicle, UserId: id });
-                const savedVehicle = await newVehicle.save();
-                updatedVehicleIds.push(savedVehicle._id);
-              }
+          if (req.files?.addressProofImage?.[0]?.path) {
+            if (existingData.metaData.addressProofImage) {
+              const publicId = existingData.addressProofImage
+                .split("/")
+                .pop()
+                .split(".")[0];
+              await cloudinaryConfig.uploader.destroy(
+                `addressProofImages/${publicId}`
+              );
             }
-            data.metaData.vehicles = updatedVehicleIds;
+            data.metaData.addressProofImage =
+              req.files.addressProofImage[0].path;
           }
-          if (req.files) {
-            if (req.files?.profile_image?.[0]?.path) {
-              if (existingData.metaData.profile_image) {
-                const publicId = existingData.profile_image
-                  .split("/")
-                  .pop()
-                  .split(".")[0];
-                await cloudinaryConfig.uploader.destroy(
-                  `profileImages/${publicId}`
-                );
-              }
-              data.profile_image = req.files.profile_image[0].path;
+          if (req.files?.rentalAgreementImage?.[0]?.path) {
+            if (existingData.metaData.rentalAgreementImage) {
+              const publicId = existingData.rentalAgreementImage
+                .split("/")
+                .pop()
+                .split(".")[0];
+              await cloudinaryConfig.uploader.destroy(
+                `rentalAgreementImages/${publicId}`
+              );
             }
-            if (req.files?.aadharImage_front?.[0]?.path) {
-              if (existingData.metaData.aadharImage_front) {
-                const publicId = existingData.aadharImage_front
-                  .split("/")
-                  .pop()
-                  .split(".")[0];
-                await cloudinaryConfig.uploader.destroy(
-                  `aadharImages/${publicId}`
-                );
-              }
-              data.metaData.aadharImage_front =
-                req.files.aadharImage_front[0].path;
-            }
-            if (req.files?.aadharImage_back?.[0]?.path) {
-              if (existingData.metaData.aadharImage_back) {
-                const publicId = existingData.aadharImage_back
-                  .split("/")
-                  .pop()
-                  .split(".")[0];
-                await cloudinaryConfig.uploader.destroy(
-                  `aadharImages/${publicId}`
-                );
-              }
-              data.metaData.aadharImage_back =
-                req.files.aadharImage_back[0].path;
-            }
-            if (req.files?.addressProofImage?.[0]?.path) {
-              if (existingData.metaData.addressProofImage) {
-                const publicId = existingData.addressProofImage
-                  .split("/")
-                  .pop()
-                  .split(".")[0];
-                await cloudinaryConfig.uploader.destroy(
-                  `addressProofImages/${publicId}`
-                );
-              }
-              data.metaData.addressProofImage =
-                req.files.addressProofImage[0].path;
-            }
-            if (req.files?.rentalAgreementImage?.[0]?.path) {
-              if (existingData.metaData.rentalAgreementImage) {
-                const publicId = existingData.rentalAgreementImage
-                  .split("/")
-                  .pop()
-                  .split(".")[0];
-                await cloudinaryConfig.uploader.destroy(
-                  `rentalAgreementImages/${publicId}`
-                );
-              }
-              data.metaData.rentalAgreementImage =
-                req.files.rentalAgreementImage[0].path;
-            }
+            data.metaData.rentalAgreementImage =
+              req.files.rentalAgreementImage[0].path;
           }
-          const updatedUser = await UserModel.findByIdAndUpdate(id, data, {
-            new: true,
-          });
-          if (updatedUser) {
-            return sendResponse(
-              res,
-              400,
-              "User updated successfully",
-              1,
-              updatedUser
-            );
-          } else {
-            return sendResponse(res, 400, "User data Not Found", 0);
-          }
+        }
+        const updatedUser = await UserModel.findByIdAndUpdate(id, data, {
+          new: true,
+        });
+        if (updatedUser) {
+          return sendResponse(
+            res,
+            400,
+            "User updated successfully",
+            1,
+            updatedUser
+          );
         } else {
           return sendResponse(res, 400, "User data Not Found", 0);
         }
       } else {
-        return sendResponse(res, 400, "Data is Missing", 0);
+        return sendResponse(res, 400, "User data Not Found", 0);
       }
     } else {
       return sendResponse(res, 400, "Parameter id is Missing", 0);

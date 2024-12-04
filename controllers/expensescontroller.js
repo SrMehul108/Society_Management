@@ -1,24 +1,23 @@
 const Expenses = require("../models/Expenses");
 const cloudinaryConfig = require("../config/cloudinaryConfig");
 const { sendResponse } = require("../services/responseHandler");
+const { validateRequest } = require("../services/validation");
 
 module.exports.insertExpense = async (req, res) => {
   try {
-    if (req.body && req.body !== "") {
-      if (req.files) {
-        if (req.files?.uploadBill?.[0]?.path) {
-          req.body.uploadBill = req.files.uploadBill[0].path;
-        }
+    validateRequest(req, res);
+    if (req.files) {
+      if (req.files?.uploadBill?.[0]?.path) {
+        req.body.uploadBill = req.files.uploadBill[0].path;
       }
-      req.body.societyId = req.user.societyId;
-      const newExpense = new Expenses(req.body);
-      await newExpense.save();
-      if (newExpense) {
-        return sendResponse(res, 400, "Data Insert Successfully", 1, newExpense);
-      }
-      return sendResponse(res, 400, "Something went wrong", 0);
     }
-    return sendResponse(res, 400, "Something missing in body data", 0);
+    req.body.societyId = req.user.societyId;
+    const newExpense = new Expenses(req.body);
+    await newExpense.save();
+    if (newExpense) {
+      return sendResponse(res, 400, "Data Insert Successfully", 1, newExpense);
+    }
+    return sendResponse(res, 400, "Something went wrong", 0);
   } catch (error) {
     console.log(error);
     return sendResponse(res, 500, "Internal Server Error", 0);
@@ -48,6 +47,7 @@ module.exports.viewExpense = async (req, res) => {
 
 module.exports.editExpense = async (req, res) => {
   try {
+    validateRequest(req, res);
     const { id } = req.params;
     if (id) {
       let existingData = await Expenses.findOne({ _id: id });
@@ -61,7 +61,7 @@ module.exports.editExpense = async (req, res) => {
             req.body.uploadBill = req.files.uploadBill[0].path;
           }
         }
-        let updateData = await Expenses.findByIdAndUpdate(id, req.body, {new: true});
+        let updateData = await Expenses.findByIdAndUpdate(id, req.body, { new: true });
         if (updateData) {
           return sendResponse(res, 200, "Data updated successfully", 1, updateData)
         }
@@ -83,7 +83,7 @@ module.exports.deleteExpense = async (req, res) => {
       let existingData = await Expenses.findOne({ _id: id });
       if (existingData) {
         existingData.isActive = false;
-        let updateData = await Expenses.findByIdAndUpdate(id, existingData, {new: true,});
+        let updateData = await Expenses.findByIdAndUpdate(id, existingData, { new: true, });
         if (updateData) {
           return sendResponse(res, 200, "Data Deleted Successfully", 1, updateData);
         }

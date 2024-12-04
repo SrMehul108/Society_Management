@@ -2,32 +2,32 @@ const UserModel = require('../models/UserData');
 const Payment = require('../models/Payment');
 const Maintenance = require('../models/Maintenance');
 const { sendResponse } = require('../services/responseHandler');
+const { validateRequest } = require('../services/validation');
 
 module.exports.insert = async (req, res) => {
     try {
-        if (req.body && req.body !== '') {
-            req.body.societyId = req.user.societyId;
-            let existingMaintance = await Maintenance.findOne({ societyId: req.body.societyId, isActive: true });
-            if (existingMaintance) {
-                return sendResponse(res, 400, 'Maintenance already exists for this society',0);
-            }
-            const newMaintenance = new Maintenance(req.body);
-            await newMaintenance.save();
-            if (newMaintenance) {
-                const userIds = await UserModel.find({ societyId: req.user.societyId, role:'user' }).select('_id');
-                const paymentPromises = userIds.map(userId => {
-                    const paymentData = {
-                        type: 'maintenance',
-                        amount: newMaintenance.amount,
-                        UserId: userId._id,
-                    };
-                    return new Payment(paymentData).save();
-                });
-                await Promise.all(paymentPromises);
-                return sendResponse(res, 200, "Maintanace added Succesfully", 1, newMaintenance);
-            }
-            return sendResponse(res, 400, "Something went wrong", 0);
+        validateRequest(req, res);
+        req.body.societyId = req.user.societyId;
+        let existingMaintance = await Maintenance.findOne({ societyId: req.body.societyId, isActive: true });
+        if (existingMaintance) {
+            return sendResponse(res, 400, 'Maintenance already exists for this society', 0);
         }
+        const newMaintenance = new Maintenance(req.body);
+        await newMaintenance.save();
+        if (newMaintenance) {
+            const userIds = await UserModel.find({ societyId: req.user.societyId, role: 'user' }).select('_id');
+            const paymentPromises = userIds.map(userId => {
+                const paymentData = {
+                    type: 'maintenance',
+                    amount: newMaintenance.amount,
+                    UserId: userId._id,
+                };
+                return new Payment(paymentData).save();
+            });
+            await Promise.all(paymentPromises);
+            return sendResponse(res, 200, "Maintanace added Succesfully", 1, newMaintenance);
+        }
+        return sendResponse(res, 400, "Something went wrong", 0);
     } catch (error) {
         console.log(error);
         return sendResponse(res, 500, "Internal Server Error", 0);
@@ -67,7 +67,7 @@ module.exports.maintenanceDetail = async (req, res) => {
                 const userIds = userData.map(user => user._id);
 
                 // Retrieve payment data for these users where type is "maintenance"
-                const paymentData = await Payment.find({ UserId: { $in: userIds }, type: "maintenance"});
+                const paymentData = await Payment.find({ UserId: { $in: userIds }, type: "maintenance" });
 
                 // Create a map of penalties based on user ID
                 const penaltyMap = isMaintenace.reduce((acc, maintenance) => {
@@ -112,8 +112,9 @@ module.exports.maintenanceDetail = async (req, res) => {
 
 module.exports.editMaintenance = async (req, res) => {
     try {
+        validateRequest(req, res);
         const { id } = req.params;
-        if (id && req.body !== "") {
+        if (id) {
             const existingData = await Maintenance.findById({ _id: id, societyId: req.user.societyId });
             if (!existingData && existingData == '') {
                 return sendResponse(res, 400, "Maintenance data not found", 0);

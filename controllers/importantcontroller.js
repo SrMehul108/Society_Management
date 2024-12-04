@@ -1,22 +1,21 @@
 const Important = require("../models/Important");
 const { sendResponse } = require("../services/responseHandler");
+const { validateRequest } = require("../services/validation");
 
 module.exports.insert = async (req, res) => {
   try {
-    if (req.body && req.body !== "") {
-      let check = await Important.findOne({ phoneNo: req.body.phoneNo });
-      if (check) {
-        return sendResponse(res, 400, "Phone number already exists", 0);
-      }
-      req.body.societyId = req.user.societyId;
-      let newData = new Important(req.body);
-      await newData.save();
-      if (newData) {
-        return sendResponse(res, 200, "Important contact saved successfully", 1, newdata);
-      }
-      return sendResponse(res, 400, "Something Wrong", 0);
+    validateRequest(req, res);
+    let check = await Important.findOne({ phoneNo: req.body.phoneNo });
+    if (check) {
+      return sendResponse(res, 400, "Phone number already exists", 0);
     }
-    return sendResponse(res, 400, "Something went wrong", 0);
+    req.body.societyId = req.user.societyId;
+    let newData = new Important(req.body);
+    await newData.save();
+    if (newData) {
+      return sendResponse(res, 200, "Important contact saved successfully", 1, newdata);
+    }
+    return sendResponse(res, 400, "Something Wrong", 0);
   } catch (error) {
     console.log(error);
     return sendResponse(res, 500, "Internal Server Error", 0);
@@ -49,6 +48,7 @@ module.exports.viewImportnat = async (req, res) => {
 
 module.exports.editImportant = async (req, res) => {
   try {
+    validateRequest(req, res);
     const { id } = req.params;
     if (id) {
       let existingData = await Important.findOne({ _id: id });

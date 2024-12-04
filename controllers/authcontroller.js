@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const cloudinaryConfig = require("../config/cloudinaryConfig");
 const { sendResponse } = require("../services/responseHandler");
+const { validateRequest } = require("../services/validation");
 this.OTP = "";
+
 module.exports.registerUser = async (req, res) => {
   try {
     if (req.body !== "") {
@@ -58,8 +60,8 @@ module.exports.loginUser = async (req, res) => {
       if (checkmail) {
         let pass = await bcrypt.compare(req.body.password, checkmail.password);
         if (pass) {
-          let token = await jwt.sign({ userData: checkmail },process.env.JWT_SECRET_ADMIN,{ expiresIn: "1d" });
-          
+          let token = await jwt.sign({ userData: checkmail }, process.env.JWT_SECRET_ADMIN, { expiresIn: "1d" });
+
           return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token, role: checkmail.role, });
         } else {
           return sendResponse(res, 400, "Invalid Password", 0);
@@ -146,7 +148,7 @@ module.exports.resetPassword = async (req, res) => {
         if (isSamePassword) {
           return sendResponse(res, 400, "New password must be different from the current password", 0);
         } else {
-          if ( req.body.password !== "" && req.body.password === req.body.confirmPassword) {
+          if (req.body.password !== "" && req.body.password === req.body.confirmPassword) {
             let pass = await bcrypt.hash(req.body.password, 10);
             req.body.password = pass;
             await UserModel.findByIdAndUpdate(checkmail._id, req.body);
@@ -169,34 +171,25 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.editProfile = async (req, res) => {
   try {
-    if (req.user) {
-      let olddata = await UserModel.findOne({ _id: req.user._id });
-      if (req.body == "") {
-        return sendResponse(res, 400, "Something went wrong", 0);
-      }
-      if (req.files) {
-        if (req.files?.profile_image?.[0]?.path) {
-          if (olddata.profile_image) {
-            const publicId = olddata.profile_image
-              .split("/")
-              .pop()
-              .split(".")[0];
-            await cloudinaryConfig.uploader.destroy(`adminImages/${publicId}`);
-          }
-          req.body.profile_image = req.files.profile_image[0].path;
-        }
-      }
-      const updatedData = await UserModel.findByIdAndUpdate(
-        req.user._id,
-        req.body,
-        { new: true }
-      );
-      if (updatedData) {
-        return sendResponse(res, 200, "Data Updated Successfully", 1, updatedData);
-      }
+    validateRequest(req, res);
+    let olddata = await UserModel.findOne({ _id: req.user._id });
+    if (req.body == "") {
       return sendResponse(res, 400, "Something went wrong", 0);
     }
-    return sendResponse(res, 400, "UnAuthorized", 0);
+    if (req.files) {
+      if (req.files?.profile_image?.[0]?.path) {
+        if (olddata.profile_image) {
+          const publicId = olddata.profile_image.split("/").pop().split(".")[0];
+          await cloudinaryConfig.uploader.destroy(`adminImages/${publicId}`);
+        }
+        req.body.profile_image = req.files.profile_image[0].path;
+      }
+    }
+    const updatedData = await UserModel.findByIdAndUpdate(req.user._id, req.body, { new: true });
+    if (updatedData) {
+      return sendResponse(res, 200, "Data Updated Successfully", 1, updatedData);
+    }
+    return sendResponse(res, 400, "Something went wrong", 0);
   } catch (error) {
     console.log(error);
     return sendResponse(res, 500, "Internal Server Error", 0);
