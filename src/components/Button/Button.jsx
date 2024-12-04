@@ -124,7 +124,7 @@ export const TenantButton = ({ label = "Tenant" }) => {
   };
   export const HighButton = ({ label = "High" }) => {
     return (
-        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        <button className="flex items-center px-7 py-1.5 bg-red-500 text-white font-medium rounded-full">
         
         {label}
       </button>
