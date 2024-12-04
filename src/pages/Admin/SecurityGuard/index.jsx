@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import AddSecurity from "../../../components/SecurityGuard/AddSecurity";
 import ViewSecurity from "../../../components/SecurityGuard/ViewSecurity";
 import DeleteSecurity from "../../../components/SecurityGuard/DeleteSecurity";
+import { DayButton, FeMaleButton, MaleButton, NightButton } from "../../../components/Button/Button";
 
 function SecurityGuard() {
   // Modal and form state
@@ -38,6 +39,14 @@ function SecurityGuard() {
         date: "10/02/2024",
         time: "10-12-2021",
         gender: "male",
+      },
+      {
+        name: "Cody Fisher",
+        phone: "9456496321",
+        shift :"Day",
+        date: "10/02/2024",
+        time: "10-12-2021",
+        gender: "Female",
       },
       {
         name: "Cody Fisher",
@@ -106,7 +115,7 @@ function SecurityGuard() {
                         <span className="text-black ">{item.phone}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span
+                        {/* <span
                           className={`px-2 py-1 rounded-full ${
                             item.shift === "day"
                               ? " text-yellow-600"
@@ -114,21 +123,22 @@ function SecurityGuard() {
                           }`}
                         >
                           {item.shift}
-                        </span>
+                        </span> */}
+                        {item.shift === "Day" ? (
+                          <DayButton/>
+                        ):(
+                          <NightButton/>
+                        )}
                       </td>
 
                       <td className="px-4 py-3 ">{item.date}</td>
                       <td className="px-4 py-3 ">{item.time}</td>
                       <td className="px-4 py-3">
-                        <span
-                          className={` py-1 rounded-full ${
-                            item.gender === "Male"
-                              ? "bg-yellow-100 text-yellow-600"
-                              : "bg-green-100 text-green-600 px-2"
-                          }`}
-                        >
-                          {item.gender}
-                        </span>
+                       {item.gender.toLowerCase() === "male" ? (
+                          <MaleButton />
+                        ):(
+                          <FeMaleButton/>
+                        )}
                       </td>
                       <td className=" text-sm text-blue-500 cursor-pointer hover:text-blue-700 ">
                         <button
