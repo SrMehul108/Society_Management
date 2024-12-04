@@ -309,11 +309,11 @@ export const updateIncome = async (data) => {
   }
 };
 
-export const deleteIncome = async ({ _id }) => {
+export const deleteIncome = async ( id ) => {
   try {
     var token = AdminToken(); // Ensure you have the correct token logic for admin authorization
     const response = await axios.delete(
-      `${API_URL}/auth/admin/otheincome/deleteIncome/${_id}`,
+      `${API_URL}/auth/admin/otheincome/deleteIncome/${id}`,
       {
         headers: {
           "Content-Type": "application/json",

@@ -640,3 +640,41 @@ export const ViewOwner = ({ isOpen, onClose, residentDetails }) => {
 
 
 
+
+ // const [wingCount, setWingCount] = useState(1);
+  // const [wings, setWings] = useState(
+  //   Array.from({ length: 1 }, () => ({
+  //     floor: '',
+  //     flats: '',
+
+  //   }))
+  // );
+
+  // const handleWingCountChange = (event) => {
+  //   const count = Number(event.target.value);
+  //   setWingCount(count);
+
+  //   // Adjust the number of members in the array
+  //   setWings((prevWings) => {
+  //     if (count > prevWings.length) {
+  //       return [
+  //         ...prevWings,
+  //         ...Array.from({ length: count - prevWings.length }, () => ({
+  //           floor: '',
+  //           flats: '',
+
+  //         }))
+  //       ];
+  //     } else {
+  //       return prevWings.slice(0, count);
+  //     }
+  //   });
+  // };
+
+  // const handleInputChange = (index, field, value) => {
+  //   setWings((prevWings) => {
+  //     const updatedWings = [...prevWings];
+  //     updatedWings[index][field] = value;
+  //     return updatedWings;
+  //   });
+  // };

@@ -127,11 +127,11 @@ function OtherIncome({ incomeData, onCreate, onEditIncome, onDeleteIncome }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {incomeData.map((income, index) => (
           <OtherIncomeCard
-            key={income.id || index}
+            key={income._id || index}
             data={income}
             onView={() => console.log(`Viewing ${income.title}`)}
             onEdit={(updatedData) => onEditIncome(index, updatedData)}
-            onDelete={() => onDeleteIncome(index, income.id)} // Call delete handler
+            onDelete={() => onDeleteIncome(index, income._id)} // Call delete handler
           />
         ))}
       </div>
@@ -196,9 +196,10 @@ export default function OtherIncomeContainer() {
     }
   };
 
-  const handleDeleteIncome = async (index, id) => {
+  const handleDeleteIncome = async (index,id) => {
+    console.log(id)
     try {
-      await deleteIncome({ _id: id });
+      await deleteIncome(id);
       const updatedData = incomeData.filter((_, i) => i !== index);
       setIncomeData(updatedData);
       console.log(`Income with ID ${id} deleted successfully.`);
