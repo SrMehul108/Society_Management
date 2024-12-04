@@ -8,10 +8,7 @@ this.OTP = "";
 module.exports.registerUser = async (req, res) => {
   try {
     if (req.body !== "") {
-      if (
-        req.body.password !== "" &&
-        req.body.password === req.body.confirmPassword
-      ) {
+      if (req.body.password !== "" && req.body.password === req.body.confirmPassword) {
         let checkmail = await UserModel.findOne({ email: req.body.email });
         if (checkmail) {
           return sendResponse(res, 400, "Email Already Exists", 0);
@@ -37,24 +34,13 @@ module.exports.registerUser = async (req, res) => {
               text: `Hello ${req.body.name}`,
               html: `<p>You've Successfully Registered</p><br><p>You can now log in with your email address.</p>`,
             });
-            return sendResponse(
-              res,
-              200,
-              "Admin Registered Successfully",
-              1,
-              newUser
-            );
+            return sendResponse(res, 200, "Admin Registered Successfully", 1, newUser);
           } else {
             return sendResponse(res, 400, "Something went wrong", 0);
           }
         }
       } else {
-        return sendResponse(
-          res,
-          400,
-          "Password and Confirm Password is Not Matched",
-          0
-        );
+        return sendResponse(res, 400, "Password and Confirm Password is Not Matched", 0);
       }
     } else {
       return sendResponse(res, 400, "Data Not Found", 0);
@@ -72,19 +58,9 @@ module.exports.loginUser = async (req, res) => {
       if (checkmail) {
         let pass = await bcrypt.compare(req.body.password, checkmail.password);
         if (pass) {
-          let token = await jwt.sign(
-            { userData: checkmail },
-            process.env.JWT_SECRET_ADMIN,
-            { expiresIn: "1d" }
-          );
-          return res
-            .status(200)
-            .json({
-              message: "You're Logged In Successfully 🎉",
-              status: 1,
-              data: token,
-              role: checkmail.role,
-            });
+          let token = await jwt.sign({ userData: checkmail },process.env.JWT_SECRET_ADMIN,{ expiresIn: "1d" });
+          
+          return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token, role: checkmail.role, });
         } else {
           return sendResponse(res, 400, "Invalid Password", 0);
         }
@@ -110,11 +86,7 @@ module.exports.forgotPassword = async (req, res) => {
       return sendResponse(res, 400, "Email is Incorrect", 0);
     }
     const otp = Math.floor(100000 + Math.random() * 900000);
-    res.cookie("otp", otp, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
+    res.cookie("otp", otp, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict" });
     this.OTP = otp;
     res.cookie("email", checkmail.email);
 
@@ -145,7 +117,6 @@ module.exports.forgotPassword = async (req, res) => {
 
 module.exports.verifyOtp = async (req, res) => {
   try {
-    console.log(req.body, req.cookies.otp);
     if (req.body !== "") {
       let sendedOtp = req.cookies.otp ? req.cookies.otp : this.OTP;
       if (req.body.otp == sendedOtp) {
@@ -173,28 +144,15 @@ module.exports.resetPassword = async (req, res) => {
           checkmail.password
         );
         if (isSamePassword) {
-          return sendResponse(
-            res,
-            400,
-            "New password must be different from the current password",
-            0
-          );
+          return sendResponse(res, 400, "New password must be different from the current password", 0);
         } else {
-          if (
-            req.body.password !== "" &&
-            req.body.password === req.body.confirmPassword
-          ) {
+          if ( req.body.password !== "" && req.body.password === req.body.confirmPassword) {
             let pass = await bcrypt.hash(req.body.password, 10);
             req.body.password = pass;
             await UserModel.findByIdAndUpdate(checkmail._id, req.body);
             return sendResponse(res, 200, "Password Reset Successfully 🎉", 1);
           } else {
-            return sendResponse(
-              res,
-              400,
-              "Password and Confirm Password must be same",
-              0
-            );
+            return sendResponse(res, 400, "Password and Confirm Password must be same", 0);
           }
         }
       } else {
@@ -234,13 +192,7 @@ module.exports.editProfile = async (req, res) => {
         { new: true }
       );
       if (updatedData) {
-        return res
-          .status(200)
-          .json({
-            message: "Data Updated Succesfully",
-            status: 1,
-            data: updatedData,
-          });
+        return sendResponse(res, 200, "Data Updated Successfully", 1, updatedData);
       }
       return sendResponse(res, 400, "Something went wrong", 0);
     }

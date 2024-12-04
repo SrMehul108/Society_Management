@@ -12,11 +12,7 @@ module.exports.insert = async (req, res) => {
       let newData = new Important(req.body);
       await newData.save();
       if (newData) {
-        return res.status(200).json({
-          message: "Data Inserted Successfull",
-          status: 0,
-          data: newData,
-        });
+        return sendResponse(res, 200, "Important contact saved successfully", 1, newdata);
       }
       return sendResponse(res, 400, "Something Wrong", 0);
     }
@@ -33,9 +29,7 @@ module.exports.viewImportnat = async (req, res) => {
     if (id) {
       let data = await Important.findOne({ _id: id });
       if (data) {
-        return res
-          .status(200)
-          .json({ message: "Data fetched Succesfully", status: 1, data: data });
+        return sendResponse(res, 200, "Important contact found successfully", 1, data);
       }
       return sendResponse(res, 400, "Data Not Found", 0);
     }
@@ -44,9 +38,7 @@ module.exports.viewImportnat = async (req, res) => {
       societyId: req.user.societyId,
     });
     if (data) {
-      return res
-        .status(200)
-        .json({ message: "Data fetched successfully", status: 1, data: data });
+      return sendResponse(res, 200, "Important contact found successfully", 1, data);
     }
     return sendResponse(res, 400, "Data Not Found", 0);
   } catch (error) {
@@ -69,11 +61,7 @@ module.exports.editImportant = async (req, res) => {
           new: true,
         });
         if (updatedData) {
-          return res.status(200).json({
-            message: "Data update successfully",
-            status: 1,
-            data: updatedData,
-          });
+          return sendResponse(res, 200, "Important contact updated successfully", 1, updatedData);
         }
         return sendResponse(res, 400, "Something Went wrong", 0);
       }
@@ -98,11 +86,7 @@ module.exports.deleteImportant = async (req, res) => {
           new: true,
         });
         if (updatedData) {
-          return res.status(200).json({
-            message: "Data update successfully",
-            status: 1,
-            data: updatedData,
-          });
+          return sendResponse(res, 200, "Important contact deleted successfully", 1, updatedData);
         }
         return sendResponse(res, 400, "Something Went wrong", 0);
       }

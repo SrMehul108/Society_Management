@@ -40,7 +40,7 @@ module.exports.viewMaintance = async (req, res) => {
         if (societyId) {
             let maintance = await Maintenance.find({ societyId: societyId, isActive: true });
             if (maintance) {
-                return res.status(200).json({ message: "Maintance Detailed fetched succesfully", status: 1, data: maintance });
+                return sendResponse(res, 200, "Maintenance Details", 1, maintance);
             }
             return sendResponse(res, 400, "No Maintance found for this society", 0);
         }
@@ -61,18 +61,13 @@ module.exports.maintenanceDetail = async (req, res) => {
             if (!isMaintenace) {
                 return sendResponse(res, 400, "No Maintenance found", 0);
             }
-            console.log(isMaintenace);
-            
             // Retrieve user data for the society
             const userData = await UserModel.find({ societyId: req.user.societyId, role: 'user' });
             if (userData && userData.length > 0) {
                 const userIds = userData.map(user => user._id);
 
                 // Retrieve payment data for these users where type is "maintenance"
-                const paymentData = await Payment.find({
-                    UserId: { $in: userIds },
-                    type: "maintenance"
-                });
+                const paymentData = await Payment.find({ UserId: { $in: userIds }, type: "maintenance"});
 
                 // Create a map of penalties based on user ID
                 const penaltyMap = isMaintenace.reduce((acc, maintenance) => {
@@ -145,7 +140,7 @@ module.exports.deleteMaintenance = async (req, res) => {
                 data.isActive = false;
                 const deleted = await Maintenance.findByIdAndUpdate(id, data);
                 if (deleted) {
-                    return res.status(200).json({ message: "Maintenance Delete Succesfully" });
+                    return sendResponse(res, 200, "Maintenance deleted successfully", 0, deleted);
                 }
                 return sendResponse(res, 400, "Something went wrong", 0);
             }

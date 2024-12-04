@@ -25,12 +25,7 @@ module.exports.insertUser = async (req, res) => {
         _id: { $ne: existingUser._id },
       });
       if (wingValidation) {
-        return sendResponse(
-          res,
-          400,
-          "On selected Wing & unit, there is already a resident",
-          0
-        );
+        return sendResponse(res, 400, "On selected Wing & unit, there is already a resident", 0);
       }
       return sendResponse(res, 400, "Email already exists", 0);
     }
@@ -70,8 +65,7 @@ module.exports.insertUser = async (req, res) => {
           return sendResponse(res, 400, "Invalid JSON format for members", 0);
         }
       }
-      if (req.body.owner && data.metaData.type === "tenant")
-        owner = JSON.parse(req.body.owner);
+      if (req.body.owner && data.metaData.type === "tenant") owner = JSON.parse(req.body.owner);
     } catch (err) {
       return sendResponse(res, 400, "Invalid JSON format for members", 0);
     }
@@ -79,14 +73,10 @@ module.exports.insertUser = async (req, res) => {
     // File uploads
     if (req.files) {
       data.profile_image = req.files?.profile_image?.[0]?.path || null;
-      data.metaData.aadharImage_front =
-        req.files?.aadharImage_front?.[0]?.path || null;
-      data.metaData.aadharImage_back =
-        req.files?.aadharImage_back?.[0]?.path || null;
-      data.metaData.addressProofImage =
-        req.files?.addressProofImage?.[0]?.path || null;
-      data.metaData.rentalAgreementImage =
-        req.files?.rentalAgreementImage?.[0]?.path || null;
+      data.metaData.aadharImage_front = req.files?.aadharImage_front?.[0]?.path || null;
+      data.metaData.aadharImage_back = req.files?.aadharImage_back?.[0]?.path || null;
+      data.metaData.addressProofImage = req.files?.addressProofImage?.[0]?.path || null;
+      data.metaData.rentalAgreementImage = req.files?.rentalAgreementImage?.[0]?.path || null;
     }
     // Create user and related entities
     const session = await mongoose.startSession();
@@ -97,11 +87,7 @@ module.exports.insertUser = async (req, res) => {
       societyId: req.user.societyId,
     });
     if (maintenanceData) {
-      const insertPayment = {
-        type: "maintenance",
-        amount: maintenanceData.amount,
-        UserId: newUser[0]._id,
-      };
+      const insertPayment = { type: "maintenance", amount: maintenanceData.amount, UserId: newUser[0]._id,};
       await Payment.create(insertPayment);
     }
     if (members) {
@@ -144,20 +130,9 @@ module.exports.insertUser = async (req, res) => {
         html: htmlMessage,
       });
     } catch (emailError) {
-      return sendResponse(
-        res,
-        500,
-        "User registered, but email sending failed",
-        0
-      );
+      return sendResponse(res, 500, "User registered, but email sending failed", 0);
     }
-    return sendResponse(
-      res,
-      200,
-      "User Registered Successfully",
-      1,
-      newUser[0]
-    );
+    return sendResponse(res, 200, "User Registered Successfully", 1, newUser[0]);
   } catch (error) {
     console.error(error);
     return sendResponse(res, 500, "Internal Server Error", 0);
@@ -195,13 +170,7 @@ module.exports.viewUser = async (req, res) => {
             })),
           },
         };
-        return sendResponse(
-          res,
-          200,
-          "User fetched successfully",
-          1,
-          formattedData
-        );
+        return sendResponse(res, 200, "User fetched successfully", 1, formattedData);
       } else {
         return sendResponse(res, 400, "User not found", 0, []);
       }
@@ -220,13 +189,7 @@ module.exports.viewUser = async (req, res) => {
         members: user.metaData.members?.length || 0,
         vehicles: user.metaData.vehicles?.length || 0,
       }));
-      return sendResponse(
-        res,
-        200,
-        "User fetched successfully",
-        1,
-        formattedData
-      );
+      return sendResponse(res, 200, "User fetched successfully", 1, formattedData);
     } else {
       return sendResponse(res, 400, "User not found", 0, []);
     }
@@ -301,14 +264,9 @@ module.exports.editUser = async (req, res) => {
                 await Member.findByIdAndUpdate(member._id, member);
                 updatedMemberIds.push(member._id);
               } else {
-                const existingMember = await Member.findOne({
-                  email: member.email,
-                });
+                const existingMember = await Member.findOne({ email: member.email });
                 if (existingMember) {
-                  return res.status(400).json({
-                    message: `Member with email ${member.email} already exists`,
-                    status: 0,
-                  });
+                  return sendResponse(400, "Member already exists", 0);
                 }
                 const newMember = new Member({ ...member, UserId: id });
                 const savedMember = await newMember.save();
@@ -325,14 +283,9 @@ module.exports.editUser = async (req, res) => {
                 await Vehicle.findByIdAndUpdate(vehicle._id, vehicle);
                 updatedVehicleIds.push(vehicle._id);
               } else {
-                const existingVehicle = await Vehicle.findOne({
-                  vehicleNumber: vehicle.vehicleNumber,
-                });
+                const existingVehicle = await Vehicle.findOne({ vehicleNumber: vehicle.vehicleNumber, });
                 if (existingVehicle) {
-                  return res.status(400).json({
-                    message: `Vehicle with number ${vehicle.vehicleNumber} already exists`,
-                    status: 0,
-                  });
+                  return sendResponse(400, "Vehicle already exists", 0);
                 }
                 const newVehicle = new Vehicle({ ...vehicle, UserId: id });
                 const savedVehicle = await newVehicle.save();
@@ -451,9 +404,9 @@ module.exports.deleteUser = async (req, res) => {
           new: true,
         });
         if (updateData) {
-          return sendResponse(res, 200, "User Vacate Successfully", 1);
+          return sendResponse(res, 200, "User Vacate Successfully", 1, updateData);
         }
-        return sendResponse(res, 200, "data Not Updated", 0);
+        return sendResponse(res, 400, "data Not Updated", 0);
       }
       return sendResponse(res, 404, "User data Not Found", 0);
     }
@@ -522,13 +475,7 @@ module.exports.addNewSecurity = async (req, res) => {
           text: `Hello ${req.body.fullname}, You've Successfully Registered. You can now log in with Email: ${req.body.email}, Password: ${password}.`,
           html: htmlMessage,
         });
-        return sendResponse(
-          res,
-          200,
-          "Security Guard Registered Successfully",
-          1,
-          newUser
-        );
+        return sendResponse(res, 200, "Security Guard Registered Successfully", 1, newUser);
       }
       return sendResponse(res, 400, "Something went wrong", 0);
     }
@@ -549,11 +496,7 @@ module.exports.viewSecurity = async (req, res) => {
         role: "security",
       });
       if (userdata) {
-        return res.status(200).json({
-          message: "Security Guard fetched Succesfully",
-          status: 1,
-          data: userdata,
-        });
+        return sendResponse(res, 200, "Security Guard Found", 1, userdata);
       } else {
         return sendResponse(res, 400, "Security Guard Not Found", 0, []);
       }
@@ -564,11 +507,7 @@ module.exports.viewSecurity = async (req, res) => {
       role: "security",
     });
     if (userData && userData.length > 0) {
-      return res.status(200).json({
-        message: "Gaurd data fetched succesfully",
-        status: 1,
-        data: formattedData,
-      });
+      return sendResponse(res, 200, "Security Guards Found", 1, userData);
     } else {
       return sendResponse(res, 400, "No Gaurd Found", 0, []);
     }
@@ -629,11 +568,7 @@ module.exports.editSecurity = async (req, res) => {
             new: true,
           });
           if (updatedUser) {
-            return res.status(200).json({
-              message: "Data updated successfully",
-              status: 1,
-              data: updatedUser,
-            });
+            return sendResponse(200, "User updated successfully", 1, updatedUser);
           }
           return sendResponse(res, 400, "Data Not updated", 0);
         }
@@ -663,7 +598,7 @@ module.exports.deleteSecurity = async (req, res) => {
           new: true,
         });
         if (updateData) {
-          return sendResponse(res, 200, "Security deleted successfully", 1);
+          return sendResponse(res, 200, "Security deleted successfully", 1, updateData);
         }
         return sendResponse(res, 400, "Security Not deleted", 0);
       }

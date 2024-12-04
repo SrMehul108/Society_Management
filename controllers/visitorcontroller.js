@@ -37,7 +37,7 @@ module.exports.getEntry = async (req, res) => {
 
 module.exports.editEntry = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         if (id) {
             const data = await Visitor.find({ _id: id, societyId: req.user.id });
             if (data) {
@@ -65,7 +65,7 @@ module.exports.deleteEntry = async (req, res) => {
                 data.isActive = false;
                 const deleted = await Visitor.findByIdAndUpdate(id, data);
                 if (deleted) {
-                    return res.status(200).json({ message: "Visitor Delete Succesfully" });
+                    return sendResponse(res, 200, "Data deleted successfully", 1, deleted);
                 }
                 return sendResponse(res, 400, "Something went wrong", 0);
             }

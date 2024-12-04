@@ -24,11 +24,13 @@ router.delete('/deleteSecurity/:id', deleteSecurity);
 
 
 // Other Secure Routes 
-router.use('/maintanace', require('./maintanace'));
-router.use('/otheincome', require('./otherIncome'));
-router.use('/important', require('./important'));
-router.use('/expenses', require('./expenses'));
-router.use('/note', require('./note'));
-router.use('/facility', require('./facility'));
-router.use('/complaint', require('./complaint'));
+router.use('/maintanace', require('./maintanace')); //maintenance route
+router.use('/otheincome', require('./otherIncome')); //other income route
+router.use('/important', require('./important')); // important route
+router.use('/expenses', require('./expenses')); // expenses route
+router.use('/note', require('./note')); // note route
+router.use('/facility', require('./facility')); // facility route
+router.use('/complaint', require('./complaint')); // complaint route
+router.use('/announce', require('./announcement')); // announcement route
+router.use('/security', require('./security')); // security route
 module.exports = router;

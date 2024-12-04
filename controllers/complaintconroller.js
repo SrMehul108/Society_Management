@@ -9,7 +9,7 @@ module.exports.insertComplaint = async (req, res) => {
                 const newData = new Complaint(req.body);
                 await newData.save();
                 if (newData) {
-                    return res.status(200).json({ message: "Complaint Raised successfully", status: 1, data: newData });
+                    return sendResponse(res, 200, "Complaint inserted successfully", 1, newData);
                 }
                 return sendResponse(res,400,"There was an error while saving data",0)
             }
@@ -33,12 +33,12 @@ module.exports.viewComplaint = async (req, res) => {
         if (id) {
             const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: type });
             if (data) {
-                return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
+                return sendResponse(res, 200, "Complaint found successfully", 1, data);
             }
             return sendResponse(res,400,"No data found with the given id",0)
         }
         const allData = await Complaint.find({ societyId: req.user.societyId, isActive: true, type: type });
-        if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
+        if (allData) return sendResponse(res, 200, "Complaints found successfully", 1, allData);
         return sendResponse(res,400,"No data found",0)
     } catch (error) {
         console.log(error);
@@ -53,7 +53,7 @@ module.exports.editComplaint = async (req, res) => {
             req.body.societyId = req.user.societyId;
             let updatedData = await Complaint.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
-                return res.status(200).json({ message: "Data Update Successfully", status: 1, data: updatedData });
+                return sendResponse(res, 200, "Complaint updated successfully", 1, updatedData)
             }
             return sendResponse(res,400,"Data not updated",0)
         }
@@ -71,7 +71,7 @@ module.exports.deleteComplaint = async (req, res) => {
             req.body.isActive = false;
             let updatedData = await Complaint.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
-                return res.status(200).json({ message: "Data Delete Successfully", status: 1, data: updatedData });
+                return sendResponse(res, 200, "Complaint deleted successfully", 1, updatedData);
             }
             return sendResponse(res,400,"Data not deleted",0)
         }

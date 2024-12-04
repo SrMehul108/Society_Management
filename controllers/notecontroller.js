@@ -1,5 +1,5 @@
 const Note = require('../models/Note');
-const {sendResponse} = require("../services/responseHandler")
+const { sendResponse } = require("../services/responseHandler")
 
 module.exports.insertNote = async (req, res) => {
     try {
@@ -9,17 +9,17 @@ module.exports.insertNote = async (req, res) => {
                 const newData = new Note(req.body);
                 await newData.save();
                 if (newData) {
-                    return res.status(200).json({ message: "Note added successfully", status: 1, data: newData });
+                    sendResponse(res, 200, "Note inserted successfully", 1, newData);
                 }
-                return sendResponse(res,400,"There was an error while saving data" ,0)
+                return sendResponse(res, 400, "There was an error while saving data", 0)
             }
-            return sendResponse(res,400,"Unauthorized" ,0)
+            return sendResponse(res, 400, "Unauthorized", 0)
         } else {
-            return sendResponse(res,400,"Invalid request" ,0)
+            return sendResponse(res, 400, "Invalid request", 0)
         }
     } catch (error) {
         console.log(error);
-        return sendResponse(res,500,"Internal Server Error" ,0)
+        return sendResponse(res, 500, "Internal Server Error", 0)
     }
 }
 
@@ -29,16 +29,16 @@ module.exports.viewNote = async (req, res) => {
         if (id) {
             const data = await Note.findOne({ _id: id, societyId: req.user.societyId, isActive: true });
             if (data) {
-                return res.status(200).json({ message: "Data fetched successfully", status: 1, data: data });
+                sendResponse(res, 200, "Note found successfully", 1, data);
             }
-            return sendResponse(res,400,"Data not found" ,0)
+            return sendResponse(res, 400, "Data not found", 0)
         }
         const allData = await Note.find({ societyId: req.user.societyId, isActive: true });
-        if (allData) return res.status(200).json({ message: "Data fetched successfully", status: 1, data: allData });
-        return sendResponse(res,400,"Data not found" ,0)
+        if (allData) return sendResponse(res, 200, "Notes found successfully", 1, allData);
+        return sendResponse(res, 400, "Data not found", 0)
     } catch (error) {
         console.log(error);
-        return sendResponse(res,500,"Internal Server Error" ,0)
+        return sendResponse(res, 500, "Internal Server Error", 0)
     }
 }
 
@@ -50,14 +50,14 @@ module.exports.editNote = async (req, res) => {
             req.body.societyId = req.user.societyId;
             let updatedData = await Note.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
-                return res.status(200).json({ message: "Data Update Successfully", status: 1, data: updatedData });
+                sendResponse(res, 200, "Note updated successfully", 1, updatedData);
             }
-            return sendResponse(res,400,"Data not found" ,0)
+            return sendResponse(res, 400, "Data not found", 0)
         }
-        return sendResponse(res,400,"Parameter (id) is missing" ,0)
+        return sendResponse(res, 400, "Parameter (id) is missing", 0)
     } catch (error) {
         console.log(error);
-        return sendResponse(res,500,"Internal Server Error" ,0)
+        return sendResponse(res, 500, "Internal Server Error", 0)
     }
 }
 
@@ -68,13 +68,13 @@ module.exports.deleteNote = async (req, res) => {
             req.body.isActive = false;
             let updatedData = await Note.findByIdAndUpdate(id, req.body, { new: true });
             if (updatedData) {
-                return res.status(200).json({ message: "Data Delete Successfully", status: 1, data: updatedData });
+                sendResponse(res, 200, "Note deleted successfully", 1, updatedData);
             }
-            return sendResponse(res,400,"Data not found" ,0)
+            return sendResponse(res, 400, "Data not found", 0)
         }
-        return sendResponse(res,400,"Parameter (id) is missing" ,0)
+        return sendResponse(res, 400, "Parameter (id) is missing", 0)
     } catch (error) {
         console.log(error);
-        return sendResponse(res,500,"Internal Server Error" ,0)
+        return sendResponse(res, 500, "Internal Server Error", 0)
     }
 }

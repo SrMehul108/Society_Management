@@ -32,7 +32,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: folderName,
       public_id: `${Date.now()}-${file.originalname.replace(/\s+/g, '_')}`,
-      resource_type: 'image',
+      resource_type: 'auto',
     };
   }
 });

@@ -9,20 +9,11 @@ module.exports.insertFacility = async (req, res) => {
         const newData = new Facility(req.body);
         await newData.save();
         if (newData) {
-          return res.status(200).json({
-            message: "Facility added successfully",
-            status: 1,
-            data: newData,
-          });
+          return sendResponse(res, 200, "Facility created successfully", 1, newData);
         }
-        return sendResponse(
-          res,
-          400,
-          "There was an error while saving data",
-          0
-        );
+        return sendResponse(res, 400, "Failed to create facility");
       }
-      return sendResponse(res, 400, "Unauthorized", 0);
+      return sendResponse(res, 403, "Unauthorized", 0);
     } else {
       return sendResponse(res, 400, "Something went wrong", 0);
     }
@@ -42,24 +33,12 @@ module.exports.viewFacility = async (req, res) => {
         isActive: true,
       });
       if (data) {
-        return res.status(200).json({
-          message: "Data fetched successfully",
-          status: 1,
-          data: data,
-        });
+        return sendResponse(res, 200, "Facility found successfully",1, data);
       }
       return sendResponse(res, 400, "Data not found", 0);
     }
-    const allData = await Facility.find({
-      societyId: req.user.societyId,
-      isActive: true,
-    });
-    if (allData)
-      return res.status(200).json({
-        message: "Data fetched successfully",
-        status: 1,
-        data: allData,
-      });
+    const allData = await Facility.find({ societyId: req.user.societyId, isActive: true });
+    if (allData) return sendResponse(res, 200, "Facility found successfully", 1, allData);
     return sendResponse(res, 400, "Data not found", 0);
   } catch (error) {
     console.log(error);
@@ -76,11 +55,7 @@ module.exports.editFacility = async (req, res) => {
         new: true,
       });
       if (updatedData) {
-        return res.status(200).json({
-          message: "Data Update Successfully",
-          status: 1,
-          data: updatedData,
-        });
+        return sendResponse(res, 200, "Facility updated successfully", 1, updatedData);
       }
       return sendResponse(res, 400, "Data not found", 0);
     }
@@ -100,11 +75,7 @@ module.exports.deleteFacility = async (req, res) => {
         new: true,
       });
       if (updatedData) {
-        return res.status(200).json({
-          message: "Data Delete Successfully",
-          status: 1,
-          data: updatedData,
-        });
+        return sendResponse(res, 200, "Facility deleted successfully", 1, updatedData);
       }
       return sendResponse(res, 400, "Data not deleted", 0);
     }
