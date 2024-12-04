@@ -6,6 +6,7 @@ import DeleteConfirmationPopup from "../../../../components/ComplaintTraking/Del
 import Table from "../../../../components/ComplaintTraking/Table";
 import {  GetRequest } from "../../../../apis/api";
 import RequestForm from "../../../../components/ComplaintTraking/RequestTracking/RequestForm";
+import { HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton } from "../../../../components/Button/Button";
 
  const RequestComplaint = () => {
   const [complaints, setComplaints] = useState([]);
@@ -70,38 +71,38 @@ import RequestForm from "../../../../components/ComplaintTraking/RequestTracking
     {
       header: "Priority",
       accessor: "priority",
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === "high"
-              ? "bg-[#E74C3C] text-white px-5"
-              : value === "medium"
-              ? "bg-[#5678E9] text-white" // Custom blue color for Medium
-              : "bg-green-500 text-white px-6"
-          }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) => {
+        switch (value.toLowerCase()) {
+          case "high":
+            return <HighButton label={value} />;
+          case "medium":
+            return <MediumButton label={value} />;
+          case "low":
+            return <LowButton label={value} />;
+          default:
+            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+              {value}
+            </span>;
+        }
+      },
     },
     {
       header: "Status",
       accessor: "status",
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${
-            value === "pending"
-              ? "bg-[#FFC3131A] text-[#FFC313]"
-              : value === "solved"
-              ? "bg-[#39973D1A] text-[#39973D]"
-              : value === "open"
-              ? "bg-[#5678E91A] text-[#5678E9]"
-              : "bg-green-100 text-green-800" // Default fallback if needed
-          }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) =>{
+        switch (value.toLowerCase()) {
+          case "pending":
+            return <PendingButton label={value} />;
+          case "open":
+            return <OpenButton label={value} />;
+          case "solve":
+            return <SolveButton label={value} />;
+          default:
+            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+              {value}
+            </span>;
+        }
+      },
     },
   ];
 
