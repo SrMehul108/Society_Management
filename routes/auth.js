@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Passport = require("passport");
 const upload = require('../services/multer.service');
-const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword, editProfile } = require('../controllers/adminController');
+const { registerUser, loginUser, forgotPassword, verifyOtp, resetPassword, editProfile } = require('../controllers/authcontroller');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
