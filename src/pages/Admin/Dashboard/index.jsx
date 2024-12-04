@@ -9,6 +9,7 @@ import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
 import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 import BalanceChart from "../../../components/Dashboard/Chart/Chart";
+import { HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton } from "../../../components/Button/Button";
 
 export const Dashboard = () => {
 
@@ -93,45 +94,51 @@ export const Dashboard = () => {
       header: "Unit Number",
       accessor: "unit",
       render: (value, row) => (
-        <span>
-          <span className="text-green-600 font-bold">{value}</span>{" "}
-          {row.unitNumber}
+        <span className="flex gap-3">
+          <span className="rounded-full bg-slate-300 flex justify-center h-6 w-6 text-blue-500">
+            {row.wing}
+          </span>
+          <span className="text-black font-medium">
+            {value} {row.unitNumber}{" "}
+          </span>
         </span>
       ),
     },
     {
       header: "Priority",
       accessor: "priority",
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === "high"
-              ? "bg-[#E74C3C] text-white px-5"
-              : value === "medium"
-                ? "bg-[#5678E9] text-white"
-                : "bg-green-500 text-white px-6"
-            }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) => {
+        switch (value.toLowerCase()) {
+          case "high":
+            return <HighButton label={value} />;
+          case "medium":
+            return <MediumButton label={value} />;
+          case "low":
+            return <LowButton label={value} />;
+          default:
+            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+              {value}
+            </span>;
+        }
+      },
     },
     {
       header: "Status",
       accessor: "status",
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-semibold ${value === "pending"
-              ? "bg-[#FFC3131A] text-[#FFC313]"
-              : value === "solved"
-                ? "bg-[#39973D1A] text-[#39973D]"
-                : value === "open"
-                  ? "bg-[#5678E91A] text-[#5678E9]"
-                  : "bg-green-100 text-green-800"
-            }`}
-        >
-          {value}
-        </span>
-      ),
+      render: (value) =>{
+        switch (value.toLowerCase()) {
+          case "pending":
+            return <PendingButton label={value} />;
+          case "open":
+            return <OpenButton label={value} />;
+          case "solve":
+            return <SolveButton label={value} />;
+          default:
+            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+              {value}
+            </span>;
+        }
+      },
     },
   ];
 

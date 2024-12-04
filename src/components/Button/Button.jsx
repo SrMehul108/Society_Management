@@ -1,4 +1,6 @@
 import { FaUser } from "react-icons/fa"; // Optional, for the icon
+import { LuSun } from "react-icons/lu";
+import { IoMoonOutline } from "react-icons/io5";
 
 export const OwnerButton = ({ label = "Owner" }) => {
   return (
@@ -122,24 +124,40 @@ export const TenantButton = ({ label = "Tenant" }) => {
   };
   export const HighButton = ({ label = "High" }) => {
     return (
-        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        <button className="flex items-center px-7 py-1.5 bg-red-500 text-white font-medium rounded-full">
         
         {label}
       </button>
     );
   };
-  export const MaleButton = ({ label = " Male" }) => {
+  export const MaleButton = ({ label = "Male" }) => {
     return (
-        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
-        <FaUser className="mr-2 text-emerald-800" />
+        <button className="flex items-center px-6 py-1.5 bg-blue-100 text-blue-600 font-medium rounded-full">
+        <FaUser className="mr-2 text-blue-600" />
         {label}
       </button>
     );
   };
-  export const FeMaleButton = ({ label = " FeMale" }) => {
+  export const FeMaleButton = ({ label = "FeMale" }) => {
     return (
-        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
-        <FaUser className="mr-2 text-emerald-800" />
+        <button className="flex items-center px-4 py-1.5 bg-pink-100 text-pink-600 font-medium rounded-full">
+        <FaUser className="mr-2 text-pink-600" />
+        {label}
+      </button>
+    );
+  };
+  export const DayButton = ({ label = "Day" }) => {
+    return (
+        <button className="flex items-center px-6 py-1.5 bg-gray-100 text-yellow-600 font-medium rounded-full">
+        <LuSun className="mr-2 text-yellow-600" />
+        {label}
+      </button>
+    );
+  };
+  export const NightButton = ({ label = "Night" }) => {
+    return (
+        <button className="flex items-center px-4 py-1.5 bg-slate-600 text-white font-medium rounded-full">
+        <IoMoonOutline  className="mr-2 text-white" />
         {label}
       </button>
     );

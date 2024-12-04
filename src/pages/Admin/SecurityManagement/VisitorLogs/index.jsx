@@ -24,187 +24,25 @@ function VisitorLog() {
             phoneNumber: "92524 12365",
             time: "3.45pm"
         },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            phoneNumber: "92589 34522",
-           time: "4.45pm"
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            phoneNumber: "92589 34522",
-            time: "7.45pm"
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            phoneNumber: "92589 34522",
-            time: "3.45pm"
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-           
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
-        {
-            profilePicture: "https://via.placeholder.com/32",
-            name: "Jenny Wilson",
-            unit: "C",
-            unitNumber: "1003",
-            date: "12/02/2024",
-            time: "3.45pm",
-            phoneNumber: "92589 34522",
-            
-        },
+       
     ];
 
 
 
     return (
         <>
-            <div className="p-4 bg-gray-100">
+            <div className="bg-gray-100">
                 <div
                     role="tablist"
-                    className="mt-4 tabs tabs-lifted tabs-lg  rounded-lg"
-                >
+                    className=" tabs tabs-lifted tabs-lg  rounded-lg">
                     <>
                         <div
-                            className="bg-white p-4 overflow-hidden"
-                            style={{ height: "680px" }}
-                        >
+                            className="bg-white p-4 overflow-hidden">
                             <h2 className="text-xl font-semibold text-gray-700 mb-4">
                                 Visitor Logs
                             </h2>
-
                             <div
-                                className="overflow-x-auto rounded-lg h-full"
-                                style={{ maxHeight: "600px" }}
-                            >
+                                className="overflow-x-auto rounded-lg h-full">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-royalgray sticky top-0 w-full">
                                         <tr>
@@ -227,7 +65,7 @@ function VisitorLog() {
 
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
+                                    <tbody className="divide-y divide-gray-200  overflow-y-auto custom-scrollbar">
                                         {data.map((item, index) => (
                                             <tr key={index} className="hover:bg-gray-50">
                                                 <td className="px-4 py-3 flex items-center space-x-2">

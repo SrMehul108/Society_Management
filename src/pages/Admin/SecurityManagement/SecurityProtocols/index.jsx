@@ -68,7 +68,7 @@ const [isViewOpen, setIsViewOpen] = useState(false);
 
 
   return (
-    <div className="container mx-auto p-4 bg-white">
+    <div className=" p-4 bg-white">
       <div className="flex justify-between items-center mb-4 rounded-md">
         <h1 className="text-xl font-bold">Security Protocols</h1>
         <button className="bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white py-2 px-4 rounded-xl" onClick={openModal}>

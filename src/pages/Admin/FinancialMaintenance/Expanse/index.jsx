@@ -123,7 +123,7 @@ function Expanse() {
 
         <div className="overflow-x-auto rounded-lg max-h-[600px]">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className=" sticky top-0" style={{backgroundColor:"#eef1fd"}}>
+            <thead className=" sticky top-0 bg-[#eef1fd]" >
               <tr>
                 {[
                   "Title",

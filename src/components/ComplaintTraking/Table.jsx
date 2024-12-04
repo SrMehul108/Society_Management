@@ -6,7 +6,7 @@ const Table = ({ columns, data, actions }) => {
     <div className="overflow-x-auto border rounded-t-2xl">
       <table className="min-w-full bg-white shadow">
         <thead>
-          <tr className="border-b" style={{backgroundColor:"#eef1fd"}}>
+          <tr className="border-b bg-[#eef1fd]">
             {columns.map((column, index) => (
               <th
                 key={index}
@@ -31,7 +31,7 @@ const Table = ({ columns, data, actions }) => {
               {columns.map((column, colIndex) => (
                 <td
                   key={colIndex}
-                  className="p-3 text-sm text-gray-700"
+                  className="p-3 text-sm text-gray-700 "
                 >
                   {typeof column.render === 'function'
                     ? column.render(row[column.accessor], row)
