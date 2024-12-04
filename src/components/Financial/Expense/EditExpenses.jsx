@@ -8,7 +8,6 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
     date: "",
     amount: "",
     uploadBill: null,
-    uploadBillPreview: "", 
   });
   const [error, setError] = useState("");
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -20,8 +19,7 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
         description: itemToEdit.description || "",
         date: itemToEdit.date || "",
         amount: itemToEdit.amount || "",
-        uploadBill: null, 
-        uploadBillPreview: itemToEdit.uploadBill || "",
+        uploadBill: null, // file handling remains separate
       });
     }
   }, [itemToEdit]);
@@ -32,29 +30,26 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
       formData.description &&
       formData.date &&
       formData.amount &&
-      formData.uploadBillPreview; 
+      formData.uploadBill !== null;
     setIsSaveEnabled(isValid);
   }, [formData]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setError(""); 
-  };
+    const { name, value, files } = e.target;
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const previewUrl = URL.createObjectURL(file);
+    if (name === "uploadBill") {
+      // File input handling
       setFormData((prev) => ({
         ...prev,
-        uploadBill: file,
-        uploadBillPreview: previewUrl,
+        uploadBill: files[0], // store the first file in the uploadBill field
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
       }));
     }
+    setError("");
   };
 
   const handleSubmit = async (e) => {
@@ -65,10 +60,15 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
     }
 
     try {
-      const updatedData = { ...formData };
-      delete updatedData.uploadBillPreview; // Remove preview from submission
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("date", formData.date);
+      formDataToSend.append("amount", formData.amount);
 
-      const response = await updateExpense(updatedData,expenseId);
+      formDataToSend.append("uploadBill", formData.uploadBill);
+
+      const response = await updateExpense(formDataToSend, expenseId);
 
       if (response.success) {
         onExpenseUpdated();
@@ -77,7 +77,7 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
         setError("Failed to update expense. Please try again.");
       }
     } catch (err) {
-      console.error("Error updating expense:", err);
+      console.log(err);
       setError("An error occurred while updating the expense.");
     }
   };
@@ -145,20 +145,14 @@ const EditExpenses = ({ itemToEdit, expenseId, onClose, onExpenseUpdated }) => {
           <div>
             <label className="block font-medium">Upload Bill</label>
             <div className="text-center items-center justify-center border-dashed border-2 border-gray-300 rounded-lg p-10">
-              {formData.uploadBillPreview && (
-                <img
-                  src={formData.uploadBillPreview}
-                  alt="Uploaded Bill"
-                  className="max-h-40 mb-4 mx-auto"
-                />
-              )}
               <input
                 type="file"
                 className="hidden"
                 id="file-upload"
                 name="uploadBill"
-                onChange={handleFileChange}
+                onChange={handleInputChange}
               />
+
               <label
                 htmlFor="file-upload"
                 className="text-blue-500 cursor-pointer hover:underline"

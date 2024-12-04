@@ -145,13 +145,13 @@ function Expanse() {
             <tbody className="divide-y divide-gray-200">
               {expense.map((item, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">{item.title}</td>
-                  <td className="px-4 py-3">{item.description}</td>
-                  <td className="px-4 py-3">{item.date}</td>
-                  <td className="px-4 py-3 text-green-500 font-bold">
+                  <td className="">{item.title}</td>
+                  <td className="">{item.description}</td>
+                  <td className="">{item.date}</td>
+                  <td className=" text-green-500 font-bold">
                     ₹{item.amount}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="">
                     <div className="flex items-center">
                       <span className="flex items-center gap-2 px-2 py-1 rounded-full">
                         {/* Conditional Icon based on file extension */}
@@ -167,7 +167,7 @@ function Expanse() {
                     </div>
                   </td>
 
-                  <td className="flex space-x-2 px-4 py-3">
+                  <td className="flex items-center space-x-2 px-4 py-3">
                     <button
                       onClick={() => openEditModal(item, item._id)}
                       className="text-green-500 hover:text-green-700"

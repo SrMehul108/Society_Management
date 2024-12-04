@@ -498,7 +498,7 @@ export const updateExpense = async (data, id) => {
       data,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -512,10 +512,7 @@ export const updateExpense = async (data, id) => {
       };
     }
   } catch (error) {
-    console.error(
-      "Error updating income:",
-      error.response ? error.response.data : error.message
-    );
+    console.log(error)
     return {
       success: false,
       message: error.response?.data?.message || error.message,
