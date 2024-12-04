@@ -128,3 +128,19 @@ export const TenantButton = ({ label = "Tenant" }) => {
       </button>
     );
   };
+  export const MaleButton = ({ label = " Male" }) => {
+    return (
+        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        <FaUser className="mr-2 text-emerald-800" />
+        {label}
+      </button>
+    );
+  };
+  export const FeMaleButton = ({ label = " FeMale" }) => {
+    return (
+        <button className="flex items-center px-6 py-1.5 bg-red-500 text-white font-medium rounded-full">
+        <FaUser className="mr-2 text-emerald-800" />
+        {label}
+      </button>
+    );
+  };

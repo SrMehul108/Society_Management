@@ -79,10 +79,10 @@ function SecurityGuard() {
         )}
 
         <div role="tablist" className="mt-4 tabs tabs-lifted tabs-lg rounded-lg">
-          <div className="bg-white p-4 overflow-hidden" style={{ height: "680px" }}>
+          <div className="bg-white p-4 overflow-hidden" >
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Securtiy Guard Details </h2>
 
-            <div className="overflow-x-auto rounded-lg h-full" style={{ maxHeight: "600px" }}>
+            <div className="overflow-x-auto rounded-lg h-full" >
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-royalgray sticky top-0 w-full">
                   <tr>
@@ -96,14 +96,14 @@ function SecurityGuard() {
                     <th className="px-4 py-2 text-left text-black font-semibold">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
+                <tbody className="divide-y divide-gray-200  overflow-y-auto custom-scrollbar">
                   {data.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 flex items-center space-x-2">
-                        <span className="text-gray-700 font-medium">{item.name}</span>
+                    <tr key={index} className="hover:bg-gray-50 ">
+                      <td className="px-4 py-3">
+                        <span className="text-gray-700 ">{item.name}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-black px-2 py-1">{item.phone}</span>
+                        <span className="text-black ">{item.phone}</span>
                       </td>
                       <td className="px-4 py-3">
                         <span
@@ -118,13 +118,13 @@ function SecurityGuard() {
                       </td>
 
                       <td className="px-4 py-3 ">{item.date}</td>
-                      <td className="px-4 py-3  ">{item.time}</td>
+                      <td className="px-4 py-3 ">{item.time}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`px-2 py-1 rounded-full ${
+                          className={` py-1 rounded-full ${
                             item.gender === "Male"
                               ? "bg-yellow-100 text-yellow-600"
-                              : "bg-green-100 text-green-600"
+                              : "bg-green-100 text-green-600 px-2"
                           }`}
                         >
                           {item.gender}
