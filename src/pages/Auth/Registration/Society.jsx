@@ -46,7 +46,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
   const [wings, setWings] = useState(
     Array.from({ length: 1 }, () => ({
       floor: '',
-      flat: '',
+      flats: '',
 
     }))
   );
@@ -62,7 +62,7 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
           ...prevWings,
           ...Array.from({ length: count - prevWings.length }, () => ({
             floor: '',
-            flat: '',
+            flats: '',
 
           }))
         ];
@@ -142,32 +142,34 @@ const Societypopup = ({ isOpenDrop, togglePopup }) => {
                           </div>
                         </div>
                         {/* {wings.map((wings, index) => ( */}
-                          <div  className="flex flex-wrap     space-y-4 sm:space-y-0 p-1 ">
-                            <div className="flex flex-col w-full  sm:w-1/2 px-1">
-                              <label className="text-gray-600 font-semibold">How Many Floor Flat<span className="text-red-500">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="How Many Flore Flat"
-                                className="border border-gray-300 p-2 rounded-md"
-                                value={wings.floor}
-                                onChange={(e) => handleInputChange(index, 'flore', e.target.value)}
-                              />
-                            </div>
-                            <div className="flex flex-col w-full  sm:w-1/2  ">
-                              <label className="text-gray-600 font-semibold">How Many  Flat per Floor<span className="text-red-500">*</span></label>
-                              <input
-                                type="number"
-                                placeholder="How Many  Flat per Floor"
-                                className="border border-gray-300 p-2 rounded-md"
-                                value={wings.flat}
-                                onChange={(e) => handleInputChange(index, 'flat', e.target.value)}
-                              />
-                            </div>
-
-
-
-
+                        <div className="flex flex-wrap     space-y-4 sm:space-y-0 p-1 ">
+                          <div className="flex flex-col w-full  sm:w-1/2 px-1">
+                            <label className="text-gray-600 font-semibold">How Many Floor Flat<span className="text-red-500">*</span></label>
+                            <input
+                              type="text"
+                              placeholder="How Many Flore Flat"
+                              className="border border-gray-300 p-2 rounded-md"
+                              value={wings.floor}
+                              onChange={(e) => handleInputChange(index, 'flore', e.target.value)}
+                            />
                           </div>
+                          <div className="flex flex-col w-full sm:w-1/2">
+                            <label className="text-gray-600 font-semibold">
+                              How Many Flat per Floor<span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="number"
+                              placeholder="How Many Flat per Floor"
+                              className="border border-gray-300 p-2 rounded-md"
+                              value={wings.flats}
+                              onChange={(e) => handleInputChange(index, 'flat', e.target.value)}
+                            />
+                          </div>
+
+
+
+
+                        </div>
                         {/* ))} */}
                       </div>
                     </div>
