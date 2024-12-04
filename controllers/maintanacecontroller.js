@@ -151,6 +151,7 @@ module.exports.deleteMaintenance = async (req, res) => {
             }
             return sendResponse(res, 400, "No data found", 0);
         }
+        return sendResponse(res, 400, "Parameter (ID) is missing", 0, []);
     } catch (error) {
         console.log(error);
         return sendResponse(res, 500, "Internal Server Error", 0);
