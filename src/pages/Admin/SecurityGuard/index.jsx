@@ -98,14 +98,14 @@ function SecurityGuard() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 h-64 overflow-y-auto custom-scrollbar">
                   {data.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 flex items-center space-x-2">
-                        <span className="text-gray-700 font-medium">{item.name}</span>
+                    <tr key={index} className="hover:bg-gray-50 ">
+                      <td className="px-4">
+                        <span className="text-gray-700 ">{item.name}</span>
                       </td>
-                      <td className="px-4 py-3">
-                        <span className="text-black px-2 py-1">{item.phone}</span>
+                      <td className="px-4">
+                        <span className="text-black ">{item.phone}</span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4">
                         <span
                           className={`px-2 py-1 rounded-full ${
                             item.shift === "day"
@@ -117,9 +117,9 @@ function SecurityGuard() {
                         </span>
                       </td>
 
-                      <td className="px-4 py-3 ">{item.date}</td>
-                      <td className="px-4 py-3  ">{item.time}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 ">{item.date}</td>
+                      <td className="px-4 ">{item.time}</td>
+                      <td className="px-4 ">
                         <span
                           className={`px-2 py-1 rounded-full ${
                             item.gender === "Male"

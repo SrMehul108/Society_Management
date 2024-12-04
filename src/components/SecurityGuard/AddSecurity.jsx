@@ -49,7 +49,7 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
         <div className="z-50 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative z-60"> {/* Ensure this has a higher z-index */}
                 <h2 className="text-2xl font-semibold mb-4 border-b-2 pb-2 border-opacity-10">
-                    {itemToEdit ? "Edit Expenses Details" : "Add Expenses Details"}
+                    {itemToEdit ? "Edit Security" : "Add Security"}
                 </h2>
                 <form className="space-y-4">
                     <div className="flex items-center ">
