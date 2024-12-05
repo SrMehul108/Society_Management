@@ -123,7 +123,7 @@ export const DashboardLayout = ({ items }) => {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-y-auto max-h-screen" style={{backgroundColor:"#f0f5fb"}}>
+        <main className="flex-1 p-4 overflow-y-auto max-h-screen bg-[#f0f5fb]" >
           <Outlet />
         </main>
       </div>
