@@ -26,6 +26,7 @@ import AccessForums from "../pages/User/Community/AccessForums/Index";
 import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
 import { lazy } from "react";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
+import ProfilePage from "../components/ProfilePopup/ProfilePage";
 
 const AddNote = lazy(() => import("../pages/Admin/FinancialMaintenance/Note"));
 const FinancialManagement = lazy(() =>
@@ -124,6 +125,10 @@ const DashStackRoute = createBrowserRouter(
             {
               element:<DashboardLayout items={AdminSidbar} />,
               children: [
+                {
+                  path: "profile", 
+                  element: <ProfilePage /> 
+                },
                 {
                   path: "dashboard",
                   element: <AdminDashBoard />,

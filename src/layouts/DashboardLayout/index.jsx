@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { DSSidebar } from "@/components";
 import { Icons } from "../../constants";
 import Notification from "../../components/Notification/Notification";
-import ProfilePopup from "../../components/ProfilePopup/ProfilePopup";
+
 import { LoginData } from "../../apis/api";
 
-export const DashboardLayout = ({ items }) => {
+export const DashboardLayout = ({ items, Data }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const navigate = useNavigate();
+  
+  const handleProfileClick = () => {
+    if (profileData) {
+      console.log("Navigating to profile with data:", profileData);
+      navigate("/admin/profile", { state: { profileData } }); // Passing data through state
+    } else {
+      console.error("Profile data is not available!");
+    }
+  };
 
   // Fetch Profile Data
   const fetchProfileData = async () => {
@@ -43,6 +53,8 @@ export const DashboardLayout = ({ items }) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
+ 
+ 
 
   return (
     <div className="flex h-screen overflow-y-auto">
@@ -115,7 +127,7 @@ export const DashboardLayout = ({ items }) => {
             ))}
 
             {/* Profile Section */}
-            <div
+            {/* <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setIsOpen(true)}
               title="View Profile"
@@ -131,8 +143,24 @@ export const DashboardLayout = ({ items }) => {
               </span>
             </div>
 
-            {/* Profile Popup */}
+           
             {isOpen && <ProfilePopup onClose={() => setIsOpen(false)} data={profileData} />}
+          </div> */}
+          <div
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={handleProfileClick} // Navigate when clicked
+      title="View Profile"
+      aria-label="View Profile"
+    >
+      <img
+        src="/placeholder.svg"
+        alt="User Avatar"
+        className="w-8 h-8 rounded-full border"
+      />
+      <span className="hidden sm:block">
+        {profileData?.fullName || "Loading..."}
+      </span>
+    </div>
           </div>
         </header>
 
