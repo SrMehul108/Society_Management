@@ -14,7 +14,7 @@ export const DashboardLayout = ({ items, Data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const navigate = useNavigate();
-  
+
   const handleProfileClick = () => {
     if (profileData) {
       console.log("Navigating to profile with data:", profileData);
@@ -53,8 +53,6 @@ export const DashboardLayout = ({ items, Data }) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
- 
- 
 
   return (
     <div className="flex h-screen overflow-y-auto">
@@ -146,21 +144,21 @@ export const DashboardLayout = ({ items, Data }) => {
            
             {isOpen && <ProfilePopup onClose={() => setIsOpen(false)} data={profileData} />}
           </div> */}
-          <div
-      className="flex items-center gap-2 cursor-pointer"
-      onClick={handleProfileClick} // Navigate when clicked
-      title="View Profile"
-      aria-label="View Profile"
-    >
-      <img
-        src="/placeholder.svg"
-        alt="User Avatar"
-        className="w-8 h-8 rounded-full border"
-      />
-      <span className="hidden sm:block">
-        {profileData?.fullName || "Loading..."}
-      </span>
-    </div>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={handleProfileClick} // Navigate when clicked
+              title="View Profile"
+              aria-label="View Profile"
+            >
+              <img
+                src="/placeholder.svg"
+                alt="User Avatar"
+                className="w-8 h-8 rounded-full border"
+              />
+              <span className="hidden sm:block">
+                {profileData?.fullName || "Loading..."}
+              </span>
+            </div>
           </div>
         </header>
 

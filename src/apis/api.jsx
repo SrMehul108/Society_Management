@@ -45,6 +45,8 @@ export const LoginData = () => {
   return null; // No token found
 };
 
+//Auth API
+
 export const Registration = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, data);
@@ -148,6 +150,9 @@ export const resetPassword = async (rpass) => {
     throw error.response ? error.response.data : new Error("Network Error");
   }
 };
+
+
+//User API
 
 export const userRegistration = async (formdata) => {
   const token = AdminToken();
