@@ -29,7 +29,6 @@ export const SecurityToken = () => {
   return securitytoken;
 };
 
-
 export const LoginData = () => {
   // Check all possible role-based tokens
   const admintoken = sessionStorage.getItem("admintoken");
@@ -183,6 +182,36 @@ export const userRegistration = async (formdata) => {
   }
 };
 
+export const userUpdate = async (updatedUserData) => {
+  const token = AdminToken();
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/edit-profile`, 
+      updatedUserData, // Send the updated user data here
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Attach the token in headers
+        },
+      }
+    );
+
+    // Return success if the update is successful
+    if (response.data.success) {
+      return { success: true, message: "Profile updated successfully" };
+    } else {
+      return { success: false, message: "Failed to update profile" };
+    }
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "An error occurred while updating the profile" };
+  }
+};
+
+
 //Resident API
 
 export const getUser = async () => {
@@ -219,7 +248,7 @@ export const getUser = async () => {
   }
 };
 
-export const deleteUser=async=>{}
+export const deleteUser = (async) => {};
 
 //OtherIncome Page
 
@@ -309,7 +338,7 @@ export const updateIncome = async (data) => {
   }
 };
 
-export const deleteIncome = async ( id ) => {
+export const deleteIncome = async (id) => {
   try {
     var token = AdminToken(); // Ensure you have the correct token logic for admin authorization
     const response = await axios.delete(
@@ -512,7 +541,7 @@ export const updateExpense = async (data, id) => {
       };
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       success: false,
       message: error.response?.data?.message || error.message,
@@ -792,7 +821,7 @@ export const getFacility = async () => {
   }
 };
 
-export const UpdateFacilty = async (data,id) => {
+export const UpdateFacilty = async (data, id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(

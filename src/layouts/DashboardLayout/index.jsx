@@ -1,37 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { DSSidebar } from "@/components";
 import { Icons } from "../../constants";
 import Notification from "../../components/Notification/Notification";
 import ProfilePopup from "../../components/ProfilePopup/ProfilePopup";
+import { LoginData } from "../../apis/api";
 
 export const DashboardLayout = ({ items }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [notificationType, setNotificationType] = useState("success");
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for sidebar toggle
-  const [searchValue, setSearchValue] = useState(""); // Controlled input state
-  const [isOpen, setIsOpen] = useState(false); // Profile popup state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [profileData, setProfileData] = useState(null);
 
-  const handleButtonClick = () => {
-    setNotifications([
-      ...notifications,
-      {
-        id: Date.now(),
-        notificationMessage: "This is a notification!",
-        notificationType: "success",
-      },
-    ]);
+  // Fetch Profile Data
+  const fetchProfileData = async () => {
+    try {
+      const response = await LoginData();
+      setProfileData(response);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  // Handle Notifications
+  const addNotification = () => {
+    const newNotification = {
+      id: Date.now(),
+      notificationMessage: "This is a notification!",
+      notificationType: "success",
+    };
+    setNotifications((prev) => [...prev, newNotification]);
     setIsNotificationVisible(true);
   };
 
-  const handleCloseNotification = (id) => {
-    setNotifications(notifications.filter((notification) => notification.id !== id));
+  const removeNotification = (id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
 
   return (
     <div className="flex h-screen overflow-y-auto">
@@ -44,18 +55,19 @@ export const DashboardLayout = ({ items }) => {
         <DSSidebar items={items} />
       </div>
 
-      {/* Overlay for mobile sidebar */}
+      {/* Sidebar Overlay */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsMenuOpen(false)}
+          aria-label="Close sidebar"
         ></div>
       )}
 
       {/* Main Content */}
       <div className="flex flex-col pl-0 md:pl-64 flex-auto min-h-0">
         {/* Header */}
-        <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between flex-[0_0_auto]">
+        <header className="bg-white shadow-md p-4 flex items-center justify-between">
           {/* Search Bar */}
           <div className="flex-1 px-4">
             <label className="flex items-center gap-2 bg-gray-300 w-full max-w-[400px] rounded-lg p-2">
@@ -81,11 +93,11 @@ export const DashboardLayout = ({ items }) => {
             </label>
           </div>
 
-          {/* Notifications and User Profile */}
+          {/* Notifications and Profile */}
           <div className="flex items-center gap-4">
-            {/* Notifications Button */}
+            {/* Notifications */}
             <button
-              onClick={handleButtonClick}
+              onClick={addNotification}
               className="p-2 border rounded-lg hover:bg-gray-100"
               title="View Notifications"
               aria-label="View Notifications"
@@ -98,32 +110,37 @@ export const DashboardLayout = ({ items }) => {
                 isVisible={isNotificationVisible}
                 message={notification.notificationMessage}
                 type={notification.notificationType}
-                onClose={() => handleCloseNotification(notification.id)}
+                onClose={() => removeNotification(notification.id)}
               />
             ))}
 
             {/* Profile Section */}
             <div
               className="flex items-center gap-2 cursor-pointer"
-              onClick={handleOpen}
+              onClick={() => setIsOpen(true)}
               title="View Profile"
               aria-label="View Profile"
             >
               <img
                 src="/placeholder.svg"
-                alt="User"
+                alt="User Avatar"
                 className="w-8 h-8 rounded-full border"
               />
-              <span className="hidden sm:block">Moni Roy</span>
+              <span className="hidden sm:block">
+                {profileData?.fullName || "Loading..."}
+              </span>
             </div>
 
             {/* Profile Popup */}
-            {isOpen && <ProfilePopup onClose={handleClose} />}
+            {isOpen && <ProfilePopup onClose={() => setIsOpen(false)} data={profileData} />}
           </div>
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 overflow-y-auto max-h-screen" style={{backgroundColor:"#f0f5fb"}}>
+        <main
+          className="flex-1 p-4 overflow-y-auto max-h-screen"
+          style={{ backgroundColor: "#f0f5fb" }}
+        >
           <Outlet />
         </main>
       </div>
