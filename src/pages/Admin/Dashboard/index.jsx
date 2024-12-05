@@ -9,13 +9,20 @@ import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
 import { GetComplaint, getImportantnumber } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 import BalanceChart from "../../../components/Dashboard/Chart/Chart";
-import { HighButton, LowButton, MediumButton, OpenButton, PendingButton, SolveButton } from "../../../components/Button/Button";
+import {
+  HighButton,
+  LowButton,
+  MediumButton,
+  OpenButton,
+  PendingButton,
+  SolveButton,
+} from "../../../components/Button/Button";
 
 export const Dashboard = () => {
-
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
-  
+
   const [importantnumber, setImportantnumber] = useState([]);
   const [selectedNumberData, setSelectedNumberData] = useState(null);
 
@@ -69,22 +76,41 @@ export const Dashboard = () => {
   ];
 
   // activities
-  const [UpcomingselectedMonth, setUpcomingSelectedMonth] = useState("Last week");
-  
+  const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
+    useState("Last week");
+
   // Example activities data
   const allActivities = [
-    { event: "Yoga Session", time: "10:00 AM", date: "2023-12-01", category: "Last week" },
-    { event: "Board Meeting", time: "02:00 PM", date: "2023-11-15", category: "Last month" },
-    { event: "Annual Gala", time: "06:00 PM", date: "2023-01-01", category: "Last year" },
-    { event: "Community Cleanup", time: "09:00 AM", date: "2023-12-05", category: "Last week" },
+    {
+      event: "Yoga Session",
+      time: "10:00 AM",
+      date: "2023-12-01",
+      category: "Last week",
+    },
+    {
+      event: "Board Meeting",
+      time: "02:00 PM",
+      date: "2023-11-15",
+      category: "Last month",
+    },
+    {
+      event: "Annual Gala",
+      time: "06:00 PM",
+      date: "2023-01-01",
+      category: "Last year",
+    },
+    {
+      event: "Community Cleanup",
+      time: "09:00 AM",
+      date: "2023-12-05",
+      category: "Last week",
+    },
   ];
 
   // Filter activities based on selected category
   const filteredActivities = allActivities.filter(
     (activity) => activity.category === UpcomingselectedMonth
   );
-
-
 
   const columns = [
     { header: "Complainer Name", accessor: "complainerName" },
@@ -116,16 +142,18 @@ export const Dashboard = () => {
           case "low":
             return <LowButton label={value} />;
           default:
-            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
-              {value}
-            </span>;
+            return (
+              <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+                {value}
+              </span>
+            );
         }
       },
     },
     {
       header: "Status",
       accessor: "status",
-      render: (value) =>{
+      render: (value) => {
         switch (value.toLowerCase()) {
           case "pending":
             return <PendingButton label={value} />;
@@ -134,9 +162,11 @@ export const Dashboard = () => {
           case "solve":
             return <SolveButton label={value} />;
           default:
-            return <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
-              {value}
-            </span>;
+            return (
+              <span className="px-2 py-1 rounded-full text-xs font-semibold text-gray-500">
+                {value}
+              </span>
+            );
         }
       },
     },
@@ -203,8 +233,6 @@ export const Dashboard = () => {
   const [editid, setEditid] = useState();
   const [editData, setEditData] = useState(null);
 
-
-
   const handleAddClick = () => {
     setPopupMode("add");
     setEditData(null);
@@ -222,16 +250,17 @@ export const Dashboard = () => {
   };
 
   const openPopup = () => {
-    setIsPopupOpen(true)
-  }
+    setIsPopupOpen(true);
+  };
 
   const [isDeleteData, setIsDeleteData] = useState(false);
   const handleDeleteClick = (id) => {
-    setEditid(id);
-    setIsDeleteData(true);
-    openPopup()
+    setIsDeleteData(id);
+    setIsDeletePopupOpen(true);
   };
-
+  const closeDeletePopup = () => {
+    setIsDeletePopupOpen(false);
+  };
   const closePopup = () => {
     setIsPopupOpen(false);
   };
@@ -290,7 +319,7 @@ export const Dashboard = () => {
         {/* Chart, Contacts, and Maintenance */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Chart Section */}
-        
+
           <div className="bg-white rounded-lg shadow-md p-3 flex flex-col">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Total Balance</h2>
@@ -372,9 +401,9 @@ export const Dashboard = () => {
                         </button>
                         {isDeleteData && (
                           <DeletePopup
-                            onClick={() => setIsDeleteData(false)}
-                            editid={editid}
-                            onClose={closePopup}
+                            onClick={() => setIsDeletePopupOpen(false)}
+                            deleteid={isDeleteData}
+                            onClose={closeDeletePopup}
                             onImportantNumberAdded={handleImportantNumberAdded}
                           />
                         )}
@@ -498,35 +527,37 @@ export const Dashboard = () => {
               ))}
             </ul>
           </div> */}
-  <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Upcoming Activity</h2>
-        <select
-          className="border border-gray-300 rounded-lg p-1"
-          value={UpcomingselectedMonth}
-          onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
-        >
-          <option>Last week</option>
-          <option>Last month</option>
-          <option>Last year</option>
-        </select>
-      </div>
-      <ul className="space-y-3">
-        {filteredActivities.length > 0 ? (
-          filteredActivities.map((activity, index) => (
-            <li key={index} className="flex justify-between items-center">
-              <div>
-                <p className="font-medium">{activity.event}</p>
-                <p className="text-sm text-gray-500">{activity.time}</p>
-              </div>
-              <p className="text-gray-500">{activity.date}</p>
-            </li>
-          ))
-        ) : (
-          <p className="text-gray-500">No activities found for {UpcomingselectedMonth}.</p>
-        )}
-      </ul>
-    </div>
+          <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Upcoming Activity</h2>
+              <select
+                className="border border-gray-300 rounded-lg p-1"
+                value={UpcomingselectedMonth}
+                onChange={(e) => setUpcomingSelectedMonth(e.target.value)}
+              >
+                <option>Last week</option>
+                <option>Last month</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <ul className="space-y-3">
+              {filteredActivities.length > 0 ? (
+                filteredActivities.map((activity, index) => (
+                  <li key={index} className="flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">{activity.event}</p>
+                      <p className="text-sm text-gray-500">{activity.time}</p>
+                    </div>
+                    <p className="text-gray-500">{activity.date}</p>
+                  </li>
+                ))
+              ) : (
+                <p className="text-gray-500">
+                  No activities found for {UpcomingselectedMonth}.
+                </p>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </>

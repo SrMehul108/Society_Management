@@ -1,12 +1,11 @@
 import { DeleteImportantnumber } from "../../../apis/api";
 
-function DeletePopup({ onClose, editid,onImportantNumberAdded }) {
+function DeletePopup({ onClose, deleteid,onImportantNumberAdded }) {
   const handleDelete = async() => {
     try {
-      const response=await DeleteImportantnumber(editid)
+      const response=await DeleteImportantnumber(deleteid)
       onImportantNumberAdded()
       onClose()
-      console.log("success")
     } catch (error) {
       console.log(error)
     } 
