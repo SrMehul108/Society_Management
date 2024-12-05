@@ -20,6 +20,17 @@ import {
 
 export const Dashboard = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [isDeleteData, setIsDeleteData] = useState(null);
+  const handleDeleteClick = (id) => {
+    setIsDeleteData(id);
+    setIsDeletePopupOpen(true);
+  };
+  const closeDeletePopup = () => {
+    setIsDeletePopupOpen(false);
+    setIsDeleteData(null);
+  };
+ 
+
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
 
@@ -253,14 +264,8 @@ export const Dashboard = () => {
     setIsPopupOpen(true);
   };
 
-  const [isDeleteData, setIsDeleteData] = useState(false);
-  const handleDeleteClick = (id) => {
-    setIsDeleteData(id);
-    setIsDeletePopupOpen(true);
-  };
-  const closeDeletePopup = () => {
-    setIsDeletePopupOpen(false);
-  };
+  
+
   const closePopup = () => {
     setIsPopupOpen(false);
   };
@@ -399,7 +404,7 @@ export const Dashboard = () => {
                         >
                           {Icons.Delete}
                         </button>
-                        {isDeleteData && (
+                        {isDeletePopupOpen && (
                           <DeletePopup
                             onClick={() => setIsDeletePopupOpen(false)}
                             deleteid={isDeleteData}
