@@ -13,7 +13,7 @@ module.exports.insert = async (req, res) => {
     let newData = new Important(req.body);
     await newData.save();
     if (newData) {
-      return sendResponse(res, 200, "Important contact saved successfully", 1, newdata);
+      return sendResponse(res, 200, "Important contact saved successfully", 1, newData);
     }
     return sendResponse(res, 400, "Something Wrong", 0);
   } catch (error) {
@@ -75,8 +75,6 @@ module.exports.editImportant = async (req, res) => {
 
 module.exports.deleteImportant = async (req, res) => {
   try {
-    console.log("hiii");
-
     const { id } = req.params;
     if (id) {
       let data = await Important.findOne({ _id: id });
