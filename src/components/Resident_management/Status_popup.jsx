@@ -10,7 +10,7 @@ export const Statuspopup = ({ onClose }) => {
     if (isAgreed) {
       alert(`Form submitted with status: ${status}`);
       navigate("/admin/residents/OwnerForm");
-      onClose(); // Close the popup after successful submission
+      onClose(); 
     } else {
       alert("You must agree to submit the form.");
     }
