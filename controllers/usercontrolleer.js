@@ -46,6 +46,7 @@ module.exports.insertUser = async (req, res) => {
         wing: req.body.wing || null,
         unit: req.body.unit || null,
         type: req.body.type || null,
+        relation : req.body.relation || null,
       },
     };
     // Parse JSON inputs

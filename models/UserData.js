@@ -57,6 +57,12 @@ const UserSchema = mongoose.Schema({
         default: 'user'
     },
     metaData: {
+        relation: {
+            type : String,
+            required: function() {
+                return this.role === 'user';
+            }
+        },
         wing: {
             type: String,
             required: function() {

@@ -171,7 +171,9 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.editProfile = async (req, res) => {
   try {
-    validateRequest(req, res);
+    if(!req.user){
+      sendResponse(res,403, "Unauthorized Access", 0);
+    }
     let olddata = await UserModel.findOne({ _id: req.user._id });
     if (req.body == "") {
       return sendResponse(res, 400, "Something went wrong", 0);
