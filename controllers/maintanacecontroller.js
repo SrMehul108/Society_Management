@@ -15,7 +15,7 @@ module.exports.insert = async (req, res) => {
         const newMaintenance = new Maintenance(req.body);
         await newMaintenance.save();
         if (newMaintenance) {
-            const userIds = await UserModel.find({ societyId: req.user.societyId, role: 'user' }).select('_id');
+            const userIds = await UserModel.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
             const paymentPromises = userIds.map(userId => {
                 const paymentData = {
                     type: 'maintenance',
@@ -62,7 +62,7 @@ module.exports.maintenanceDetail = async (req, res) => {
                 return sendResponse(res, 400, "No Maintenance found", 0);
             }
             // Retrieve user data for the society
-            const userData = await UserModel.find({ societyId: req.user.societyId, role: 'user' });
+            const userData = await UserModel.find({ societyId: req.user.societyId, role: 'user', isActive: true });
             if (userData && userData.length > 0) {
                 const userIds = userData.map(user => user._id);
 
