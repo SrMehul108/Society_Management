@@ -12,8 +12,6 @@ import { Statuspopup } from "../../../components/Resident_management/Status_popu
 import { getUser } from "../../../apis/api";
 import EditStatusModal from "../../../components/Resident_management/EditStatus_modal";
 
-
-
 export const ResidentManagement = () => {
   const [residents, setResidents] = useState([]);
   const [loading, setLoading] = useState(true); // for loading state
@@ -26,22 +24,19 @@ export const ResidentManagement = () => {
     setSelectedResident(resident); // Pass the selected resident's details
     setIsSidebarOpen(true);
   };
-
+  const fetchResidents = async () => {
+    try {
+      const data = await getUser();
+      console.log("Fetched data:", data); // Check what data is being returned
+      setResidents(data);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError("Failed to load resident data.");
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    // Fetch user data on component mount
-    const fetchResidents = async () => {
-      try {
-        const data = await getUser();
-        console.log("Fetched data:", data); // Check what data is being returned
-        setResidents(data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load resident data.");
-        setLoading(false);
-      }
-    };
-
     fetchResidents();
   }, []);
 
@@ -56,15 +51,12 @@ export const ResidentManagement = () => {
   const StatusclosePopup = () => setIsPopupStatus(false);
 
   if (loading) {
-    return <div>
-      {/* <Loader/> */}
-    </div>; // Show loading text until data is fetched
+    return <div>{/* <Loader/> */}</div>; // Show loading text until data is fetched
   }
 
   if (error) {
     return <div>{error}</div>; // Show error message if data fails to load
   }
-
 
   console.log("residents", residents);
 
@@ -120,7 +112,9 @@ export const ResidentManagement = () => {
                 <tr key={index} className="text-gray-700">
                   <td className="py-3 px-4 border-b flex items-center space-x-3">
                     <img
-                      src={resident?.profile_image ? resident.profile_image : "img"}
+                      src={
+                        resident?.profile_image ? resident.profile_image : "img"
+                      }
                       alt="Profile"
                       className="w-10 h-10 rounded-full"
                     />
@@ -147,8 +141,12 @@ export const ResidentManagement = () => {
                     )}
                   </td>
                   <td className="py-3 px-4 border-b">{resident?.phoneNo}</td>
-                  <td className="py-3 px-4 border-b text-center">{resident?.members}</td>
-                  <td className="py-3 px-4 border-b text-center">{resident?.vehicles}</td>
+                  <td className="py-3 px-4 border-b text-center">
+                    {resident?.members}
+                  </td>
+                  <td className="py-3 px-4 border-b text-center">
+                    {resident?.vehicles}
+                  </td>
                   <td className="py-3 px-4 border-b text-center">
                     <button
                       className="bg-green-500 text-white p-2 text-xs rounded-lg hover:bg-green-600 mr-2"
@@ -156,7 +154,11 @@ export const ResidentManagement = () => {
                     >
                       <i className="fas fa-edit"></i>
                     </button>
-                    {isEditStatusModalOpen && <EditStatusModal onClose={() => setIsEditStatusModalOpen(false)} />}
+                    {isEditStatusModalOpen && (
+                      <EditStatusModal
+                        onClose={() => setIsEditStatusModalOpen(false)}
+                      />
+                    )}
                     <button
                       className="bg-blue-500 text-white p-2 rounded-lg text-xs hover:bg-blue-600"
                       onClick={() => handleViewOwner(resident)}
@@ -166,7 +168,6 @@ export const ResidentManagement = () => {
                   </td>
                 </tr>
               ))}
-
             </tbody>
           </table>
           {/* ViewOwner Sidebar */}
@@ -211,10 +212,11 @@ export const ResidentManagement = () => {
                   <div>
                     <span className="font-semibold">Status:</span>
                     <span
-                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.unitStatus === "Occupied"
-                        ? "bg-teal-200 text-teal-800"
-                        : "bg-purple-200 text-purple-800"
-                        }`}
+                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
+                        resident.unitStatus === "Occupied"
+                          ? "bg-teal-200 text-teal-800"
+                          : "bg-purple-200 text-purple-800"
+                      }`}
                     >
                       {resident.unitStatus}
                     </span>
@@ -222,10 +224,11 @@ export const ResidentManagement = () => {
                   <div>
                     <span className="font-semibold">Resident:</span>
                     <span
-                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${resident.residentStatus === "Tenant"
-                        ? "bg-pink-200 text-pink-800"
-                        : "bg-indigo-200 text-indigo-800"
-                        }`}
+                      className={`ml-1 px-2 py-1 rounded-full text-white text-xs ${
+                        resident.residentStatus === "Tenant"
+                          ? "bg-pink-200 text-pink-800"
+                          : "bg-indigo-200 text-indigo-800"
+                      }`}
                     >
                       {resident.residentStatus}
                     </span>
