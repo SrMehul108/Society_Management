@@ -17,7 +17,7 @@ export const RegistrationForm = () => {
     firstName: "",
     lastName: "",
     email: "",
-    number: "",
+    phoneNo: "",
     country: "",
     state: "",
     city: "",
@@ -57,7 +57,7 @@ export const RegistrationForm = () => {
       alert("Please select a society");
       return;
     }
-    formData.name = `${formData.firstName} ${formData.lastName}`;
+    formData.fullName = `${formData.firstName} ${formData.lastName}`;
     formData.role = "admin";
     delete formData.firstName;
     delete formData.lastName;
@@ -69,7 +69,7 @@ export const RegistrationForm = () => {
         firstName: "",
         lastName: "",
         email: "",
-        number: "",
+        phoneNo: "",
         country: "",
         state: "",
         city: "",
@@ -159,16 +159,16 @@ export const RegistrationForm = () => {
           </div>
           <div>
             <label
-              htmlFor="number"
+              htmlFor="phoneNo"
               className="block text-sm font-medium text-gray-950"
             >
               Phone Number<span className="text-red-500">*</span>
             </label>
             <input
               type="tel"
-              id="number"
-              name="number"
-              value={formData.number}
+              id="phoneNo"
+              name="phoneNo"
+              value={formData.phoneNo}
               onChange={handleChange}
               placeholder="Enter Phone Number"
               className="mt-1 block w-full border border-zinc-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#FF5733] focus:border-[#FF5733]"
