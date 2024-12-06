@@ -1,16 +1,20 @@
-
-
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddSecurity from "../../../components/SecurityGuard/AddSecurity";
 import ViewSecurity from "../../../components/SecurityGuard/ViewSecurity";
 import DeleteSecurity from "../../../components/SecurityGuard/DeleteSecurity";
-import { DayButton, FeMaleButton, MaleButton, NightButton } from "../../../components/Button/Button";
+import {
+  DayButton,
+  FeMaleButton,
+  MaleButton,
+  NightButton,
+} from "../../../components/Button/Button";
+import { GetGuard } from "../../../apis/api";
 
 function SecurityGuard() {
   // Modal and form state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // Tracks the item to be edited
+  const [editingItem, setEditingItem] = useState(null);
+  const [securityData, setSecurityData] = useState();
 
   const openModal = (item = null) => {
     setEditingItem(item); // If item is passed, open in edit mode
@@ -22,53 +26,41 @@ function SecurityGuard() {
     setIsModalOpen(false);
   };
 
+  // delete
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const data = [
-    {
-      name: "Cody Fisher",
-      phone: "9456496321",
-      shift :"Day",
-      date: "10/02/2024",
-      time: "10-12-2021",
-      gender: "Female",
-    },
-    {
-        name: "Cody Fisher",
-        phone: "9456496321",
-        shift :"Night",
-        date: "10/02/2024",
-        time: "10-12-2021",
-        gender: "male",
-      },
-      {
-        name: "Cody Fisher",
-        phone: "9456496321",
-        shift :"Day",
-        date: "10/02/2024",
-        time: "10-12-2021",
-        gender: "Female",
-      },
-      {
-        name: "Cody Fisher",
-        phone: "9456496321",
-        shift :"Night",
-        date: "10/02/2024",
-        time: "10-12-2021",
-        gender: "male",
-      },
-  ];
+  const openDeleteModal = () => setIsDeleteOpen(true);
+  const closeDeleteModal = () => setIsDeleteOpen(false);
 
-    // delete 
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  // view
+  const [isViewOpen, setIsViewOpen] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+  const openViewModal = (item) =>{
+    setViewItem(item);
+    setIsViewOpen(true);
+  }
+  const closeViewModal = () => {
+    setViewItem(null);
+    setIsViewOpen(false);
+  }
 
-    const openDeleteModal = () => setIsDeleteOpen(true);
-    const closeDeleteModal = () => setIsDeleteOpen(false);
+  const FetchSecurityGuard = async () => {
+    try {
+      const data = await GetGuard();
+      setSecurityData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-     // view 
-     const [isViewOpen, setIsViewOpen] = useState(false);
-  const openViewModal = () => setIsViewOpen(true);
-     const closeViewModal = () => setIsViewOpen(false);
- 
+  const handleGuardAdd=()=>{
+    FetchSecurityGuard()
+    closeModal()
+  }
+
+  useEffect(() => {
+    FetchSecurityGuard();
+  }, []);
 
   return (
     <>
@@ -84,35 +76,66 @@ function SecurityGuard() {
 
         {/* Modal for adding or editing expense */}
         {isModalOpen && (
-          <AddSecurity isOpen={isModalOpen} onClose={closeModal} itemToEdit={editingItem} />
+          <AddSecurity
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            itemToEdit={editingItem}
+            onAddGuard={handleGuardAdd}
+          />
         )}
 
-        <div role="tablist" className="mt-4 tabs tabs-lifted tabs-lg rounded-lg">
-          <div className="bg-white p-4 overflow-hidden" >
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Securtiy Guard Details </h2>
+        <div
+          role="tablist"
+          className="mt-4 tabs tabs-lifted tabs-lg rounded-lg"
+        >
+          <div className="bg-white p-4 overflow-hidden">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Securtiy Guard Details{" "}
+            </h2>
 
-            <div className="overflow-x-auto rounded-lg h-full" >
+            <div className="overflow-x-auto rounded-lg h-full">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-royalgray sticky top-0 w-full">
                   <tr>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Securtiy Guard Name</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Phone Number</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Selete  Shift </th>
-                    <th className="px-4 py-2 text-left text-black font-semibold"> Shift Date</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold"> Shift Time</th>
-                   
-                    <th className="px-4 py-2 text-left text-black font-semibold">Gender</th>
-                    <th className="px-4 py-2 text-left text-black font-semibold">Action</th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Securtiy Guard Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Phone Number
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Selete Shift{" "}
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      {" "}
+                      Shift Date
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      {" "}
+                      Shift Time
+                    </th>
+
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Gender
+                    </th>
+                    <th className="px-4 py-2 text-left text-black font-semibold">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200  overflow-y-auto custom-scrollbar">
-                  {data.map((item, index) => (
+                  {securityData?.map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50 ">
-                      <td className="px-4 py-3">
-                        <span className="text-gray-700 ">{item.name}</span>
+                      <td className="px-4 py-3 flex items-center gap-3">
+                        <img
+                          src={item.profile_image}
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full"
+                        />
+                        <span className="text-gray-700 ">{item.fullName}</span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-black ">{item.phone}</span>
+                        <span className="text-black ">{item.phoneNo}</span>
                       </td>
                       <td className="px-4 py-3">
                         {/* <span
@@ -124,20 +147,24 @@ function SecurityGuard() {
                         >
                           {item.shift}
                         </span> */}
-                        {item.shift === "Day" ? (
-                          <DayButton/>
-                        ):(
-                          <NightButton/>
+                        {item.securityData.shift === "day" ? (
+                          <DayButton />
+                        ) : (
+                          <NightButton />
                         )}
                       </td>
 
-                      <td className="px-4 py-3 ">{item.date}</td>
-                      <td className="px-4 py-3 ">{item.time}</td>
+                      <td className="px-4 py-3 ">
+                        {item.securityData.shiftDate}
+                      </td>
+                      <td className="px-4 py-3 ">
+                        {item.securityData.shiftTime}
+                      </td>
                       <td className="px-4 py-3">
-                       {item.gender.toLowerCase() === "male" ? (
+                        {item.gender.toLowerCase() === "male" ? (
                           <MaleButton />
-                        ):(
-                          <FeMaleButton/>
+                        ) : (
+                          <FeMaleButton />
                         )}
                       </td>
                       <td className=" text-sm text-blue-500 cursor-pointer hover:text-blue-700 ">
@@ -147,15 +174,24 @@ function SecurityGuard() {
                         >
                           <i className="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button className="text-blue-500 hover:text-blue-700 p-1" onClick={openViewModal}>
+                        <button
+                          className="text-blue-500 hover:text-blue-700 p-1"
+                          onClick={() => openViewModal(item)}
+                        >
                           <i className="fas fa-eye"></i>
                         </button>
-                        {isViewOpen && <ViewSecurity closeModal={closeViewModal} />}
-                        <button className="text-red-500 hover:text-red-700 p-1" onClick={openDeleteModal}>
+                        {isViewOpen && (
+                          <ViewSecurity closeModal={closeViewModal} item={viewItem} />
+                        )}
+                        <button
+                          className="text-red-500 hover:text-red-700 p-1"
+                          onClick={openDeleteModal}
+                        >
                           <i className="fas fa-trash"></i>
                         </button>
-                  {isDeleteOpen && <DeleteSecurity closeModal={closeDeleteModal} />}
-
+                        {isDeleteOpen && (
+                          <DeleteSecurity closeModal={closeDeleteModal} />
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -168,5 +204,4 @@ function SecurityGuard() {
     </>
   );
 }
-export default  SecurityGuard;
-
+export default SecurityGuard;
