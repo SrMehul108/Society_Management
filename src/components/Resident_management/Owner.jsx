@@ -4,36 +4,23 @@ import owner from '../../assets/image/owner.jpg'
 import { UploadIcon } from './UploadIcon';
 import { X, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom';
+import { userRegistration } from '../../apis/api';
 
 
 
 export const Owner = () => {
     const [fileNames, setFileNames] = useState(Array(4).fill(""));
-    const [formData, SetFormData] = useState([])
+    const [formData, SetFormData] = useState([]);
+    const [vehicleCount, setVehicleCount] = useState(1);
+    const [photo, setPhoto] = useState(null);
+    const fileInputRef = useRef(null);
+    const [vehicles, setVehicles] = useState([{ type: '', name: '', number: '' }]);
     const [files, setFiles] = useState([
         { id: 1, name: 'Syncfusion Essential Adhocard.JPG', size: '3.5 MB', progress: 40 },
         { id: 2, name: 'Syncfusion Essential Adhocard.JPG', size: '3.5 MB', progress: 0 },
         { id: 3, name: 'Syncfusion Essential Verabil.JPG', size: '3.5 MB', progress: 0 },
         { id: 4, name: 'Syncfusion Essential Agreement.JPG', size: '2.5 MB', progress: 40 },
-    ])
-
-    const handleFileChange = (e, index) => {
-        const file = e.target.files[0];
-        if (file) {
-            const updatedFileNames = [...fileNames];
-            updatedFileNames[index] = file.name;
-            setFileNames(updatedFileNames);
-        }
-    };
-
-    const handleClickUpload = (index) => {
-        document.getElementById(`fileInput-${index}`).click();
-    };
-
-    const removeFile = (id) => {
-        setFiles(files.filter(file => file.id !== id))
-    }
-
+    ]);
     const [memberCount, setMemberCount] = useState(1); // Default to 5 members
     const [members, setMembers] = useState(
         Array.from({ length: 1 }, () => ({
@@ -45,12 +32,45 @@ export const Owner = () => {
             relation: ''
         }))
     );
+    const [basicData, setBasicData] = useState({
+        fullName: '',
+        phone: '',
+        email: '',
+        age: '',
+        gender: '',
+        relation: '',
+        wing: '',
+        unit: '',
+        profile_image: '',
+    });
+
+    const handleFileChange = (e, index) => {
+        const file = e.target.files[0];
+        if (file) {
+            const updatedFileNames = [...fileNames];
+            updatedFileNames[index] = file;
+            setFileNames(updatedFileNames);
+        }
+    };
+
+    const fileInputs = [
+        { title: "Upload Aadhar Card (Front Side)", name: "aadharImage_front" },
+        { title: "Upload Aadhar Card (Back Side)", name: "aadharImage_back" },
+        { title: "Address Proof (Vero Bill OR Light Bill)", name: "addressProofImage" },
+        { title: "Rent Agreement", name: "rentalAgreementImage" }
+    ];
+
+    const handleClickUpload = (index) => {
+        document.getElementById(`fileInput-${index}`).click();
+    };
+
+    const removeFile = (id) => {
+        setFiles(files.filter(file => file.id !== id))
+    }
 
     const handleMemberCountChange = (event) => {
         const count = Number(event.target.value);
         setMemberCount(count);
-
-        // Adjust the number of members in the array
         setMembers((prevMembers) => {
             if (count > prevMembers.length) {
                 return [
@@ -78,14 +98,9 @@ export const Owner = () => {
         });
     };
 
-    const [vehicleCount, setVehicleCount] = useState(1);
-    const [vehicles, setVehicles] = useState([{ type: '', name: '', number: '' }]);
-
     const handleVehicleCountChange = (e) => {
         const count = parseInt(e.target.value);
         setVehicleCount(count);
-
-        // Adjust the vehicles array based on the selected count
         if (count > vehicles.length) {
             setVehicles([...vehicles, ...Array(count - vehicles.length).fill({ type: '', name: '', number: '' })]);
         } else {
@@ -101,31 +116,66 @@ export const Owner = () => {
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('fullName', basicData.fullName);
+        formData.append('email', basicData.email);
+        formData.append('phoneNo', basicData.phone);
+        formData.append('profile_image', basicData.profile_image);
+        formData.append('gender', basicData.gender);
+        formData.append('age', basicData.age);
+        formData.append('role', 'user');
+        // Append files
+        formData.append('aadharImage_front', fileNames[0]);
+        formData.append('aadharImage_back', fileNames[1]);
+        formData.append('addressProofImage', fileNames[2]);
+        formData.append('rentalAgreementImage', fileNames[3]);
+        formData.append('relation', basicData.relation);
+        formData.append('wing', basicData.wing);
+        formData.append('unit', basicData.unit);
+        formData.append('type', 'owner');
 
+        members.forEach((member, index) => {
+            formData.append(`members[${index}][fullName]`, member.fullName);
+            formData.append(`members[${index}][phoneNo]`, member.phone);
+            formData.append(`members[${index}][email]`, member.email);
+            formData.append(`members[${index}][age]`, member.age);
+            formData.append(`members[${index}][gender]`, member.gender);
+            formData.append(`members[${index}][relation]`, member.relation);
+        });
+
+        vehicles.forEach((vehicle, index) => {
+            formData.append(`vehicles[${index}][vehicleType]`, vehicle.type);
+            formData.append(`vehicles[${index}][vehicleName]`, vehicle.name);
+            formData.append(`vehicles[${index}][vehicleNumber]`, vehicle.number);
+        });
+        console.log(formData);
+        try {
+            let response = await userRegistration(formData);
+            console.log(response);
+        } catch (error) {
+            console.error("Error during registration:", error);
+        }
     };
-    // image add 
-    const [photo, setPhoto] = useState(null);
-
-    const fileInputRef = useRef(null);
-
-
-    // Handle photo upload
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
                 setPhoto(reader.result);
-
+                basicData.profile_image = file; // Store the file for later use
             };
             reader.readAsDataURL(file);
         }
     };
-
-    // Trigger the file input dialog on button click
+    const handleBasicDataChange = (field, value) => {
+        setBasicData(prevData => ({
+            ...prevData,
+            [field]: value
+        }));
+    };
     const handleAddPhotoClick = () => {
         fileInputRef.current.click();
-
     };
 
     return (
@@ -175,30 +225,32 @@ export const Owner = () => {
                                         {/* First Row */}
                                         <div className="flex gap-6">
                                             <div className="w-1/3">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Full Name*
-                                                </label>
+                                                <label className="block text-sm font-medium text-gray-700"> Full Name*</label>
                                                 <input
+                                                    name='fullName'
                                                     type="text"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.fullName}
+                                                    onChange={(e) => handleBasicDataChange('fullName', e.target.value)}
                                                 />
                                             </div>
                                             <div className="w-1/3">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Phone Number*
-                                                </label>
+                                                <label className="block text-sm font-medium text-gray-700"> Phone Number*</label>
                                                 <input
                                                     type="tel"
+                                                    name='phoneNumber'
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.phone}
+                                                    onChange={(e) => handleBasicDataChange('phone', e.target.value)}
                                                 />
                                             </div>
                                             <div className="w-1/3">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Email Address
-                                                </label>
+                                                <label className="block text-sm font-medium text-gray-700"> Email Address</label>
                                                 <input
                                                     type="email"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.email}
+                                                    onChange={(e) => handleBasicDataChange('email', e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -212,16 +264,23 @@ export const Owner = () => {
                                                 <input
                                                     type="number"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.age}
+                                                    onChange={(e) => handleBasicDataChange('age', e.target.value)}
                                                 />
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700">
                                                     Gender*
                                                 </label>
-                                                <select className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                    <option>Other</option>
+                                                <select
+                                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.gender}
+                                                    onChange={(e) => handleBasicDataChange('gender', e.target.value)}
+                                                >
+                                                    <option value="">Select Gender</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="other">Other</option>
                                                 </select>
                                             </div>
                                             <div>
@@ -231,6 +290,8 @@ export const Owner = () => {
                                                 <input
                                                     type="text"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.wing}
+                                                    onChange={(e) => handleBasicDataChange('wing', e.target.value)}
                                                 />
                                             </div>
                                             <div>
@@ -240,6 +301,8 @@ export const Owner = () => {
                                                 <input
                                                     type="text"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.unit}
+                                                    onChange={(e) => handleBasicDataChange('unit', e.target.value)}
                                                 />
                                             </div>
                                             <div>
@@ -249,6 +312,8 @@ export const Owner = () => {
                                                 <input
                                                     type="text"
                                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                                    value={basicData.relation}
+                                                    onChange={(e) => handleBasicDataChange('relation', e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -257,30 +322,26 @@ export const Owner = () => {
                             </div>
                             <div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    {[
-                                        "Upload Aadhar Card (Front Side)",
-                                        "Upload Aadhar Card (Back Side)",
-                                        "Address Proof (Vero Bill OR Light Bill)",
-                                        "Rent Agreement",
-                                    ].map((title, index) => (
+                                    {fileInputs.map((input, index) => (
                                         <div
-                                            key={title}
+                                            key={input.name}
                                             className="border border-dashed border-gray-300 rounded-md p-4 cursor-pointer"
                                             onClick={() => handleClickUpload(index)}
                                         >
                                             <div className="text-center">
                                                 <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                                                <p className="mt-1 text-sm text-gray-600">{title}</p>
+                                                <p className="mt-1 text-sm text-gray-600">{input.title}</p>
                                                 <p className="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                                                 {fileNames[index] && (
                                                     <p className="mt-2 text-xs text-gray-700 truncate">
-                                                        {fileNames[index]}
+                                                        {fileNames[index].name || fileNames[index]}
                                                     </p>
                                                 )}
                                             </div>
                                             <input
                                                 id={`fileInput-${index}`}
                                                 type="file"
+                                                name={input.name}
                                                 className="hidden"
                                                 onChange={(e) => handleFileChange(e, index)}
                                                 accept=".png, .jpg, .jpeg, .gif"
@@ -445,8 +506,8 @@ export const Owner = () => {
                                                             onChange={(e) => handleChange(index, 'type', e.target.value)}
                                                         >
                                                             <option value="">Select Type</option>
-                                                            <option value="Two Wheelers">Two Wheelers</option>
-                                                            <option value="Four Wheelers">Four Wheelers</option>
+                                                            <option value="TwoWheeler">Two Wheelers</option>
+                                                            <option value="FourWheeler">Four Wheelers</option>
                                                         </select>
                                                     </div>
                                                     <div className="flex flex-col mb-4  w-1/3 ms-1">
@@ -473,12 +534,6 @@ export const Owner = () => {
                                             </div>
                                         ))}
                                     </div>
-
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
