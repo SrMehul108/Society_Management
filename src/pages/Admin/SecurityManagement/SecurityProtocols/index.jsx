@@ -1,28 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SecurityProtocols from "../../../../components/SecurityManagement/Protocols/SecurityProtocols";
 import SecurityEdit from "../../../../components/SecurityManagement/Protocols/SecurityEdit";
 import SecurityView from "../../../../components/SecurityManagement/Protocols/SecurityView";
 import SecurityDelete from "../../../../components/SecurityManagement/Protocols/SecurityDelete";
 import { Icons } from "../../../../constants";
+import { GetProtocol } from "../../../../apis/api";
 
 const SecurityManagement = () => {
-  const [protocols, setProtocols] = useState([
-    {
-      id: 1,
-      title: "Evelyn Harper",
-      description: "Providing false information or deliberately.",
-      date: "11/11/2021 ",
-      time: "3.45pm",
-    },
-    {
-      id: 2,
-      title: "Esther Howard",
-      description: "Regular waste collection services.",
-      date: "11/10/2021 ",
-      time: "8.45pm",
-    },
-    // Add more complaint data as needed...
-  ]);
+  const [protocols, setProtocols] = useState();
 
   //protocols popup
 
@@ -58,6 +43,24 @@ const SecurityManagement = () => {
   const openDeleteModal = () => setIsDeleteOpen(true);
   const closeDeleteModal = () => setIsDeleteOpen(false);
 
+  const FetchProtocols=async()=>{
+    try {
+      const data=await GetProtocol()
+      setProtocols(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    FetchProtocols()
+  },[])
+
+  const handleProtocolsAdded=()=>{
+    FetchProtocols()
+    closeModal()
+  }
+
   return (
     <div className=" p-4 bg-white rounded-lg">
       <div className="flex justify-between items-center mb-4 rounded-md">
@@ -68,7 +71,7 @@ const SecurityManagement = () => {
         >
           Create Protocols
         </button>
-        {isOpen && <SecurityProtocols closeModal={closeModal} />}
+        {isOpen && <SecurityProtocols onClose={closeModal} onAddProtocols={handleProtocolsAdded} />}
       </div>
       <div className="overflow-x-auto border rounded-t-2xl">
         <table className="min-w-full bg-white  shadow">
@@ -93,7 +96,7 @@ const SecurityManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {protocols.map((protocols) => (
+            {protocols?.map((protocols) => (
               <tr key={protocols.id} className="border-b hover:bg-gray-50">
                 <td className="p-3 text-sm text-gray-700 font-semibold">
                   {protocols.title}
