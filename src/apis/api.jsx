@@ -45,6 +45,8 @@ export const LoginData = () => {
   return null; // No token found
 };
 
+//Auth API
+
 export const Registration = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, data);
@@ -149,6 +151,8 @@ export const resetPassword = async (rpass) => {
   }
 };
 
+//User API
+
 export const userRegistration = async (formdata) => {
   const token = AdminToken();
   if (!token) {
@@ -190,7 +194,7 @@ export const userUpdate = async (updatedUserData) => {
 
   try {
     const response = await axios.post(
-      `${API_URL}/auth/edit-profile`, 
+      `${API_URL}/auth/edit-profile`,
       updatedUserData, // Send the updated user data here
       {
         headers: {
@@ -207,10 +211,12 @@ export const userUpdate = async (updatedUserData) => {
     }
   } catch (error) {
     console.log(error);
-    return { success: false, message: "An error occurred while updating the profile" };
+    return {
+      success: false,
+      message: "An error occurred while updating the profile",
+    };
   }
 };
-
 
 //Resident API
 
@@ -1106,3 +1112,114 @@ export const DeleteRequest = async (DeleteId) => {
     };
   }
 };
+
+//Protocols API
+export const AddProtocol = async (data) => {
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/security/createProtocol`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+};
+
+export const GetProtocol = async () => {
+  try {
+    var token = AdminToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/security/getProtocol`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+export const EditProtocol=async(data,id)=>{
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/security/editProtocol/${id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+}
+
+export const DeleteProtocol=async(id)=>{
+  try {
+    var token = AdminToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/security/deleteProtocol/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}

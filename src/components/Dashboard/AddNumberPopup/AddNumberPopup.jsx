@@ -83,6 +83,7 @@ function AddNumberPopup({
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+              placeholder="Joe doe"
             />
           </div>
           <div className="mb-4">
@@ -96,6 +97,7 @@ function AddNumberPopup({
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+              placeholder="+00 00000 00000"
             />
           </div>
           <div className="mb-4">
@@ -109,6 +111,7 @@ function AddNumberPopup({
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+              placeholder="Work"
             />
           </div>
         </form>
