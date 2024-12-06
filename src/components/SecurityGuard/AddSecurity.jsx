@@ -98,7 +98,7 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
                             </label>
                            <select className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="male">Male</option>
-                            <option value="Female">FeMale</option>
+                            <option value="Female">Female</option>
                            </select>
                         </div>
                         <div className="w-1/2">
