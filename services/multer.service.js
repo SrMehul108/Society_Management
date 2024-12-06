@@ -2,7 +2,7 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinaryConfig');
 const path = require('path');
-const allowedFileTypes = ['.jpg', '.png', '.gif', '.pdf'];
+const allowedFileTypes = ['.jpg', '.png', '.gif', '.pdf', '.jpeg'];
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {

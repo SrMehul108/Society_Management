@@ -46,7 +46,7 @@ module.exports.insertUser = async (req, res) => {
         wing: req.body.wing || null,
         unit: req.body.unit || null,
         type: req.body.type || null,
-        relation : req.body.relation || null,
+        relation: req.body.relation || null,
       },
     };
     // Parse JSON inputs
@@ -54,21 +54,47 @@ module.exports.insertUser = async (req, res) => {
     try {
       if (req.body.members) {
         try {
-          members = JSON.parse(req.body.members);
+          console.log("before parse", req.body.members);
+          if (typeof req.body.members === "string") {
+            members = JSON.parse(req.body.members);
+          } else {
+            members = req.body.members; 
+          }
+          console.log("after parse", typeof members);
+          if (!Array.isArray(members)) {
+            return sendResponse(400, "Members should be an array", 0);
+          }
         } catch (err) {
           return sendResponse(res, 400, "Invalid JSON format for members", 0);
         }
       }
       if (req.body.vehicles) {
         try {
-          vehicles = JSON.parse(req.body.vehicles);
+          if (typeof req.body.vehicles === "string") {
+            vehicles = JSON.parse(req.body.vehicles);
+          } else {
+            vehicles = req.body.vehicles; 
+          }
+          if (!Array.isArray(vehicles)) {
+            return sendResponse(400, "Vehicles should be an array", 0);
+          }
         } catch (err) {
-          return sendResponse(res, 400, "Invalid JSON format for members", 0);
+          return sendResponse(res, 400, "Invalid JSON format for vehicles", 0);
         }
       }
-      if (req.body.owner && data.metaData.type === "tenant") owner = JSON.parse(req.body.owner);
+      if (req.body.owner && data.metaData.type === "tenant") {
+        try {
+          if (typeof req.body.owner === "string") {
+            owner = JSON.parse(req.body.owner);
+          } else {
+            owner = req.body.owner; // Already an object
+          }
+        } catch (err) {
+          return sendResponse(res, 400, "Invalid JSON format for owner", 0);
+        }
+      }
     } catch (err) {
-      return sendResponse(res, 400, "Invalid JSON format for members", 0);
+      return sendResponse(res, 400, "Invalid JSON format", 0);
     }
     if (owner) data.metaData.owner = owner;
     // File uploads

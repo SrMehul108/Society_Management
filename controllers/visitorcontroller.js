@@ -20,10 +20,11 @@ module.exports.vistorLog = async (req, res) => {
 module.exports.getEntry = async (req, res) => {
     try {
         const { id } = req.params;
+        let data;
         if (id) {
-            const data = await Visitor.find({ _id: id, societyId: req.user.societyId });
+            data = await Visitor.find({ _id: id, societyId: req.user.societyId });
         } else {
-            const data = await Visitor.find({ societyId: req.user.societyId });
+            data = await Visitor.find({ societyId: req.user.societyId });
         }
         if (data) {
             return sendResponse(res, 200, "Visitor data fetched Successfully", 1, data);
