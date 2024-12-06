@@ -158,17 +158,18 @@ export const userRegistration = async (formdata) => {
   if (!token) {
     return { success: false, message: "Authorization token is missing" };
   }
-
+  if (!formdata) return { success: false, message: "formdata is missing" };
+  console.log(formdata);
+  
   try {
-    const response = await axios.post(
-      `${API_URL}/auth/admin/insertUser`,
-      { formdata },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.post(`${API_URL}/auth/admin/insertUser`, formdata, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       }
-    );
+    });
+
+    console.log(response);
 
     if (response.status === 200 && response.data?.status === 1) {
       return {
