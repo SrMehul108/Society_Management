@@ -158,17 +158,18 @@ export const userRegistration = async (formdata) => {
   if (!token) {
     return { success: false, message: "Authorization token is missing" };
   }
-
+  if (!formdata) return { success: false, message: "formdata is missing" };
+  console.log(formdata);
+  
   try {
-    const response = await axios.post(
-      `${API_URL}/auth/admin/insertUser`,
-      { formdata },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.post(`${API_URL}/auth/admin/insertUser`, formdata, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       }
-    );
+    });
+
+    console.log(response);
 
     if (response.status === 200 && response.data?.status === 1) {
       return {
@@ -1221,5 +1222,98 @@ export const DeleteProtocol=async(id)=>{
     );
   } catch (error) {
     console.log(error);
+  }
+}
+
+//Visitor API
+export const GetVisitor=async()=>{
+  try {
+    var token = AdminToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/security/getEntry`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
+
+//Guard API
+export const GetGuard=async()=>{
+  try {
+    var token = AdminToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/getSecurity`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    // Log the error response and status
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
+
+export const AddGuard=async(data)=>{
+  try {
+    var token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/addNewSecurity`,
+      data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
   }
 }
