@@ -142,4 +142,5 @@ function OtherIncomePopup({ onClose, onIncomeAdded }) {
   );
 }
 
+
 export default OtherIncomePopup;
