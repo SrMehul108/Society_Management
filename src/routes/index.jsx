@@ -27,6 +27,8 @@ import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion
 import { lazy } from "react";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
 import ProfilePage from "../components/ProfilePopup/ProfilePage";
+import EditProfilePopup from "../components/ProfilePopup/EditProfilePopup";
+import EditProfilePage from "../components/ProfilePopup/EditProfilePopup";
 
 const AddNote = lazy(() => import("../pages/Admin/FinancialMaintenance/Note"));
 const FinancialManagement = lazy(() =>
@@ -128,6 +130,10 @@ const DashStackRoute = createBrowserRouter(
                 {
                   path: "profile", 
                   element: <ProfilePage /> 
+                },
+                {
+                  path: "editprofile", 
+                  element: <EditProfilePage /> 
                 },
                 {
                   path: "dashboard",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EditProfilePopup from "./EditProfilePopup";
 
 const ProfilePage = () => {
@@ -8,12 +8,11 @@ const ProfilePage = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState(profileData);
+  const navigate = useNavigate();
 
   // Debugging: Check if data is received correctly
   console.log("Received Profile Data:", profileData);
 
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
 
   const handleUpdateProfile = (updatedProfile) => {
     setProfile(updatedProfile);
@@ -33,25 +32,24 @@ const ProfilePage = () => {
     state: profile.state,
     city: profile.city,
   };
+  const handleEditProfile = () => {
+    console.log("editprofile");
+    
+    navigate("/admin/editprofile", { state: { profileData } });
+  };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center ">
+    <div className="fixed inset-0 flex justify-center items-center  ">
       <div className="rounded-lg shadow-xl p-6 max-w-4xl w-full relative bg-slate-50">
         <div className="flex justify-between mb-4">
           <h2>Profile</h2>
           <button
-            onClick={handleOpen}
+            onClick={handleEditProfile}
             className="px-6 py-3 bg-orange-500 text-white rounded-md shadow-lg hover:bg-orange-600 transition"
           >
             Edit Profile
           </button>
-          {isOpen && (
-            <EditProfilePopup
-              profile={profile}
-              onClose={handleClose}
-              onUpdate={handleUpdateProfile}
-            />
-          )}
+         
         </div>
         <div className="flex flex-col md:flex-row bg-white rounded-lg">
           <div className="flex flex-col items-center justify-center border-r md:w-1/3 p-4">
