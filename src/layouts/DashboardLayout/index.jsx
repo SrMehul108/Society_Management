@@ -72,7 +72,7 @@ export const DashboardLayout = ({ items, Data }) => {
   }, []);
 
   const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id)); // Use `id` directly
+    setNotifications((prev) => prev.filter((n) => n._id !== id)); // Use `id` directly
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
 
