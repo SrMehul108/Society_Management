@@ -6,7 +6,7 @@ import Notification from "../../components/Notification/Notification";
 import { LoginData } from "../../apis/api";
 import { io } from 'socket.io-client';
 
-// Initialize socket
+
 const socket = io('https://society-management-4z4w.onrender.com');
 
 export const DashboardLayout = ({ items, Data }) => {
@@ -24,7 +24,7 @@ export const DashboardLayout = ({ items, Data }) => {
     }
   };
 
-  // Fetch Profile Data
+
   const fetchProfileData = async () => {
     try {
       const response = await LoginData();
@@ -34,7 +34,7 @@ export const DashboardLayout = ({ items, Data }) => {
     }
   };
 
-  // Handle Notifications
+
   const addNotification = (message, type = "info") => {
     const newNotification = {
       id: Date.now(),
@@ -53,16 +53,16 @@ export const DashboardLayout = ({ items, Data }) => {
     if (socket) {
       const societyId = LoginData();
       const SocId = societyId.societyId;
-      socket.emit('join-society', SocId);  // Emit the event with the societyId
+      socket.emit('join-society', SocId); 
     }
 
     return () => {
-      socket.off("new-notification"); // Cleanup listener on unmount
+      socket.off("new-notification");
     };
   }, [socket]);
 
   const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id)); // Use id directly
+    setNotifications((prev) => prev.filter((n) => n.id !== id)); 
   };
 
   return (

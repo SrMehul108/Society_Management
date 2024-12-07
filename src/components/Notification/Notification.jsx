@@ -10,6 +10,7 @@ const Notification = ({ message, type, onClose }) => {
     >
       <div className="flex items-center justify-between">
         <span>{message}</span>
+        <span>{type}</span>
         <button 
           onClick={onClose} 
           className="ml-4 text-white font-bold hover:text-gray-200"
