@@ -3,22 +3,23 @@ import { Outlet, useNavigate } from "react-router";
 import { DSSidebar } from "@/components";
 import { Icons } from "../../constants";
 import Notification from "../../components/Notification/Notification";
-
 import { LoginData } from "../../apis/api";
+import { io } from 'socket.io-client';
+
+// Initialize socket
+const socket = io('https://society-management-4z4w.onrender.com'); 
 
 export const DashboardLayout = ({ items, Data }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
     if (profileData) {
-      console.log("Navigating to profile with data:", profileData);
-      navigate("/admin/profile", { state: { profileData } }); // Passing data through state
+      navigate("/admin/profile", { state: { profileData } });
     } else {
       console.error("Profile data is not available!");
     }
@@ -39,15 +40,36 @@ export const DashboardLayout = ({ items, Data }) => {
   }, []);
 
   // Handle Notifications
-  const addNotification = () => {
+  const addNotification = (message, type) => {
     const newNotification = {
       id: Date.now(),
-      notificationMessage: "This is a notification!",
-      notificationType: "success",
+      notificationMessage: message,
+      notificationType: type,
     };
     setNotifications((prev) => [...prev, newNotification]);
     setIsNotificationVisible(true);
   };
+
+  useEffect(() => {
+    if (isNotificationVisible) {
+      const timer = setTimeout(() => {
+        setIsNotificationVisible(false);
+      }, 3000); // 3 seconds delay
+
+      return () => clearTimeout(timer);
+    }
+  }, [isNotificationVisible]);
+
+  useEffect(() => {
+    // Listen for notifications from the backend
+    socket.on("new-notification", (data) => {
+      addNotification(data.message, data.type);
+    });
+
+    return () => {
+      socket.off("new-notification"); // Cleanup listener on unmount
+    };
+  }, []);
 
   const removeNotification = (id) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
@@ -70,7 +92,6 @@ export const DashboardLayout = ({ items, Data }) => {
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsMenuOpen(false)}
-          aria-label="Close sidebar"
         ></div>
       )}
 
@@ -81,18 +102,6 @@ export const DashboardLayout = ({ items, Data }) => {
           {/* Search Bar */}
           <div className="flex-1 px-4">
             <label className="flex items-center gap-2 bg-gray-300 w-full max-w-[400px] rounded-lg p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="h-4 w-4 opacity-70"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                  clipRule="evenodd"
-                />
-              </svg>
               <input
                 type="text"
                 className="grow bg-gray-300 focus:outline-none"
@@ -105,12 +114,9 @@ export const DashboardLayout = ({ items, Data }) => {
 
           {/* Notifications and Profile */}
           <div className="flex items-center gap-4">
-            {/* Notifications */}
             <button
-              onClick={addNotification}
+              onClick={() => addNotification("Test notification", "success")}
               className="p-2 border rounded-lg hover:bg-gray-100"
-              title="View Notifications"
-              aria-label="View Notifications"
             >
               {Icons.Bell}
             </button>
@@ -128,18 +134,14 @@ export const DashboardLayout = ({ items, Data }) => {
            
             <div
               className="flex items-center gap-2 cursor-pointer"
-              onClick={handleProfileClick} // Navigate when clicked
-              title="View Profile"
-              aria-label="View Profile"
+              onClick={handleProfileClick}
             >
               <img
                 src="/placeholder.svg"
                 alt="User Avatar"
                 className="w-8 h-8 rounded-full border"
               />
-              <span className="hidden sm:block">
-                {profileData?.fullName || "Loading..."}
-              </span>
+              <span>{profileData?.fullName || "Loading..."}</span>
             </div>
           </div>
         </header>
