@@ -21,8 +21,12 @@ const ProfilePage = () => {
 
   if (!profile) {
     return <div>No profile data available. Please try again.</div>;
-  }
 
+  } 
+   const ProfileName = {
+    firstName: profile.fullName,
+   
+  };
   const displayedFields = {
     firstName: profile.fullName,
     phoneNumber: profile.phoneNo,
@@ -59,7 +63,9 @@ const ProfilePage = () => {
               className="rounded-full w-24 h-24"
             />
             <h2 className="text-xl font-semibold mt-4">
-              {profile.firstName} {profile.lastName}
+            {Object.entries(ProfileName).map(([key, value]) => (
+                <div key={key}>{profile.fullName}</div>
+              ))}
             </h2>
           </div>
           <div className="md:w-2/3 p-4">

@@ -33,7 +33,10 @@ const EditProfilePage = () => {
       console.error("Error updating profile:", error);
     }
   };
-
+  const ProfileName = {
+    fullName: updatedProfile.fullName || "",
+   
+  };
   const displayedFields = {
     fullName: updatedProfile.fullName || "",
     phoneNo: updatedProfile.phoneNo || "",
@@ -51,10 +54,24 @@ const EditProfilePage = () => {
         <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
 
         {/* Edit Profile Form */}
+        <div className="flex">
+        <div className="flex flex-col items-center justify-center border-r md:w-1/3 p-4">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Profile"
+              className="rounded-full w-24 h-24"
+            />
+            <h2 className="text-xl font-semibold mt-4">
+            {Object.entries(ProfileName).map(([key, value]) => (
+                <div key={key}>{updatedProfile.fullName}</div>
+              ))}
+            </h2>
+          </div>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-3"
         >
+           
           {Object.entries(displayedFields).map(([key, value]) => (
             <div key={key}>
               <label className="block text-sm font-medium mb-1">
@@ -78,6 +95,7 @@ const EditProfilePage = () => {
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );
