@@ -11,13 +11,13 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "../ui/sidebar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { MenuIcon, XIcon } from "lucide-react";
 
 export const DSSidebar = ({ items }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState({});
-
+  const navigate = useNavigate();
   // Function to toggle dropdowns (only one open at a time)
   const toggleGroup = (title) => {
     setOpenGroups((prev) => ({
@@ -29,6 +29,15 @@ export const DSSidebar = ({ items }) => {
   const handleToggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // logout
+
+  const logoutpage = () => {
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('role');
+    sessionStorage.clear();
+    navigate('/');
+  }
 
   return (
     <>
@@ -46,9 +55,8 @@ export const DSSidebar = ({ items }) => {
 
       {/* Sidebar */}
       <SidebarProvider
-        className={`fixed md:relative top-0 left-0 h-full bg-white z-40 transform ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 flex flex-col`}
+        className={`fixed md:relative top-0 left-0 h-full bg-white z-40 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 flex flex-col`}
       >
         <SidebarHeader className="p-6 text-center text-2xl font-bold">
           <p
@@ -84,10 +92,9 @@ export const DSSidebar = ({ items }) => {
                               <NavLink
                                 to={item.url}
                                 className={({ isActive }) =>
-                                  `py-2 px-4 rounded-lg flex items-center ${
-                                    isActive
-                                      ? "bg-orange-500 text-white"
-                                      : "text-black hover:bg-orange-500"
+                                  `py-2 px-4 rounded-lg flex items-center ${isActive
+                                    ? "bg-orange-500 text-white"
+                                    : "text-black hover:bg-orange-500"
                                   }`
                                 }
                               >
@@ -103,10 +110,9 @@ export const DSSidebar = ({ items }) => {
                       <NavLink
                         to={group.url}
                         className={({ isActive }) =>
-                          `py-2 px-4 rounded-lg flex items-center ${
-                            isActive
-                              ? "bg-orange-500 text-white"
-                              : "text-black hover:bg-orange-500"
+                          `py-2 px-4 rounded-lg flex items-center ${isActive
+                            ? "bg-orange-500 text-white"
+                            : "text-black hover:bg-orange-500"
                           }`
                         }
                       >
@@ -123,7 +129,8 @@ export const DSSidebar = ({ items }) => {
 
         <SidebarFooter>
           <div className="p-4 border-t border-gray-200">
-            <button className="flex items-center text-red-500 hover:bg-gray-200 hover:text-red-700 w-full">
+            <button className="flex items-center text-red-500 hover:bg-gray-200 hover:text-red-700 w-full"
+              onClick={logoutpage}>
               Logout
             </button>
           </div>
