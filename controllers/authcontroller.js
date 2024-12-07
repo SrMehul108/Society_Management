@@ -203,7 +203,6 @@ module.exports.editProfile = async (req, res) => {
 
 module.exports.SocietyFinanceDetail = async (req, res) => {
   try {
-
     if (!req.user) {
       return sendResponse(res, 403, "Unauthorized Access", 0);
     }
@@ -219,7 +218,9 @@ module.exports.SocietyFinanceDetail = async (req, res) => {
     const unitCount = await User.countDocuments({ societyId: req.user.societyId, isActive: true, role: 'user' });
     const totalExpenAmount = totalExpenses.length > 0 ? totalExpenses[0].totalAmount : 0;
     const totalIncomeAmount = totalIncome.length > 0 ? totalIncome[0].totalAmount : 0;
+    const balance = totalIncomeAmount - totalExpenAmount;
     const data = {
+      balance,
       totalIncomeAmount,
       totalExpenAmount,
       unitCount
