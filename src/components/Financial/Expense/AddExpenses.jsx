@@ -74,11 +74,12 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit, onAddExpanse }) => {
     formDataToSend.append("uploadBill", formData.uploadBill);
 
     try {
-      const response = await addExpense(formDataToSend); // Ensure addExpense handles FormData
+      const response = await addExpense(formDataToSend); 
       onAddExpanse();
       onClose();
       console.log("Expense added successfully:", response);
     } catch (error) {
+      console.log(error)
       console.error("Error adding expense:", error);
       setError("Failed to add expense. Please try again.");
     }
@@ -90,6 +91,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit, onAddExpanse }) => {
         <h2 className="text-2xl font-semibold mb-4 border-b-2 pb-2 border-opacity-10">
           {itemToEdit ? "Edit Expense Details" : "Add Expense Details"}
         </h2>
+        {error && <p className="text-red-500">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block font-medium">
@@ -164,7 +166,7 @@ const AddExpanse = ({ isOpen, onClose, itemToEdit, onAddExpanse }) => {
             </div>
           </div>
 
-          {error && <p className="text-red-500">{error}</p>}
+         
           <div className="flex justify-between gap-2">
             <div className="w-1/2 justify-center flex">
               <button
