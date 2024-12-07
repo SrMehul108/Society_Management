@@ -6,7 +6,7 @@ const Notification = ({ message, type, onClose }) => {
       className={`fixed right-36 top-[6%] p-4 rounded-md shadow-lg w-96 h-96 z-50 transition-all duration-300 ease-in-out
       ${type === 'success' ? 'bg-green-500 text-white' : 
       type === 'error' ? 'bg-red-500 text-white' :
-      'bg-blue-500 text-white'}`} // 'error' and 'info' types are also handled
+      'bg-white text-black'}`} // Added 'error' and 'info' types.
     >
       <div className="flex items-center justify-between">
         <span>{message}</span>
