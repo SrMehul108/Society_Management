@@ -24,7 +24,7 @@ module.exports.insertExpense = async (req, res) => {
         societyId: req.user.societyId,
         targetUsers: targetUserIds,
       });
-      return sendResponse(res, 200, "Data Insert Successfully", 1, newExpense);
+      return sendResponse(res, 200 , "Data Insert Successfully", 1, newExpense);
     }
     return sendResponse(res, 400, "Something went wrong", 0);
   } catch (error) {

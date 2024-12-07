@@ -12,7 +12,7 @@ module.exports.createAnnouncement = async (req, res) => {
             const newData = new Announcement(req.body);
             await newData.save();
             if (newData) {
-                const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive : true }).select('_id');
+                const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
                 const targetUserIds = usersInSociety.map(user => user._id);
                 await notificationService.sendNotification({
                     type: 'announcement',
@@ -41,9 +41,9 @@ module.exports.viewAnnouncement = async (req, res) => {
             }
             return sendResponse(res, 400, "No data found with the given id", 0)
         }
-        const allData = await Announcement.find({ societyId: req.user.societyId, isActive: true, type: type });
-        if (allData) return sendResponse(res, 200, "Data fetched successfully", 1, allData);
-        return sendResponse(res, 400, "No data found", 0)
+        const allData = await Announcement.find({ societyId: req.user.societyId, isActive: true });
+        if (allData && allData.length > 0) return sendResponse(res, 200, "Data fetched successfully", 1, allData);
+        return sendResponse(res, 400, "No data found", 0, []);
     } catch (error) {
         console.log(error);
         return sendResponse(res, 500, "Internal Server Error", 0)
