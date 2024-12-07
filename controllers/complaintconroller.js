@@ -11,7 +11,7 @@ module.exports.insertComplaint = async (req, res) => {
             const newData = new Complaint(req.body);
             await newData.save();
             if (newData) {
-                const usersInSociety = await UserData.find({ societyId: req.user.societyId, role: 'user', isActive : true }).select('_id');
+                const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive : true }).select('_id');
                 const targetUserIds = usersInSociety.map(user => user._id);
                 await notificationService.sendNotification({
                     type: newData.type == 'complaint' ? "complaint" : "request",
