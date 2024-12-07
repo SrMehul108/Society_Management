@@ -1295,12 +1295,13 @@ export const GetGuard=async()=>{
   }
 }
 
-export const AddGuard=async(data)=>{
+
+export const addsecurity=async(security)=>{
   try {
     var token = AdminToken();
-    const response = await axios.post(
-      `${API_URL}/auth/admin/addNewSecurity`,
-      data,
+    
+    const response = await axios.post(`${API_URL}/auth/admin/addNewSecurity`,
+      security,
       {
         headers: {
           "Content-Type": "multipart/form-data",
