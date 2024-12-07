@@ -54,7 +54,7 @@ export const DashboardLayout = ({ items, Data }) => {
     if (isNotificationVisible) {
       const timer = setTimeout(() => {
         setIsNotificationVisible(false);
-      }, 3000); // 3 seconds delay
+      }, 30000); // 3 seconds delay
 
       return () => clearTimeout(timer);
     }
