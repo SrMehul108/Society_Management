@@ -28,7 +28,7 @@ export const ForgetPassword = () => {
     e.preventDefault();
     try {
       const response = await forgotPassword(formData);
-      localStorage.setItem("userEmail", formData.email);
+      sessionStorage.setItem("userEmail", formData.email);
       toast.success("OTP  sent to your email");
       navigate("/otp");
     }

@@ -29,6 +29,7 @@ import PageNotFound from "../components/PageNotFound/PageNotFound";
 import ProfilePage from "../components/ProfilePopup/ProfilePage";
 import EditProfilePopup from "../components/ProfilePopup/EditProfilePopup";
 import EditProfilePage from "../components/ProfilePopup/EditProfilePopup";
+import ProtectedRoute from "../context/ProtectedRoute";
 
 const AddNote = lazy(() => import("../pages/Admin/FinancialMaintenance/Note"));
 const FinancialManagement = lazy(() =>
@@ -68,7 +69,7 @@ const DashStackRoute = createBrowserRouter(
           element: <Outlet />,
           children: [
             {
-              element: <DashboardLayout items={UserSidebar} />,
+              element: (<ProtectedRoute allowedRoles={['user']}><DashboardLayout items={UserSidebar} /></ProtectedRoute>),
               children: [
                 {
                   index: true,
@@ -125,7 +126,7 @@ const DashStackRoute = createBrowserRouter(
           path: "admin",
           children: [
             {
-              element:<DashboardLayout items={AdminSidbar} />,
+              element:(<ProtectedRoute allowedRoles={['admin']}><DashboardLayout items={AdminSidbar} /></ProtectedRoute>),
               children: [
                 {
                   path: "profile", 
@@ -230,7 +231,7 @@ const DashStackRoute = createBrowserRouter(
           path: "user",
           children: [
             {
-              element:<DashboardLayout items={UserSidebar} />,
+              element:(<ProtectedRoute allowedRoles={['user']}><DashboardLayout items={UserSidebar} /></ProtectedRoute>),
               children: [
                 {
                   index: true,
@@ -274,7 +275,7 @@ const DashStackRoute = createBrowserRouter(
         // Security
         {
           path: "security",
-          element:<DashboardLayout items={SecuritySidebar} />,
+          element:(<ProtectedRoute allowedRoles={['security']}><DashboardLayout items={SecuritySidebar} /></ProtectedRoute>),
           children: [
             {
               index: true,

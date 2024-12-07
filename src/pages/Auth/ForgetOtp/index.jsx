@@ -42,7 +42,7 @@ export const OtpPage = () => {
   };
 
   const handleResend = async () => {
-    const email = localStorage.getItem("userEmail");
+    const email = sessionStorage.getItem("userEmail");
     if (!email) {
       toast.error("Email not found. Please restart the process.");
       return;

@@ -1,30 +1,34 @@
-// import { Navigate } from "react-router-dom";
-// import { AdminToken, SecurityToken, UserToken } from "../apis/api";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
+const ProtectedRoute = ({ children, allowedRoles = [] }) => {
+  const navigate = useNavigate();
 
-// const ProtectedRoute = ({ children, allowedRoles }) => {
-//   // Fetch all tokens
-//   const adminToken = AdminToken();
-//   const userToken = UserToken();
-//   const securityToken = SecurityToken();
+  useEffect(() => {
+    // Fetch tokens from sessionStorage
+    const adminToken = sessionStorage.getItem("adminToken");
+    const userToken = sessionStorage.getItem("userToken");
+    const securityToken = sessionStorage.getItem("securityToken");
 
-//   // Ensure at least one valid token exists
-//   if (
-//     adminToken === "Token is Missing" &&
-//     userToken === "Token is Missing" &&
-//     securityToken === "Token is Missing"
-//   ) {
-//     return <Navigate to="/login" replace />;
-//   }
+    // Validate tokens
+    const tokens = [adminToken, userToken, securityToken];
+    const isTokenMissing = tokens.some((token) => !token); // Check if any token is missing or null
 
-//   // Check role against allowed roles
-//   const role = sessionStorage.getItem("role");
-//   if (!allowedRoles.includes(role)) {
-//     return <Navigate to="/login" replace />;
-//   }
+    // Redirect if any token is missing
+    if (!isTokenMissing) {
+      navigate("/login");
+      return;
+    }
 
-//   // If everything is fine, render the route
-//   return children;
-// };
+    // Get role and validate access
+    const role = sessionStorage.getItem("role") || "";
+    if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+      navigate("/login");
+      return;
+    }
+  }, [allowedRoles, navigate]);
 
-// export default ProtectedRoute;
+  return children;
+};
+
+export default ProtectedRoute;

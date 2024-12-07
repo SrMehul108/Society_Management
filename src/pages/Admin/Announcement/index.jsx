@@ -1,6 +1,3 @@
-
-
-
 import React, { useRef, useState } from "react";
 import AnnouncementAdd from "../../../components/Announcement/AnnouncementAdd";
 import AnnouncementEdit from "../../../components/Announcement/AnnouncementEdit";
@@ -100,6 +97,7 @@ const Announcement = () => {
 
    //View protocols popup
 const [isViewOpen, setIsViewOpen] = useState(false);
+
 
 // Sample data for the request
 const requestData = {

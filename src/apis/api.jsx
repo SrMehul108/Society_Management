@@ -88,13 +88,16 @@ export const login = async (credentials) => {
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.userData.role;
 
-    // Save the token in sessionStorage based on role
+    // Save the token and role in sessionStorage based on role
     if (userRole === "admin") {
       sessionStorage.setItem("admintoken", token);
+      sessionStorage.setItem("role", "admin");
     } else if (userRole === "user") {
       sessionStorage.setItem("usertoken", token);
+      sessionStorage.setItem("role", "user");
     } else if (userRole === "security") {
       sessionStorage.setItem("securitytoken", token);
+      sessionStorage.setItem("role", "security");
     }
 
     return response.data;
@@ -102,6 +105,7 @@ export const login = async (credentials) => {
     throw error.response ? error.response.data : new Error("Network Error");
   }
 };
+
 
 export const resendOtp = async (email) => {
   try {

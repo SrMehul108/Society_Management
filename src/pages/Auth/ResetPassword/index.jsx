@@ -34,7 +34,7 @@ export const ResetPassword = () => {
     }
 
     try {
-      const email = localStorage.getItem("userEmail");
+      const email = sessionStorage.getItem("userEmail");
       if (!email) {
         alert("Email not found. Please restart the process.");
         return;
