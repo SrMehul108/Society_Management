@@ -3,7 +3,7 @@ import { AskQuestion } from "../../../../components/Comunity/AskQuestion";
 import { ShowQuestions } from "../../../../components/Comunity/ShowQuestions";
 import Sidebar from "../../../../components/Comunity/Sidebar";
 
-const CommunityDiscussionPage = () => {
+const CommunityDiscussion = () => {
     const [questions, setQuestions] = useState([
         //   { id: 1, title: "What is the capital of France?", answers: ["Paris is the capital of France."] },
         //   { id: 2, title: "How to use React with Tailwind CSS?", answers: ["You can use className to add Tailwind styles."] },
@@ -65,4 +65,4 @@ const CommunityDiscussionPage = () => {
     );
 };
 
-export default CommunityDiscussionPage;
+export default CommunityDiscussion;

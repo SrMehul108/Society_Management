@@ -3,22 +3,13 @@ import { AuthLayout, DashboardLayout } from "@/layouts";
 import { AdminSidbar, UserSidebar, SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
 import {Login,Registration,ResidentManagement,ForgetPassword,OtpPage,ResetPassword,Userlogin,} from "@/pages";
-import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
-import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
-import ParticipationTabs from "../pages/User/EventsParticipate";
-import MaintenanceInvoices from "../pages/User/PaymentPortal/MaintenanceInvoices";
-import OtherIncome from "../pages/User/PaymentPortal/OtherIncome";
-import SecurityProtocolsTable from "../pages/User/SecurityProtocol";
 import VisitorTracking from "../pages/Security/VisitorTracking";
 import EmergencyManagement from "../pages/Security/EmergencyManagement";
 import { Owner } from "../components/Resident_management/Owner";
 import Tenant from "../components/Resident_management/Tenant";
-import AccessForums from "../pages/User/Community/AccessForums/Index";
-import CommunityDiscussionPage from "../pages/User/Community/CommunityDiscussion";
 import { lazy } from "react";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
 import ProfilePage from "../components/ProfilePopup/ProfilePage";
-import EditProfilePopup from "../components/ProfilePopup/EditProfilePopup";
 import EditProfilePage from "../components/ProfilePopup/EditProfilePopup";
 import ProtectedRoute from "../context/ProtectedRoute";
 
@@ -46,6 +37,15 @@ const VisitorLog = lazy(() =>
 );
 const SecurityGuard = lazy(() => import("../pages/Admin/SecurityGuard"));
 const Announcement = lazy(() => import("../pages/Admin/Announcement"));
+const AccessForums = lazy(() => import("../pages/User/Community/AccessForums"));
+const CommunityDiscussion = lazy(() => import("../pages/User/Community/CommunityDiscussion"));
+const ParticipationTabs = lazy(() => import("../pages/User/EventsParticipate"));
+const MaintenanceInvoices = lazy(() => import("../pages/User/PaymentPortal/MaintenanceInvoices"));
+const OtherIncome = lazy(() => import("../pages/User/PaymentPortal/OtherIncome"));
+const UserPersonalDetail = lazy(() => import("../pages/User/PersonalDetailsScreen"));
+const SecurityProtocolsTable = lazy(() => import("../pages/User/SecurityProtocol"));
+const UserComplaintSubmission = lazy(() => import("../pages/User/ServiceAndComplaint"));
+
 
 
 
@@ -87,7 +87,7 @@ const DashStackRoute = createBrowserRouter(
                     },
                     {
                       path: "CommunityDiscussion",
-                      element: <CommunityDiscussionPage />,
+                      element: <CommunityDiscussion />,
                     },
                   ],
                 },

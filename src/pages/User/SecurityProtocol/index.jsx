@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function SecurityProtocolsTable() {
+ function SecurityProtocolsTable() {
     const [protocols, setProtocols] = useState([
         { title: 'Cameron Williamson', description: 'A visual representation of your spending categories.', date: '11/02/2024', time: '2:45 PM' },
         { title: 'Darrell Steward', description: 'Securing critical government systems.', date: '12/02/2024', time: '3:00 PM' },
@@ -43,3 +43,4 @@ export default function SecurityProtocolsTable() {
         </div>
     );
 }
+ export default SecurityProtocolsTable;
