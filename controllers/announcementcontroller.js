@@ -1,6 +1,7 @@
 const Announcement = require('../models/Announcement');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
+const notificationService = require('../services/notificationService');
 
 module.exports.createAnnouncement = async (req, res) => {
     try {
@@ -10,6 +11,12 @@ module.exports.createAnnouncement = async (req, res) => {
             const newData = new Announcement(req.body);
             await newData.save();
             if (newData) {
+                await notificationService.sendNotification({
+                    type: 'announcement',
+                    message: `New announcement created: ${newData.title}`,
+                    societyId: req.user.societyId,
+                    targetUsers: [],
+                });
                 return sendResponse(res, 200, "Announcement created successfully", 1, newData);
             }
             return sendResponse(res, 400, "There was an error while saving data", 0)

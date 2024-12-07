@@ -5,6 +5,9 @@ const nodemailer = require("nodemailer");
 const cloudinaryConfig = require("../config/cloudinaryConfig");
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require("../services/validation");
+const Expenses = require('../models/Expenses');
+const Income = require("../models/OtherIncome");
+const User = require('../models/UserData');
 this.OTP = "";
 
 module.exports.registerUser = async (req, res) => {
@@ -171,8 +174,8 @@ module.exports.resetPassword = async (req, res) => {
 
 module.exports.editProfile = async (req, res) => {
   try {
-    if(!req.user){
-      sendResponse(res,403, "Unauthorized Access", 0);
+    if (!req.user) {
+      sendResponse(res, 403, "Unauthorized Access", 0);
     }
     let olddata = await UserModel.findOne({ _id: req.user._id });
     if (req.body == "") {
@@ -197,3 +200,32 @@ module.exports.editProfile = async (req, res) => {
     return sendResponse(res, 500, "Internal Server Error", 0);
   }
 };
+
+module.exports.SocietyFinanceDetail = async (req, res) => {
+  try {
+
+    if (!req.user) {
+      return sendResponse(res, 403, "Unauthorized Access", 0);
+    }
+    const totalExpenses = await Expenses.aggregate([
+      { $match: { societyId: req.user.societyId, isActive: true } },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
+    ]);
+    const totalIncome = await Income.aggregate([
+      { $match: { societyId: req.user.societyId, isActive: true } },
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
+    ]);
+    const income = await Income.find({ societyId: req.user.societyId, isActive: true });
+    const unitCount = await User.countDocuments({ societyId: req.user.societyId, isActive: true, role: 'user' });
+    const totalExpenAmount = totalExpenses.length > 0 ? totalExpenses[0].totalAmount : 0;
+    const totalIncomeAmount = totalIncome.length > 0 ? totalIncome[0].totalAmount : 0;
+    const data = {
+      totalIncomeAmount,
+      totalExpenAmount,
+      unitCount
+    }
+    return sendResponse(res, 200, "Data Retrieved Successfully", 1, data);
+  } catch (error) {
+    return sendResponse(500, "Internal Server Error", 0)
+  }
+}

@@ -15,7 +15,9 @@ const Payment = require("../models/Payment");
 module.exports.insertUser = async (req, res) => {
   try {
     validateRequest(req, res);
-    const existingUser = await UserModel.findOne({ email: req.body.email });
+    const existingUser = await UserModel.findOne({
+      $or: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }]
+    });
     if (existingUser) {
       const wingValidation = await UserModel.findOne({
         societyId: req.user.societyId,
@@ -27,7 +29,7 @@ module.exports.insertUser = async (req, res) => {
       if (wingValidation) {
         return sendResponse(res, 400, "On selected Wing & unit, there is already a resident", 0);
       }
-      return sendResponse(res, 400, "Email already exists", 0);
+      return sendResponse(res, 400, "Email or phone number already exists", 0);
     }
     // Generate secure password
     const password = crypto.randomBytes(8).toString("hex");
