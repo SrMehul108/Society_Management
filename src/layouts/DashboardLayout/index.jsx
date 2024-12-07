@@ -60,8 +60,8 @@ export const DashboardLayout = ({ items, Data }) => {
     }
   }, [isNotificationVisible]);
 
+  // Listen for notifications from the backend (via socket.io)
   useEffect(() => {
-    // Listen for notifications from the backend (via socket.io)
     socket.on("new-notification", (data) => {
       addNotification(data.message, data.type);
     });
@@ -71,8 +71,17 @@ export const DashboardLayout = ({ items, Data }) => {
     };
   }, []);
 
+  // Emit join-society event when the socket connection is established
+  useEffect(() => {
+    if (socket) {
+      const societyId = LoginData();
+      const SocId=societyId.societyId
+      socket.emit('join-society', SocId);  // Emit the event with the societyId
+    }
+  }, [socket]); // Only emit when socket is initialized
+
   const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n._id !== id)); // Use `id` directly
+    setNotifications((prev) => prev.filter((n) => n._id !== id)); // Use id directly
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
 

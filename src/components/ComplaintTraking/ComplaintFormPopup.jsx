@@ -44,6 +44,7 @@ function ComplaintForm({ closeModal, onComplaintAdd }) {
     try {
       // Call the API to add the complaint
       const response = await AddComplaint(formData);
+      console.log(response)
       onComplaintAdd(response);  // Notify parent component of the new complaint
       closeModal();  // Close the modal
     } catch (error) {
