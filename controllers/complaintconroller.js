@@ -3,6 +3,7 @@ const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
 const notificationService = require('../services/notificationService');
 const User = require('../models/UserData');
+
 module.exports.insertComplaint = async (req, res) => {
     try {
         validateRequest(req, res);

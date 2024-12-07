@@ -1,5 +1,7 @@
 const Society = require('../models/Society');
 const { sendResponse } = require('../services/responseHandler');
+
+
 module.exports.insertSociety = async (req, res) => {
     try {
         if (!req.body || Object.keys(req.body).length === 0) {
