@@ -8,7 +8,7 @@ module.exports.vistorLog = async (req, res) => {
         const newData = new Visitor(req.body);
         await newData.save();
         if (newData) {
-            return sendResponse(res, 200, "Data inserted Succesfully", 1, allData);
+            return sendResponse(res, 200, "Data inserted Succesfully", 1, newData);
         }
         return sendResponse(res, 400, "No data Found", 0, []);
     } catch (error) {
