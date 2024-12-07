@@ -7,7 +7,7 @@ import { LoginData } from "../../apis/api";
 import { io } from 'socket.io-client';
 
 // Initialize socket
-const socket = io('https://society-management-4z4w.onrender.com'); 
+const socket = io('https://society-management-4z4w.onrender.com');
 
 export const DashboardLayout = ({ items, Data }) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
@@ -40,7 +40,7 @@ export const DashboardLayout = ({ items, Data }) => {
   }, []);
 
   // Handle Notifications
-  const addNotification = (message, type) => {
+  const addNotification = (message, type = "info") => {
     const newNotification = {
       id: Date.now(),
       notificationMessage: message,
@@ -61,7 +61,7 @@ export const DashboardLayout = ({ items, Data }) => {
   }, [isNotificationVisible]);
 
   useEffect(() => {
-    // Listen for notifications from the backend
+    // Listen for notifications from the backend (via socket.io)
     socket.on("new-notification", (data) => {
       addNotification(data.message, data.type);
     });
@@ -72,7 +72,7 @@ export const DashboardLayout = ({ items, Data }) => {
   }, []);
 
   const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id)); // Use `id` directly
     if (notifications.length <= 1) setIsNotificationVisible(false);
   };
 
@@ -114,12 +114,15 @@ export const DashboardLayout = ({ items, Data }) => {
 
           {/* Notifications and Profile */}
           <div className="flex items-center gap-4">
+            {/* Notification Button */}
             <button
-              onClick={() => addNotification("Test notification", "success")}
+              onClick={() => addNotification("New notification", "info")}
               className="p-2 border rounded-lg hover:bg-gray-100"
             >
               {Icons.Bell}
             </button>
+
+            {/* Display Notifications */}
             {notifications.map((notification) => (
               <Notification
                 key={notification.id}
@@ -131,7 +134,6 @@ export const DashboardLayout = ({ items, Data }) => {
             ))}
 
             {/* Profile Section */}
-           
             <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick}
