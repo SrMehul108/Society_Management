@@ -2,7 +2,7 @@ import React from 'react';
 
 const PaymentMaintenance = ({ maintenanceAmount, penaltyAmount }) => {
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full mb-6 flex flex-col sm:flex-row items-start sm:items-center">
+    <div className="bg-white  sm:p-6 rounded-lg shadow-md w-full mb-6 flex flex-col sm:flex-row items-start sm:items-center">
       <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
         <h2 className="font-semibold text-lg mb-4">Show Maintenance Details</h2>
       </div>

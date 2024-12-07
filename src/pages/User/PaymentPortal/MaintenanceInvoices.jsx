@@ -10,7 +10,7 @@ const MaintenanceInvoices = () => {
     const penaltyAmount = 500;
 
     return (
-        <div className="p-4 bg-gray-100">
+        <div className=" bg-gray-100">
             
             <PaymentMaintenance maintenanceAmount={maintenanceAmount} penaltyAmount={penaltyAmount} />
             <PaymentPending />
