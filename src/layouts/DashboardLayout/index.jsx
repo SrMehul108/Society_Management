@@ -130,6 +130,8 @@ export const DashboardLayout = ({ items, Data }) => {
               />
             ))}
 
+            {/* Profile Section */}
+           
             <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick}

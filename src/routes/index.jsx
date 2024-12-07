@@ -2,16 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import { AuthLayout, DashboardLayout } from "@/layouts";
 import { AdminSidbar, UserSidebar, SecuritySidebar } from "@/constants";
 import { AdminDashBoard } from "@/pages";
-import {
-  Login,
-  Registration,
-  ResidentManagement,
-  ForgetPassword,
-  OtpPage,
-  ResetPassword,
-  Userlogin,
-} from "@/pages";
-
+import {Login,Registration,ResidentManagement,ForgetPassword,OtpPage,ResetPassword,Userlogin,} from "@/pages";
 import UserPersonalDetail from "../pages/User/PersonalDetailsScreen";
 import UserComplaintSubmission from "../pages/User/ServiceAndComplaint";
 import ParticipationTabs from "../pages/User/EventsParticipate";
