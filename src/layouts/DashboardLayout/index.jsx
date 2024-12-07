@@ -10,7 +10,6 @@ import { io } from 'socket.io-client';
 const socket = io('https://society-management-4z4w.onrender.com');
 
 export const DashboardLayout = ({ items, Data }) => {
-  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -35,10 +34,6 @@ export const DashboardLayout = ({ items, Data }) => {
     }
   };
 
-  useEffect(() => {
-    fetchProfileData();
-  }, []);
-
   // Handle Notifications
   const addNotification = (message, type = "info") => {
     const newNotification = {
@@ -47,42 +42,27 @@ export const DashboardLayout = ({ items, Data }) => {
       notificationType: type,
     };
     setNotifications((prev) => [...prev, newNotification]);
-    setIsNotificationVisible(true);
   };
 
   useEffect(() => {
-    if (isNotificationVisible) {
-      const timer = setTimeout(() => {
-        setIsNotificationVisible(false);
-      }, 3000); // 3 seconds delay
-
-      return () => clearTimeout(timer);
-    }
-  }, [isNotificationVisible]);
-
-  // Listen for notifications from the backend (via socket.io)
-  useEffect(() => {
+    fetchProfileData();
     socket.on("new-notification", (data) => {
       addNotification(data.message, data.type);
     });
 
+    if (socket) {
+      const societyId = LoginData();
+      const SocId = societyId.societyId;
+      socket.emit('join-society', SocId);  // Emit the event with the societyId
+    }
+
     return () => {
       socket.off("new-notification"); // Cleanup listener on unmount
     };
-  }, []);
-
-  // Emit join-society event when the socket connection is established
-  useEffect(() => {
-    if (socket) {
-      const societyId = LoginData();
-      const SocId=societyId.societyId
-      socket.emit('join-society', SocId);  // Emit the event with the societyId
-    }
-  }, [socket]); // Only emit when socket is initialized
+  }, [socket]);
 
   const removeNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n._id !== id)); // Use id directly
-    if (notifications.length <= 1) setIsNotificationVisible(false);
+    setNotifications((prev) => prev.filter((n) => n.id !== id)); // Use id directly
   };
 
   return (
@@ -135,7 +115,6 @@ export const DashboardLayout = ({ items, Data }) => {
             {notifications.map((notification) => (
               <Notification
                 key={notification.id}
-                isVisible={isNotificationVisible}
                 message={notification.notificationMessage}
                 type={notification.notificationType}
                 onClose={() => removeNotification(notification.id)}
