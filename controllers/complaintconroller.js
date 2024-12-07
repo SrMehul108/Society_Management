@@ -2,6 +2,7 @@ const Complaint = require('../models/Complaint');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 module.exports.insertComplaint = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -10,11 +11,13 @@ module.exports.insertComplaint = async (req, res) => {
             const newData = new Complaint(req.body);
             await newData.save();
             if (newData) {
+                const usersInSociety = await UserData.find({ societyId: req.user.societyId, role: 'user', isActive : true }).select('_id');
+                const targetUserIds = usersInSociety.map(user => user._id);
                 await notificationService.sendNotification({
                     type: newData.type == 'complaint' ? "complaint" : "request",
                     message: `New ${newData.type} created: ${newData.complaintName}`,
                     societyId: req.user.societyId,
-                    targetUsers: [],
+                    targetUsers: targetUserIds,
                 });
                 return sendResponse(res, 200, "Complaint inserted successfully", 1, newData);
             }

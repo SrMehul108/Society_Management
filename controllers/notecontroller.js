@@ -2,6 +2,7 @@ const Note = require('../models/Note');
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require('../services/validation');
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 module.exports.insertNote = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -9,11 +10,13 @@ module.exports.insertNote = async (req, res) => {
         const newData = new Note(req.body);
         await newData.save();
         if (newData) {
+            const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
+            const targetUserIds = usersInSociety.map(user => user._id);
             await notificationService.sendNotification({
                 type: 'note',
                 message: `New Note created: ${newData.title}`,
                 societyId: req.user.societyId,
-                targetUsers: [],
+                targetUsers: targetUserIds,
             });
             sendResponse(res, 200, "Note inserted successfully", 1, newData);
         }

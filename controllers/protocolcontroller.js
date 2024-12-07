@@ -2,6 +2,7 @@ const Protocol = require('../models/Protocol');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 module.exports.insertProtocol = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -9,11 +10,13 @@ module.exports.insertProtocol = async (req, res) => {
         const newData = new Protocol(req.body);
         await newData.save();
         if (newData) {
+            const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
+            const targetUserIds = usersInSociety.map(user => user._id);
             await notificationService.sendNotification({
                 type: 'protocol',
                 message: `New Protocol created: ${newData.title}`,
                 societyId: req.user.societyId,
-                targetUsers: [],
+                targetUsers: targetUserIds,
             });
             return sendResponse(res, 200, "Protocol inserted successfully", 1, newData);
         }

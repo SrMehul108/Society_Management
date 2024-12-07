@@ -2,6 +2,7 @@ const OtherIncome = require("../models/OtherIncome");
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require("../services/validation");
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 module.exports.insertIncome = async (req, res) => {
   try {
     validateRequest(req, res);
@@ -10,12 +11,14 @@ module.exports.insertIncome = async (req, res) => {
       const newData = new OtherIncome(req.body);
       await newData.save();
       if (newData) {
+        const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
+        const targetUserIds = usersInSociety.map(user => user._id);
         await notificationService.sendNotification({
           type: 'note',
           message: `New Other Income created: ${newData.title}`,
           societyId: req.user.societyId,
-          targetUsers: [],
-      });
+          targetUsers: targetUserIds,
+        });
         return sendResponse(res, 200, "Income inserted successfully", 1, newData);
       }
       return sendResponse(res, 400, "There was an error while saving data", 0); Response(res, 400, "Something went wrong", 0);

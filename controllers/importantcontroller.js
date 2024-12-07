@@ -2,6 +2,7 @@ const Important = require("../models/Important");
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require("../services/validation");
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 module.exports.insert = async (req, res) => {
   try {
     validateRequest(req, res);
@@ -13,12 +14,14 @@ module.exports.insert = async (req, res) => {
     let newData = new Important(req.body);
     await newData.save();
     if (newData) {
+      const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
+      const targetUserIds = usersInSociety.map(user => user._id);
       await notificationService.sendNotification({
         type: 'important number',
         message: `New Number Added: ${newData.phoneNo}`,
         societyId: req.user.societyId,
-        targetUsers: [],
-    });
+        targetUsers: targetUserIds,
+      });
       return sendResponse(res, 200, "Important contact saved successfully", 1, newData);
     }
     return sendResponse(res, 400, "Something Wrong", 0);

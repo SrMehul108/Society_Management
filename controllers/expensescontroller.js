@@ -3,6 +3,7 @@ const cloudinaryConfig = require("../config/cloudinaryConfig");
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require("../services/validation");
 const notificationService = require('../services/notificationService');
+const User = require("../models/UserData");
 module.exports.insertExpense = async (req, res) => {
   try {
     validateRequest(req, res);
@@ -15,12 +16,14 @@ module.exports.insertExpense = async (req, res) => {
     const newExpense = new Expenses(req.body);
     await newExpense.save();
     if (newExpense) {
+      const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive: true }).select('_id');
+      const targetUserIds = usersInSociety.map(user => user._id);
       await notificationService.sendNotification({
         type: 'expenses',
         message: `New Expenses Added: ${newData.title}`,
         societyId: req.user.societyId,
-        targetUsers: [],
-    });
+        targetUsers: targetUserIds,
+      });
       return sendResponse(res, 400, "Data Insert Successfully", 1, newExpense);
     }
     return sendResponse(res, 400, "Something went wrong", 0);

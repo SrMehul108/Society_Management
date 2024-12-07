@@ -2,6 +2,7 @@ const Announcement = require('../models/Announcement');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
 const notificationService = require('../services/notificationService');
+const User = require('../models/UserData');
 
 module.exports.createAnnouncement = async (req, res) => {
     try {
@@ -11,11 +12,13 @@ module.exports.createAnnouncement = async (req, res) => {
             const newData = new Announcement(req.body);
             await newData.save();
             if (newData) {
+                const usersInSociety = await User.find({ societyId: req.user.societyId, role: 'user', isActive : true }).select('_id');
+                const targetUserIds = usersInSociety.map(user => user._id);
                 await notificationService.sendNotification({
                     type: 'announcement',
                     message: `New announcement created: ${newData.title}`,
                     societyId: req.user.societyId,
-                    targetUsers: [],
+                    targetUsers: targetUserIds,
                 });
                 return sendResponse(res, 200, "Announcement created successfully", 1, newData);
             }
