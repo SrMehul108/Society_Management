@@ -1,64 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AnnouncementAdd from "../../../components/Announcement/AnnouncementAdd";
 import AnnouncementEdit from "../../../components/Announcement/AnnouncementEdit";
 import AnnouncementDelete from "../../../components/Announcement/AnnouncementDelete";
 import SecurityView from "../../../components/SecurityManagement/Protocols/SecurityView";
+import { GetAnnouncement } from "../../../apis/api";
 
 
 
-const note = [
-  {
-    id: 1,
-    title: "Parking Facilities",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45PM",
-  },
-  {
-    id: 2,
-    title: "Community Center",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45PM",
-  },
-  {
-    id: 3,
-    title: "Swimming Pool",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45 PM",
-  },
-  {
-    id: 4,
-    title: "Parks and Green Spaces",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45 PM",
-  },
-  {
-    id: 5,
-    title: "Wi-Fi and Connectivity",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45 PM",
-  },
-  {
-    id: 6,
-    title: "Pet-Friendly Facilities",
-    description:
-      "The celebration of Ganesh Chaturthi involves the installation of clay idols of Ganesa in...",
-      date: "2021-01-01",
-      hours:"7.45 PM",
-  },
-];
 
 const Announcement = () => {
   const [menuVisible, setMenuVisible] = useState(null);
+  const [announcement, setAnnouncement] = useState();
 
   const toggleMenu = (id) => {
     setMenuVisible((prev) => (prev === id ? null : id));
@@ -111,6 +63,19 @@ const requestData = {
 const openViewModal = () => setIsViewOpen(true);
 const closeViewModal = () => setIsViewOpen(false);
 
+const Fetchannouncement=async()=>{
+  try {
+    const data=await GetAnnouncement()
+    setAnnouncement(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+useEffect(()=>{
+  Fetchannouncement()
+},[])
+
   return (
     <div className="p-4 sm:p-6 bg-white w-full rounded-xl">
       {/* Header Section */}
@@ -127,18 +92,18 @@ const closeViewModal = () => setIsViewOpen(false);
 
       {/* Facility Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {note.map((note) => (
-          <div key={note.id} className="rounded-lg border relative">
+        {announcement.map((announcement) => (
+          <div key={announcement._id} className="rounded-lg border relative">
             <div className="bg-blue-500 rounded-t-lg flex justify-between items-center p-3">
               <h2 className="font-semibold text-xl text-white">
-                {note.title}
+                {announcement.title}
               </h2>
               <div className="relative">
                 <i
                   className="fas fa-ellipsis-h text-gray-600 bg-white p-1 rounded-sm cursor-pointer"
-                  onClick={() => toggleMenu(note.id)}
+                  onClick={() => toggleMenu(note._id)}
                 ></i>
-                {menuVisible === note.id && (
+                {menuVisible === note._id && (
                   <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-10">
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -166,16 +131,16 @@ const closeViewModal = () => setIsViewOpen(false);
             </div>
             <div className="p-1 flex justify-between">
               <h2 className="font-normal text-gray-500">Announcement Date</h2>
-              <p>{note.date}</p>
+              <p>{announcement.date}</p>
             </div>
             <div className="p-1 flex justify-between">
               <h2 className="font-normal text-gray-500">Announcement Time</h2>
-              <p>{note.hours}</p>
+              <p>{announcement.hours}</p>
             </div>
             
             <div className="p-1">
               <h2 className="font-normal text-gray-500">Description</h2>
-              <p>{note.description}</p>
+              <p>{announcement.description}</p>
             </div>
           </div>
         ))}

@@ -1322,3 +1322,35 @@ export const addsecurity=async(security)=>{
     throw error.response ? error.response.data : new Error("Network Error");
   }
 }
+
+
+//Announcement API
+export const GetAnnouncement = async () => {
+  try {
+    const token = AdminToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/announce/viewAnnouncement`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      if (response.data.data.length === 0) {
+        return { success: true, data: [], message: "No complaints found." };
+      }
+      return { success: true, data: response.data.data };
+    }
+
+    return {
+      success: false,
+      message: response.data.message || "Unknown error",
+    };
+  } catch (error) {
+    console.error("Error:", error.message);
+    const message =
+      error.response?.data?.message || `An error occurred: ${error.message}`;
+    return { success: false, message };
+  }
+};
