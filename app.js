@@ -10,7 +10,7 @@ const db = require('./config/db');
 const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
-const server = http.createServer(app); 
+const server = http.createServer(app);  
 const io = socketInstance.init(server);
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +36,6 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
