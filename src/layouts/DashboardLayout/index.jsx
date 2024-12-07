@@ -125,25 +125,7 @@ export const DashboardLayout = ({ items, Data }) => {
             ))}
 
             {/* Profile Section */}
-            {/* <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => setIsOpen(true)}
-              title="View Profile"
-              aria-label="View Profile"
-            >
-              <img
-                src="/placeholder.svg"
-                alt="User Avatar"
-                className="w-8 h-8 rounded-full border"
-              />
-              <span className="hidden sm:block">
-                {profileData?.fullName || "Loading..."}
-              </span>
-            </div>
-
            
-            {isOpen && <ProfilePopup onClose={() => setIsOpen(false)} data={profileData} />}
-          </div> */}
             <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick} // Navigate when clicked
