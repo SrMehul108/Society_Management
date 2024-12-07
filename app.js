@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketInstance = require('./socket/socketInstance');
+const notificationSocket = require('./services/notificationSocket');
 const Passport = require("passport");
 const session = require("express-session");
 const passportjwt = require("./config/passport");
@@ -12,6 +13,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);  
 const io = socketInstance.init(server);
+notificationSocket(io);
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
