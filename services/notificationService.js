@@ -1,5 +1,5 @@
 const socketInstance = require('../socket/socketInstance');  // Import socketInstance
-
+const Notification = require('../models/Notification');
 exports.sendNotification = async ({ type, message, societyId, targetUsers }) => {
     try {
         // Save the notification to the database
