@@ -1,7 +1,7 @@
 const Facility = require("../models/Facility");
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require("../services/validation");
-
+const notificationService = require('../services/notificationService');
 module.exports.insertFacility = async (req, res) => {
   try {
     validateRequest(req, res);
@@ -9,6 +9,12 @@ module.exports.insertFacility = async (req, res) => {
     const newData = new Facility(req.body);
     await newData.save();
     if (newData) {
+      await notificationService.sendNotification({
+        type: 'facility',
+        message: `New Facility created: ${newData.facilityName}`,
+        societyId: req.user.societyId,
+        targetUsers: [],
+    });
       return sendResponse(res, 200, "Facility created successfully", 1, newData);
     }
     return sendResponse(res, 400, "Failed to create facility");

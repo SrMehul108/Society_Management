@@ -1,7 +1,7 @@
 const Protocol = require('../models/Protocol');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
-
+const notificationService = require('../services/notificationService');
 module.exports.insertProtocol = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -9,6 +9,12 @@ module.exports.insertProtocol = async (req, res) => {
         const newData = new Protocol(req.body);
         await newData.save();
         if (newData) {
+            await notificationService.sendNotification({
+                type: 'protocol',
+                message: `New Protocol created: ${newData.title}`,
+                societyId: req.user.societyId,
+                targetUsers: [],
+            });
             return sendResponse(res, 200, "Protocol inserted successfully", 1, newData);
         }
         return sendResponse(res, 400, "There was an error while saving data", 0)

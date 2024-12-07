@@ -1,7 +1,7 @@
 const Complaint = require('../models/Complaint');
 const { sendResponse } = require('../services/responseHandler');
 const { validateRequest } = require('../services/validation');
-
+const notificationService = require('../services/notificationService');
 module.exports.insertComplaint = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -10,6 +10,12 @@ module.exports.insertComplaint = async (req, res) => {
             const newData = new Complaint(req.body);
             await newData.save();
             if (newData) {
+                await notificationService.sendNotification({
+                    type: newData.type == 'complaint' ? "complaint" : "request",
+                    message: `New ${newData.type} created: ${newData.complaintName}`,
+                    societyId: req.user.societyId,
+                    targetUsers: [],
+                });
                 return sendResponse(res, 200, "Complaint inserted successfully", 1, newData);
             }
             return sendResponse(res, 400, "There was an error while saving data", 0)

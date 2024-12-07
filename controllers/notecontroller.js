@@ -1,7 +1,7 @@
 const Note = require('../models/Note');
 const { sendResponse } = require("../services/responseHandler");
 const { validateRequest } = require('../services/validation');
-
+const notificationService = require('../services/notificationService');
 module.exports.insertNote = async (req, res) => {
     try {
         validateRequest(req, res);
@@ -9,6 +9,12 @@ module.exports.insertNote = async (req, res) => {
         const newData = new Note(req.body);
         await newData.save();
         if (newData) {
+            await notificationService.sendNotification({
+                type: 'note',
+                message: `New Note created: ${newData.title}`,
+                societyId: req.user.societyId,
+                targetUsers: [],
+            });
             sendResponse(res, 200, "Note inserted successfully", 1, newData);
         }
         return sendResponse(res, 400, "There was an error while saving data", 0)
