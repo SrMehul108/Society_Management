@@ -20,7 +20,7 @@ module.exports.insertExpense = async (req, res) => {
       const targetUserIds = usersInSociety.map(user => user._id);
       await notificationService.sendNotification({
         type: 'expenses',
-        message: `New Expenses Added: ${newData.title}`,
+        message: `New Expenses Added: ${newExpense.title}`,
         societyId: req.user.societyId,
         targetUsers: targetUserIds,
       });
