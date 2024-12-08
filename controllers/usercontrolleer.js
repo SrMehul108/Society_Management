@@ -222,7 +222,6 @@ module.exports.editUser = async (req, res) => {
           age: req.body.age,
           gender: req.body.gender,
           societyId: req.user.societyId,
-          password: hashedPassword,
           role: "user",
           metaData: {
             wing: req.body.wing || existingData.metaData.wing,
