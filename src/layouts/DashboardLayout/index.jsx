@@ -35,7 +35,7 @@ export const DashboardLayout = ({ items, Data }) => {
   };
 
 
-  const addNotification = (message, type = "info") => {
+  const addNotification = (message = "hello", type = "info") => {
     const newNotification = {
       id: Date.now(),
       notificationMessage: message,
@@ -105,7 +105,7 @@ export const DashboardLayout = ({ items, Data }) => {
           <div className="flex items-center gap-4">
             {/* Notification Button */}
             <button
-              onClick={() => addNotification("New notification", "info")}
+              onClick={() => addNotification()}
               className="p-2 border rounded-lg hover:bg-gray-100"
             >
               {Icons.Bell}
