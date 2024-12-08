@@ -24,7 +24,7 @@ module.exports = {
 
                 socket.on("join-chat", (roomId) => {
                     console.log(`Joint Chat with  ${roomId}.`);
-
+                    
                     socket.join(`chat-${roomId}`);
                 });
 

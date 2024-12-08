@@ -25,12 +25,17 @@ module.exports.getMessages = async (req, res) => {
  */
 module.exports.sendMessage = async (req, res) => {
     try {
-        const { from, to, message, type } = req.body;
-        if (!from || !to || !message) {
+        const { from, to, type } = req.body;
+
+        let messageContent = req.body.message;
+        if (req.file) {
+            messageContent = req.files.chatImage[0].path;
+        }
+        if (!from || !to || !messageContent) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const savedMessage = await chatService.saveMessage({ from, to, message, type });
-        return sendResponse(res,200, "Message sent successfully", 1, savedMessage);
+        const savedMessage = await chatService.saveMessage({ from, to, messageContent, type });
+        return sendResponse(res, 200, "Message sent successfully", 1, savedMessage);
     } catch (error) {
         console.error("Error saving message:", error);
         res.status(500).json({ error: "Failed to send message" });
@@ -53,7 +58,7 @@ module.exports.markAsRead = async (req, res) => {
             return res.status(404).json({ message: 'Message not found' });
         }
 
-        return sendResponse(res,200, "Message marked as read", 1, updatedMessage);
+        return sendResponse(res, 200, "Message marked as read", 1, updatedMessage);
     } catch (error) {
         console.error('Error marking message as read:', error);
         return res.status(500).json({ message: 'Server error' });
