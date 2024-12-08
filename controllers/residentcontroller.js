@@ -6,7 +6,7 @@ module.exports.userDetail = async (req, res) => {
         if (!req.user) {
             return sendResponse(res, 403, "Oops! i think your session is expired"); F
         }
-        const userData = await User.find({ societyid: req.user.societyid, isActive: true, role: "user" }).select('_id fullName metaData.wing metaData.unit');
+        const userData = await User.find({ societyid: req.user.societyid, isActive: true, role: "user" }).select('_id fullName metaData.wing metaData.unit profile_image');
         if (!userData) {
             return sendResponse(res, 400, "No data Found", 0);
         }
