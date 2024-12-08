@@ -14,8 +14,12 @@ module.exports = {
             io.on("connection", (socket) => {
                 console.log("New client connected:", socket.id);
 
-                // Track the online user
-                onlineUsers[socket.id] = { socketId: socket.id, isAvailable: true };
+                // Track the online user, store both socketId and userId
+                socket.on("register-user", (userId) => {
+                    onlineUsers[socket.id] = { socketId: socket.id, userId, isAvailable: true };
+                    console.log(`User ${userId} registered with socket ${socket.id}`);
+                    io.emit("update-online-users", onlineUsers);
+                });
 
                 // Join society or chat rooms as needed (can be omitted if irrelevant)
                 socket.on("join-society", (societyId) => {
@@ -23,8 +27,7 @@ module.exports = {
                 });
 
                 socket.on("join-chat", (roomId) => {
-                    console.log(`Joint Chat with  ${roomId}.`);
-                    
+                    console.log(`Joined chat with roomId: ${roomId}`);
                     socket.join(`chat-${roomId}`);
                 });
 
@@ -32,12 +35,12 @@ module.exports = {
                 socket.on("send-message", (message) => {
                     const { to, from, message: text, type } = message;
 
-                    // Find the recipient's socket ID
+                    // Find the recipient's socket ID by userId
                     const recipientSocketId = Object.keys(onlineUsers).find(
                         (id) => onlineUsers[id].userId === to
                     );
 
-                    // Emit the message to the recipient
+                    // Emit the message to the recipient if they are online
                     if (recipientSocketId) {
                         io.to(recipientSocketId).emit("receive-message", message);
                     } else {
@@ -45,9 +48,8 @@ module.exports = {
                     }
                 });
 
-                // When a user starts a call, mark their availability
+                // When a user starts a call, mark their availability as unavailable
                 socket.on("start-call", (roomId) => {
-                    // Mark as unavailable for others
                     onlineUsers[socket.id].isAvailable = false;
                     io.emit("update-online-users", onlineUsers);
                 });
