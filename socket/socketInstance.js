@@ -83,8 +83,4 @@ module.exports = {
     getUserAvailability: (socketId) => {
         return onlineUsers[socketId]?.isAvailable || false;
     },
-
-    //vansh changes 
-    getOnlineUsers: () => onlineUsers,
-
 };
