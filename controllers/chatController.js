@@ -28,14 +28,14 @@ module.exports.sendMessage = async (req, res) => {
         console.log(req.body);
         console.log(req.files);
         const { from, to, type } = req.body;
-        let messageContent = req.body.message;
+        let message = req.body.message;
         if (req.files && req.files?.chatImage?.[0]?.path) {
-            messageContent = req.files.chatImage[0].path;
+            message = req.files.chatImage[0].path;
         }
-        if (!from || !to || !messageContent) {
+        if (!from || !to || !message) {
             return res.status(400).json({ error: "Missing required fields" });
         }
-        const savedMessage = await chatService.saveMessage({ from, to, messageContent, type });
+        const savedMessage = await chatService.saveMessage({ from, to, message, type });
         return sendResponse(res, 200, "Message sent successfully", 1, savedMessage);
     } catch (error) {
         console.error("Error saving message:", error);
