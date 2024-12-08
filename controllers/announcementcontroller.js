@@ -34,6 +34,9 @@ module.exports.viewAnnouncement = async (req, res) => {
     try {
         const { id } = req.query;
         const { type } = req.query;
+        if (!type) {
+            return sendResponse(res, 400, "Type is required", 0)
+        }
         if (id) {
             const data = await Announcement.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: type });
             if (data) {
