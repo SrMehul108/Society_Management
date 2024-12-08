@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { GetSocketMessages, SendMessage } from "../../../apis/api";
+import { Icons } from "../../../constants";
+import CallComponent from "./CallComponent";
 
 const socket = io("https://society-management-4z4w.onrender.com");
 
@@ -15,15 +17,21 @@ const DesktopChat = ({
   const [message, setMessage] = useState("");
   const [partnerTyping, setPartnerTyping] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [calling, setCalling] = useState(false); // For handling call states
+  const [roomId, setRoomId] = useState();
+  const [isVoiceCall, setIsVoiceCall] = useState(false);
   const messageEndRef = useRef(null);
 
   useEffect(() => {
     if (!currentUserData?._id || !selectedUser?._id) {
-      console.error("Cannot join chat: Missing currentUserId or chatPartnerId.");
+      console.error(
+        "Cannot join chat: Missing currentUserId or chatPartnerId."
+      );
       return;
     }
 
-    const roomId = `${currentUserData._id}-${selectedUser._id}`;
+    var roomId = `${currentUserData._id}-${selectedUser._id}`;
+    setRoomId(roomId);
     socket.emit("register-user", currentUserData._id);
     socket.emit("join-chat", roomId);
 
@@ -60,14 +68,9 @@ const DesktopChat = ({
       }
     });
 
-    socket.on("connect_error", (err) => {
-      console.error("Socket connection error:", err);
-    });
-
     return () => {
       socket.off("receive-message");
       socket.off("user-typing");
-      socket.off("connect_error");
     };
   }, [currentUserData?._id, selectedUser?._id]);
 
@@ -93,12 +96,13 @@ const DesktopChat = ({
     }
   };
 
-  const handleTyping = () => {
-    socket.emit("typing", currentUserData._id);
+  const initiateVoiceCall = () => {
+    setCalling(true);
+    setIsVoiceCall(true);
   };
 
-  const handleStopTyping = () => {
-    socket.emit("stop-typing", currentUserData._id);
+  const initiateVideoCall = () => {
+    setCalling(true);
   };
 
   const scrollToBottom = () => {
@@ -111,6 +115,7 @@ const DesktopChat = ({
 
   return (
     <div className="h-[98%] flex">
+      {/* Left Sidebar */}
       <div className="w-1/4 bg-white p-4 border-r overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Chats</h2>
         <div className="space-y-3">
@@ -120,13 +125,21 @@ const DesktopChat = ({
                 key={user._id}
                 onClick={() => handleUserSelection(user)}
                 className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer ${
-                  selectedUser?._id === user._id ? "bg-gray-200" : "hover:bg-gray-100"
+                  selectedUser?._id === user._id
+                    ? "bg-gray-200"
+                    : "hover:bg-gray-100"
                 }`}
               >
-                <div className="h-10 w-10 bg-gray-300 rounded-full"></div>
+                <div className="h-10 w-10 bg-gray-300 rounded-full overflow-hidden">
+                  <img src={user.profile_image} alt="" />
+                </div>
                 <div>
-                  <p className="font-medium">{user.fullName || "Unknown User"}</p>
-                  <p className="text-sm text-gray-500">{user.lastMessage || ""}</p>
+                  <p className="font-medium">
+                    {user.fullName || "Unknown User"}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {user.lastMessage || ""}
+                  </p>
                 </div>
               </div>
             ))
@@ -136,13 +149,53 @@ const DesktopChat = ({
         </div>
       </div>
 
+      {/* Chat Window */}
       <div className="flex-1 bg-white flex flex-col">
-        <div className="p-4 bg-gray-100 shadow-sm border-b">
-          <h3 className="text-lg font-bold">
+        {/* Header */}
+        <div className="p-4 bg-white shadow-sm border-b flex items-center justify-between">
+          <h3 className="text-lg font-bold flex items-center gap-5">
+            <div className="h-10 w-10 bg-gray-300 rounded-full overflow-hidden">
+              {selectedUser?.profile_image ? (
+                <img
+                  src={selectedUser.profile_image}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full bg-gray-200 flex items-center justify-center text-sm text-gray-500 ">
+                  No Image
+                </div>
+              )}
+            </div>
             {selectedUser?.fullName || "Select a user to start chatting"}
           </h3>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={initiateVideoCall}
+              className="p-2 text-white rounded-full"
+              style={{ backgroundColor: "#f6f8fb" }}
+            >
+              {Icons.videocall}
+            </button>
+            <button
+              onClick={initiateVoiceCall}
+              className="p-2 text-white rounded-full"
+              style={{ backgroundColor: "#f6f8fb" }}
+            >
+              {Icons.phonecall}
+            </button>
+          </div>
         </div>
+        {isVoiceCall && (
+          <CallComponent
+            currentUserId={currentUserData._id}
+            calleeId={selectedUser._id}
+            roomId={roomId}
+            callType="audio"
+          />
+        )}
 
+        {/* Messages */}
         <div className="flex-grow p-4 overflow-y-auto">
           {loadingMessages ? (
             <p className="text-center text-gray-500">Loading messages...</p>
@@ -171,14 +224,13 @@ const DesktopChat = ({
           <div ref={messageEndRef}></div>
         </div>
 
+        {/* Message Input */}
         {selectedUser && (
           <div className="p-4 bg-gray-100 border-t flex items-center space-x-3">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyUp={handleTyping}
-              onBlur={handleStopTyping}
               placeholder="Type a message..."
               className="flex-1 p-2 border rounded-lg focus:outline-none"
             />
@@ -187,6 +239,13 @@ const DesktopChat = ({
               className="bg-blue-500 text-white px-4 py-2 rounded-lg"
             >
               Send
+            </button>
+            <button
+              onClick={initiateVoiceCall}
+              className="p-2 text-white rounded-full"
+              style={{ backgroundColor: "#5678e9" }}
+            >
+              {Icons.Recording}
             </button>
           </div>
         )}

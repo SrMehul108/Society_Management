@@ -1635,4 +1635,40 @@ export const SendMessage = async (formData) => {
   }
 };
 
-export const UserCall=async()=>{}
+export const UserCall=async(from, to)=>{
+  try {
+    const token = UserToken();
+    const decode = jwtDecode(token);
+    console.log("Fetching messages with params:", { from, to });
+
+    const response = await axios.get(`${API_URL}/society/call/start`, {
+      params: { from, to },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    throw error;
+  }
+}
+
+export const EndCall=async(from, to)=>{
+  try {
+    const token = UserToken();
+    const decode = jwtDecode(token);
+    console.log("Fetching messages with params:", { from, to });
+
+    const response = await axios.get(`${API_URL}/society/chat/messages`, {
+      params: { from, to },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    throw error;
+  }
+}
