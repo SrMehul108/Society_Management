@@ -25,8 +25,6 @@ module.exports.getMessages = async (req, res) => {
  */
 module.exports.sendMessage = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.files);
         const { from, to, type } = req.body;
         let message = req.body.message;
         if (req.files && req.files?.chatImage?.[0]?.path) {
