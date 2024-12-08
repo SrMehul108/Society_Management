@@ -11,7 +11,6 @@ module.exports.getMessages = async (req, res) => {
             return res.status(400).json({ error: "Missing 'from' or 'to' query parameters" });
         }
         const messages = await chatService.getMessages(from, to);
-        res.status(200).json(messages);
         return sendResponse(res, 200, "Message fetched Succesfully", 1, messages);
 
     } catch (error) {
