@@ -1,22 +1,24 @@
 const callService = require("../services/callservice");
 const { sendResponse } = require("../services/responseHandler");
 const socketInstance = require('../socket/socketInstance');
+const onlineUsers = socketInstance.getOnlineUsers();
 
 
 module.exports.startCall = async (req, res) => {
+    console.log("OnlineUser",onlineUsers)
     const { roomId, callerId, calleeId } = req.body;
     // Validate inputs
     if (!roomId || !callerId || !calleeId) {
         return sendResponse(res, 400, "Missing required fields: roomId, callerId, or calleeId.", 0);
     }
     // Validate the existence of onlineUsers
-    if (!socketInstance.onlineUsers) {
+    if (!onlineUsers) {
         console.error("onlineUsers object is undefined");
         return sendResponse(res, 500, "Socket instance is not properly initialized.", 0);
     }
     // Find callee's socket ID
-    const calleeSocketId = Object.keys(socketInstance.onlineUsers).find(
-        (socketId) => socketInstance.onlineUsers[socketId].userId === calleeId
+    const calleeSocketId = Object.keys(onlineUsers).find(
+        (socketId) => onlineUsers[socketId].userId === calleeId
     );
     // Check if the callee is available for a call
     if (!calleeSocketId ||
