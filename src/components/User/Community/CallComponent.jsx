@@ -11,6 +11,7 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
   const [remoteStream, setRemoteStream] = useState(null);
   const [localStream, setLocalStream] = useState(null);
   const [error, setError] = useState(null);
+  const [incomingCall, setIncomingCall] = useState(null);
 
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
@@ -45,9 +46,10 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
 
     initLocalStream();
 
-    socket.on("receive-offer", (data) => {
-      if (data.roomId === roomId) {
-        handleOffer(data);
+    socket.on("receive-offer", async (data) => {
+      if (data.to === calleeId) {
+        console.log("Incoming call offer:", data);
+        setIncomingCall(data);
       }
     });
 
@@ -68,7 +70,7 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
       socket.off("receive-answer");
       socket.off("receive-ice-candidate");
     };
-  }, [roomId, callType]);
+  }, [roomId, callType, calleeId]);
 
   const startCall = async () => {
     try {
@@ -156,6 +158,18 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
     }
   };
 
+  const acceptCall = async () => {
+    if (incomingCall) {
+      await handleOffer(incomingCall);
+      setIncomingCall(null);
+      setIsCallActive(true);
+    }
+  };
+
+  const declineCall = () => {
+    setIncomingCall(null);
+  };
+
   const endCall = async () => {
     if (peerConnectionRef.current) {
       peerConnectionRef.current.close();
@@ -175,6 +189,13 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
   return (
     <div>
       {error && <p className="error">{error}</p>}
+      {incomingCall && (
+        <div>
+          <p>Incoming call from {incomingCall.from}</p>
+          <button onClick={acceptCall}>Accept</button>
+          <button onClick={declineCall}>Decline</button>
+        </div>
+      )}
       <div>
         {callType === "video" && <video ref={localVideoRef} autoPlay muted></video>}
         {isCallActive && callType === "video" && <video ref={remoteVideoRef} autoPlay></video>}

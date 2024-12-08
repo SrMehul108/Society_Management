@@ -1635,16 +1635,16 @@ export const SendMessage = async (formData) => {
   }
 };
 
-export const UserCall = async ( from, to, roomId ) => {
+export const UserCall = async ( data ) => {
   try {
     const token = UserToken();
     const decode = jwtDecode(token);
-    console.log(from,to)
+    console.log(data)
 
 
     const response = await axios.post(
       `${API_URL}/society/call/start`,
-       from, to, roomId , 
+      data ,
       {
         headers: {
           Authorization: `Bearer ${token}`,
