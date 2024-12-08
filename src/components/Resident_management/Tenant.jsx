@@ -15,6 +15,23 @@ const Tenant = () => {
         { id: 3, name: 'Syncfusion Essential Verabil.JPG', size: '3.5 MB', progress: 0 },
         { id: 4, name: 'Syncfusion Essential Agreement.JPG', size: '2.5 MB', progress: 40 },
     ])
+    const[formData,setFormData]=useState([])
+    const[vehicleCount,setVehicleCount]=useState(1)
+    const[photo,setPhoto]=useState(null)
+    const fileInputRef = useRef(null);
+    const [memberCount, setMemberCount] = useState(1);
+
+    const [members, setMembers] = useState(
+        Array.from({ length: 1 }, () => ({
+            fullName: '',
+            phone: '',
+            email: '',
+            age: '',
+            gender: '',
+            relation: ''
+        }))
+    );
+
 
     const handleFileChange = (e, index) => {
         const file = e.target.files[0];
@@ -33,23 +50,12 @@ const Tenant = () => {
         setFiles(files.filter(file => file.id !== id))
     }
 
-    const [memberCount, setMemberCount] = useState(1); // Default to 5 members
-    const [members, setMembers] = useState(
-        Array.from({ length: 1 }, () => ({
-            fullName: '',
-            phone: '',
-            email: '',
-            age: '',
-            gender: '',
-            relation: ''
-        }))
-    );
+    
+    
 
     const handleMemberCountChange = (event) => {
         const count = Number(event.target.value);
         setMemberCount(count);
-
-        // Adjust the number of members in the array
         setMembers((prevMembers) => {
             if (count > prevMembers.length) {
                 return [
@@ -77,7 +83,6 @@ const Tenant = () => {
         });
     };
 
-    const [vehicleCount, setVehicleCount] = useState(1);
     const [vehicles, setVehicles] = useState([{ type: '', name: '', number: '' }]);
 
     const handleVehicleCountChange = (e) => {
@@ -108,11 +113,9 @@ const Tenant = () => {
         setOwner({ ...owner, [field]: value });
     };
 
-    // image add 
-    const [photo, setPhoto] = useState(null);
+    
 
-    const fileInputRef = useRef(null);
-
+   
 
     // Handle photo upload
     const handlePhotoChange = (event) => {

@@ -106,7 +106,6 @@ export const login = async (credentials) => {
   }
 };
 
-
 export const resendOtp = async (email) => {
   try {
     const response = await axios.post(`${API_URL}/auth/forgot-password`, {
@@ -164,14 +163,18 @@ export const userRegistration = async (formdata) => {
   }
   if (!formdata) return { success: false, message: "formdata is missing" };
   console.log(formdata);
-  
+
   try {
-    const response = await axios.post(`${API_URL}/auth/admin/insertUser`, formdata, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+    const response = await axios.post(
+      `${API_URL}/auth/admin/insertUser`,
+      formdata,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       }
-    });
+    );
 
     console.log(response);
 
@@ -1178,7 +1181,38 @@ export const GetProtocol = async () => {
   }
 };
 
-export const EditProtocol=async(data,id)=>{
+export const GetProtocolUser = async () => {
+  try {
+    var token = UserToken();
+    const response = await axios.get(
+      `${API_URL}/auth/admin/security/getProtocol`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    console.log(error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+export const EditProtocol = async (data, id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -1210,9 +1244,9 @@ export const EditProtocol=async(data,id)=>{
       message: error.response?.data?.message || error.message,
     };
   }
-}
+};
 
-export const DeleteProtocol=async(id)=>{
+export const DeleteProtocol = async (id) => {
   try {
     var token = AdminToken();
     const response = await axios.delete(
@@ -1227,10 +1261,10 @@ export const DeleteProtocol=async(id)=>{
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 //Visitor API
-export const GetVisitor=async()=>{
+export const GetVisitor = async () => {
   try {
     var token = AdminToken();
     const response = await axios.get(
@@ -1260,21 +1294,18 @@ export const GetVisitor=async()=>{
       data: [],
     };
   }
-}
+};
 
 //Guard API
-export const GetGuard=async()=>{
+export const GetGuard = async () => {
   try {
     var token = AdminToken();
-    const response = await axios.get(
-      `${API_URL}/auth/admin/getSecurity`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/auth/admin/getSecurity`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (response.status === 200 && response.data.status === 1) {
       return response.data.data;
     } else {
@@ -1293,13 +1324,14 @@ export const GetGuard=async()=>{
       data: [],
     };
   }
-}
+};
 
-export const addsecurity=async(security)=>{
+export const addsecurity = async (security) => {
   try {
     var token = AdminToken();
-    
-    const response = await axios.post(`${API_URL}/auth/admin/addNewSecurity`,
+
+    const response = await axios.post(
+      `${API_URL}/auth/admin/addNewSecurity`,
       security,
       {
         headers: {
@@ -1320,9 +1352,9 @@ export const addsecurity=async(security)=>{
     console.log(error);
     throw error.response ? error.response.data : new Error("Network Error");
   }
-}
+};
 
-export const DeleteSecurityGuard=async(DeleteId)=>{
+export const DeleteSecurityGuard = async (DeleteId) => {
   if (!DeleteId) {
     console.error("Important ID (_id) is undefined");
     return;
@@ -1354,9 +1386,9 @@ export const DeleteSecurityGuard=async(DeleteId)=>{
       message: error.response ? error.response.data : error.message,
     };
   }
-}
+};
 
-export const EditSecurityGuard=async(data,id)=>{
+export const EditSecurityGuard = async (data, id) => {
   try {
     const token = AdminToken();
     const response = await axios.post(
@@ -1388,7 +1420,7 @@ export const EditSecurityGuard=async(data,id)=>{
       message: error.response?.data?.message || error.message,
     };
   }
-}
+};
 
 //Announcement Admin Side API
 export const GetAnnouncement = async (type) => {
@@ -1446,7 +1478,7 @@ export const AddAnnouncement = async (data) => {
     console.log(error);
     throw error.response ? error.response.data : new Error("Network Error");
   }
-}
+};
 
 export const EditAnnouncement = async (data, id) => {
   try {
@@ -1515,3 +1547,92 @@ export const DeleteAnnouncement = async (DeleteId) => {
     };
   }
 };
+
+//Socket IO Get User
+export const GetSocketUser = async () => {
+  try {
+    const token = UserToken(); // Fetching the token
+    if (!token) {
+      throw new Error("Token is missing");
+    }
+
+    const decodedToken = jwtDecode(token);
+    const currentUserId = decodedToken.userData._id; // Ensure this field is available
+    if (!currentUserId) {
+      throw new Error("Current user (_id) is missing in the decoded token");
+    }
+
+    console.log("Decoded Token:", decodedToken); // Debugging the token decoding
+    const response = await axios.get(`${API_URL}/auth/user/userdetail`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200 && response.data.status === 1) {
+      return {
+        success: true,
+        data: response.data.data || [],
+        message: response.data.message || "Data fetched successfully.",
+      };
+    }
+
+    return {
+      success: false,
+      message: response.data.message || "Unknown error occurred.",
+    };
+  } catch (error) {
+    console.error("Error:", error.message);
+    const message =
+      error.response?.data?.message || `An error occurred: ${error.message}`;
+    return { success: false, message };
+  }
+};
+
+
+export const GetSocketMessages = async (from, to) => {
+  try {
+    const token = UserToken();
+    const decode = jwtDecode(token);
+    console.log("Fetching messages with params:", { from, to });
+
+    const response = await axios.get(`${API_URL}/society/chat/messages`, {
+      params: { from, to },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    throw error;
+  }
+};
+
+export const SendMessage = async (formData) => {
+  try {
+    const token = UserToken();
+    const decode = jwtDecode(token);
+    const from = decode.userData._id; // Get the user ID from the decoded JWT
+
+    console.log(formData.from, formData.to, formData.message, formData.type); // Corrected log
+
+    const response = await axios.post(
+      `${API_URL}/society/chat/message/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error sending message:", error);
+    throw error; // Handle the error in the component or call
+  }
+};
+
+export const 
