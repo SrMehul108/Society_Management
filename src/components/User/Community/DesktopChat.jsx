@@ -5,8 +5,9 @@ import { GetSocketMessages, SendMessage } from "../../../apis/api";
 import { Icons } from "../../../constants";
 import CallComponent from "./CallComponent";
 import NoChatSelected from "./NoChatSelected";
+var API_URL=import.meta.env.VITE_API_URL
 
-const socket = io("https://society-management-4z4w.onrender.com");
+const socket = io(API_URL);
 
 const DesktopChat = ({
   users,
@@ -21,6 +22,7 @@ const DesktopChat = ({
   const [calling, setCalling] = useState(false); // For handling call states
   const [roomId, setRoomId] = useState();
   const [isVoiceCall, setIsVoiceCall] = useState(false);
+  const [isVideoCall, setIsVideoCall] = useState(false);
   const messageEndRef = useRef(null);
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const DesktopChat = ({
 
     var roomId = `${currentUserData._id}-${selectedUser._id}`;
     setRoomId(roomId);
+    console.log(roomId);
     socket.emit("register-user", currentUserData._id);
     socket.emit("join-chat", roomId);
 
@@ -103,9 +106,9 @@ const DesktopChat = ({
   };
 
   const initiateVideoCall = () => {
+    setIsVideoCall(true);
     setCalling(true);
   };
-  
 
   const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -153,114 +156,120 @@ const DesktopChat = ({
 
       {/* Chat Window */}
       <div className="flex-1 bg-white flex flex-col">
-  {/* Header */}
-  <div className="p-4 bg-white shadow-sm border-b flex items-center justify-between">
-    <h3 className="text-lg font-bold flex items-center gap-5">
-      <div className="h-10 w-10 bg-gray-300 rounded-full overflow-hidden">
-        {selectedUser?.profile_image ? (
-          <img
-            src={selectedUser.profile_image}
-            alt="Profile"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full bg-gray-200 flex items-center justify-center text-sm text-gray-500 ">
-          
-          </div>
-        )}
-      </div>
-      {selectedUser?.fullName}
-    </h3>
-    <div className="flex items-center space-x-3">
-      <button
-        onClick={initiateVideoCall}
-        className="p-2 text-white rounded-full"
-        style={{ backgroundColor: "#f6f8fb" }}
-      >
-        {Icons.videocall}
-      </button>
-      <button
-        onClick={initiateVoiceCall}
-        className="p-2 text-white rounded-full"
-        style={{ backgroundColor: "#f6f8fb" }}
-      >
-        {Icons.phonecall}
-      </button>
-    </div>
-  </div>
-
-  {/* Show NoChatSelected if no user is selected */}
-  {!selectedUser ? (
-    <NoChatSelected />
-  ) : (
-    <>
-      {isVoiceCall && (
-        <CallComponent
-          currentUserId={currentUserData._id}
-          calleeId={selectedUser._id}
-          roomId={roomId}
-          callType="audio"
-        />
-      )}
-
-      {/* Messages */}
-      <div className="flex-grow p-4 overflow-y-auto">
-        {loadingMessages ? (
-          <p className="text-center text-gray-500">Loading messages...</p>
-        ) : messages.length ? (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                msg.from === currentUserData._id ? "justify-end" : ""
-              }`}
-            >
-              <div
-                className={`max-w-xs p-3 rounded-lg shadow ${
-                  msg.from === currentUserData._id
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-800"
-                }`}
-              >
-                <p>{msg.message}</p>
-              </div>
+        {/* Header */}
+        <div className="p-4 bg-white shadow-sm border-b flex items-center justify-between">
+          <h3 className="text-lg font-bold flex items-center gap-5">
+            <div className="h-10 w-10 bg-gray-300 rounded-full overflow-hidden">
+              {selectedUser?.profile_image ? (
+                <img
+                  src={selectedUser.profile_image}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full bg-gray-200 flex items-center justify-center text-sm text-gray-500 "></div>
+              )}
             </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">No messages yet</p>
-        )}
-        <div ref={messageEndRef}></div>
-      </div>
-
-      {/* Message Input */}
-      {selectedUser && (
-        <div className="p-4 bg-gray-100 border-t flex items-center space-x-3">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 p-2 border rounded-lg focus:outline-none"
-          />
-          <button
-            onClick={handleSendMessage}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            Send
-          </button>
-          <button
-            onClick={initiateVoiceCall}
-            className="p-2 text-white rounded-full"
-            style={{ backgroundColor: "#5678e9" }}
-          >
-            {Icons.Recording}
-          </button>
+            {selectedUser?.fullName}
+          </h3>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={initiateVideoCall}
+              className="p-2 text-white rounded-full"
+              style={{ backgroundColor: "#f6f8fb" }}
+            >
+              {Icons.videocall}
+            </button>
+            <button
+              onClick={initiateVoiceCall}
+              className="p-2 text-white rounded-full"
+              style={{ backgroundColor: "#f6f8fb" }}
+            >
+              {Icons.phonecall}
+            </button>
+          </div>
         </div>
-      )}
-    </>
-  )}
-</div>
 
+        {/* Show NoChatSelected if no user is selected */}
+        {!selectedUser ? (
+          <NoChatSelected />
+        ) : (
+          <>
+            {isVoiceCall && (
+              <CallComponent
+              callerId={currentUserData._id}
+                calleeId={selectedUser._id}
+                roomId={roomId}
+                callType="voice"
+              />
+            )}
+
+            {isVideoCall && (
+              <CallComponent
+              callerId={currentUserData._id}
+                calleeId={selectedUser._id}
+                roomId={roomId}
+                callType="video"
+              />
+            )}
+
+            {/* Messages */}
+            <div className="flex-grow p-4 overflow-y-auto">
+              {loadingMessages ? (
+                <p className="text-center text-gray-500">Loading messages...</p>
+              ) : messages.length ? (
+                messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`flex ${
+                      msg.from === currentUserData._id ? "justify-end" : ""
+                    }`}
+                  >
+                    <div
+                      className={`max-w-xs mb-4 p-3 rounded-lg shadow ${
+                        msg.from === currentUserData._id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      <p>{msg.message}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">No messages yet</p>
+              )}
+              <div ref={messageEndRef}></div>
+            </div>
+
+            {/* Message Input */}
+            {selectedUser && (
+              <div className="p-4 bg-gray-100 border-t flex items-center space-x-3">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 p-2 border rounded-lg focus:outline-none"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                >
+                  Send
+                </button>
+                <button
+                  onClick={initiateVoiceCall}
+                  className="p-2 text-white rounded-full"
+                  style={{ backgroundColor: "#5678e9" }}
+                >
+                  {Icons.Recording}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
