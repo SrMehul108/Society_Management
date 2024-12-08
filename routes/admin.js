@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../services/multer.service');
 const { insertUser, viewUser, editUser, deleteUser, addNewSecurity, viewSecurity, editSecurity, deleteSecurity } = require('../controllers/usercontrolleer');
-const { SocietyFinanceDetail } = require('../controllers/authcontroller');
+const { SocietyFinanceDetail, PendingMaintenanceList } = require('../controllers/authcontroller');
 // Resident
 router.post('/insertUser', upload.fields([
   { name: 'profile_image', maxCount: 1 }, { name: 'aadharImage_front', maxCount: 1 }, { name: 'aadharImage_back', maxCount: 1 }, { name: 'addressProofImage', maxCount: 1 }, { name: 'rentalAgreementImage', maxCount: 1 }]), insertUser);
@@ -21,8 +21,9 @@ router.get('/getSecurity', viewSecurity);
 router.post('/editSecurity/:id', upload.fields([{ name: 'aadharImage_front', maxCount: 1 }, { name: 'profile_image', maxCount: 1 }]), editSecurity);
 router.delete('/deleteSecurity/:id', deleteSecurity);
 
-router.get('/SocietyBalance',SocietyFinanceDetail);
-
+// dashboard data Routes
+router.get('/SocietyBalance', SocietyFinanceDetail);
+router.get('/pendingMaintenanceList', PendingMaintenanceList);
 
 // Other Secure Routes 
 router.use('/maintanace', require('./maintanace')); //maintenance route
