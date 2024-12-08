@@ -2,26 +2,36 @@ const socketInstance = require('../socket/socketInstance');  // Import socketIns
 const Notification = require('../models/Notification');
 exports.sendNotification = async ({ type, message, societyId, targetUsers }) => {
     try {
-        // Save the notification to the database
+        if (!societyId) {
+            console.error("Invalid societyId provided for notification emission.");
+            return;
+        }
         const newNotification = new Notification({ type, message, societyId, targetUsers });
         await newNotification.save();
-
-        // Emit the notification to clients in the society room
-        const io = socketInstance.getIO();  // Get the initialized io instance
-
+        
+        const io = socketInstance.getIO();
         if (io) {
-            io.to(`society-${societyId}`).emit('new-notification', {
-                type,
-                message,
-                societyId,
-                targetUsers,
-                timestamp: new Date(),
-            });
+            try {
+                io.to(`society-${societyId}`).emit("new-notification", {
+                    type,
+                    message,
+                    societyId,
+                    targetUsers,
+                    timestamp: new Date(),
+                });
+            } catch (error) {
+                console.error(
+                    `Error emitting notification to society-${societyId}:`,
+                    error
+                );
+            }
+        } else {
+            console.warn("Socket.IO instance is not initialized.");
         }
 
         return newNotification;
     } catch (error) {
-        console.error('Error sending notification:', error);
+        console.error("Error sending notification:", error);
         throw error;
     }
 };

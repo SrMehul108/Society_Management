@@ -8,6 +8,8 @@ const { validateRequest } = require("../services/validation");
 const Expenses = require('../models/Expenses');
 const Income = require("../models/OtherIncome");
 const User = require('../models/UserData');
+const Payment = require("../models/Payment");
+const Maintenance = require("../models/Maintenance");
 this.OTP = "";
 
 module.exports.registerUser = async (req, res) => {
@@ -63,7 +65,11 @@ module.exports.loginUser = async (req, res) => {
       if (checkmail) {
         let pass = await bcrypt.compare(req.body.password, checkmail.password);
         if (pass) {
-          let token = await jwt.sign({ userData: checkmail }, process.env.JWT_SECRET_ADMIN, { expiresIn: "1d" });
+          let token = await jwt.sign(
+            { userData: checkmail },
+            checkmail.role === 'admin' ? process.env.JWT_SECRET_ADMIN : checkmail.role === 'security' ? process.env.JWT_SECRET_SECURITY : process.env.JWT_SECRET_USER,
+            { expiresIn: "1d" }
+          );
 
           return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token, role: checkmail.role, });
         } else {
@@ -228,5 +234,43 @@ module.exports.SocietyFinanceDetail = async (req, res) => {
     return sendResponse(res, 200, "Data Retrieved Successfully", 1, data);
   } catch (error) {
     return sendResponse(500, "Internal Server Error", 0)
+  }
+}
+
+module.exports.PendingMaintenanceList = async (req, res) => {
+  try {
+    const users = await UserModel.find({ societyId: req.user.societyId, isActive: true, role: 'user' });
+    if (!users || users.length === 0) {
+      return sendResponse(res, 404, "No Users Found", 0);
+    }
+
+    const currentDate = new Date();
+    const updatedPayments = [];
+
+    for (const user of users) {
+      const payments = await Payment.find({ UserId: user._id, type: 'maintenance', paymentStatus: false }).populate('UserId', 'fullName');
+      for (const payment of payments) {
+        const maintenance = await Maintenance.findOne({ societyId: user.societyId, isActive: true });
+        if (maintenance) {
+          const dueDate = new Date(maintenance.dueDate);
+          const penaltyDays = maintenance.penaltyDay;
+          let calculatedAmount = parseInt(payment.amount); // Ensure payment.amount is treated as an integer
+
+          // Check if the due date has passed
+          if (currentDate > dueDate) {
+            const daysOverdue = Math.floor((currentDate - dueDate) / (1000 * 60 * 60 * 24));
+            if (daysOverdue > penaltyDays) {
+              const penaltyAmount = parseInt(maintenance.penaltyAmount); // Ensure penaltyAmount is treated as an integer
+              calculatedAmount += penaltyAmount; // Calculate the new amount without updating the payment
+            }
+          }
+          updatedPayments.push({ user: user.fullName, amount: calculatedAmount }); // Only push username and calculated amount
+        }
+      }
+    }
+
+    return sendResponse(res, 200, "Pending Maintenance List Retrieved Successfully", 1, updatedPayments);
+  } catch (error) {
+    return sendResponse(res, 500, "Internal Server Error", 0);
   }
 }
