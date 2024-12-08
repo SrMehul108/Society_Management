@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { addsecurity } from "../../apis/api";
 
-const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
+const AddSecurity = ({ isOpen, onClose, itemToEdit,onAddGuard }) => {
   if (!isOpen) return null;
 
   const [formValues, setFormValues] = useState({
-    title: "",
-    description: "",
-    date: "",
-    amount: "",
+    shiftDate: "", // Match schema field name
+    shiftTime: "", // Match schema field name
+    email: "", // Add email as a required field
     fullName: "",
     phoneNo: "",
-    profile_image: null, // Profile Image File
-    billFile: null, // Aadhaar Card File
-    shift: "Day",
-    gender: "Male",
-    time: "",
+    profile_image: null,
+    aadharImage_front: null,
+    shift: "day", // Use lowercase values as per schema enum
+    gender: "male", // Use lowercase values as per schema enum
   });
 
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -26,21 +24,19 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
       setFormValues({
         ...itemToEdit,
         profile_image: null, // Reset file inputs
-        billFile: null,
+        aadharImage_front: null,
       });
     } else {
       setFormValues({
-        title: "",
-        description: "",
-        date: "",
-        amount: "",
+        shiftDate: "", // Match schema field name
+        shiftTime: "", // Match schema field name
+        email: "", // Add email as a required field
         fullName: "",
         phoneNo: "",
         profile_image: null,
-        billFile: null,
-        shift: "Day",
-        gender: "Male",
-        time: "",
+        aadharImage_front: null,
+        shift: "day", // Use lowercase values as per schema enum
+        gender: "male", // Use lowercase values as per schema enum
       });
     }
   }, [itemToEdit]);
@@ -59,14 +55,14 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
 
     const formData = new FormData();
     Object.entries(formValues).forEach(([key, value]) => {
-      if (value) formData.append(key, value); // Avoid adding null/undefined values
+      if (value) formData.append(key, value);
     });
 
     try {
       const response = await addsecurity(formData);
       if (response.success) {
-        alert("Security added successfully!");
-        onClose(); // Close the modal
+        onAddGuard()
+        onClose();
       } else {
         alert(`Failed to add security: ${response.message}`);
       }
@@ -126,6 +122,21 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
             />
           </div>
 
+          <div>
+            <label className="block font-medium">
+              Email<span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formValues.email}
+              onChange={handleInputChange}
+              placeholder="Enter Email"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
           {/* Phone Number */}
           <div>
             <label className="block font-medium">
@@ -143,36 +154,25 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
           </div>
 
           {/* Gender and Shift */}
-          <div className="flex space-x-4">
-            <div className="w-1/2">
-              <label className="block font-medium">
-                Gender<span className="text-red-500">*</span>
-              </label>
-              <select
-                name="gender"
-                value={formValues.gender}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div className="w-1/2">
-              <label className="block font-medium">
-                Shift<span className="text-red-500">*</span>
-              </label>
-              <select
-                name="shift"
-                value={formValues.shift}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="Day">Day</option>
-                <option value="Night">Night</option>
-              </select>
-            </div>
-          </div>
+          <select
+            name="gender"
+            value={formValues.gender}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
+          <select
+            name="shift"
+            value={formValues.shift}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="day">Day</option>
+            <option value="night">Night</option>
+          </select>
 
           {/* Date and Time */}
           <div className="flex space-x-4">
@@ -182,8 +182,8 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
               </label>
               <input
                 type="date"
-                name="date"
-                value={formValues.date}
+                name="shiftDate"
+                value={formValues.shiftDate}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -196,8 +196,8 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
               <input
                 id="time"
                 type="time"
-                name="time"
-                value={formValues.time}
+                name="shiftTime"
+                value={formValues.shiftTime}
                 onChange={handleInputChange}
                 className="w-full border rounded px-3 py-2"
                 required
@@ -211,7 +211,7 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
             <div className="text-center items-center justify-center border-dashed border-2 border-gray-300 rounded-lg p-10">
               <input
                 type="file"
-                name="billFile"
+                name="aadharImage_front"
                 className="hidden"
                 id="aadhaar-upload"
                 onChange={handleInputChange}
@@ -226,7 +226,7 @@ const AddSecurity = ({ isOpen, onClose, itemToEdit }) => {
             </div>
             {formValues.billFile && (
               <p className="mt-2 text-sm text-gray-500">
-                Selected file: {formValues.billFile.name}
+                Selected file: {formValues.aadharImage_front.name}
               </p>
             )}
           </div>
