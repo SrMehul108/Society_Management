@@ -1641,7 +1641,7 @@ export const UserCall=async(from, to)=>{
     const decode = jwtDecode(token);
     console.log("Fetching messages with params:", { from, to });
 
-    const response = await axios.get(`${API_URL}/society/call/start`, {
+    const response = await axios.post(`${API_URL}/society/call/start`, {
       params: { from, to },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1660,7 +1660,7 @@ export const EndCall=async(from, to)=>{
     const decode = jwtDecode(token);
     console.log("Fetching messages with params:", { from, to });
 
-    const response = await axios.get(`${API_URL}/society/chat/messages`, {
+    const response = await axios.post(`${API_URL}/society/call/end`, {
       params: { from, to },
       headers: {
         Authorization: `Bearer ${token}`,

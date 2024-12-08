@@ -120,18 +120,15 @@ const AccessForms = () => {
     <>
       {isMobile ? (
         <MobileChat
-          users={users}
-          currentUserData={currentUser}
-          selectedUser={selectedUser}
-          handleUserSelection={handleUserSelection}
-          messages={messages}
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          sendMessage={sendMessage}
-          backToUserList={backToUserList}
-          isSidebarVisible={isSidebarVisible}
-          toggleSidebarVisibility={toggleSidebarVisibility}
-          socket={socket}  // Pass socket instance here
+        users={users}
+        currentUserData={currentUser}
+        selectedUser={selectedUser}
+        handleUserSelection={handleUserSelection}
+        messages={messages}
+        newMessage={newMessage}
+        setNewMessage={setNewMessage}
+        sendMessage={sendMessage}
+        socket={socket}  // Pass socket instance here
         />
       ) : (
         <DesktopChat
