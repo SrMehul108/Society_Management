@@ -36,9 +36,8 @@ exports.getMessages = async (from, to) => {
                 { from, to },
                 { from: to, to: from },
             ],
-        }).sort({ timestamp: 1 }); // Sort by oldest first
-
-        return messages; // This now includes the 'status' field (read/unread)
+        }).sort({ timestamp: 1 });
+        return messages;
     } catch (error) {
         console.error("Error fetching messages:", error);
         throw error;
