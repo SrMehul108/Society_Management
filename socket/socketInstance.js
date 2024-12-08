@@ -1,5 +1,5 @@
 let io;
-let onlineUsers = {};  // Track users by socket ID
+let onlineUsers = {}; // Track users by socket ID
 
 module.exports = {
     init: (server) => {
@@ -24,6 +24,23 @@ module.exports = {
 
                 socket.on("join-chat", (roomId) => {
                     socket.join(`chat-${roomId}`);
+                });
+
+                // Handle sending messages
+                socket.on("send-message", (message) => {
+                    const { to, from, message: text, type } = message;
+
+                    // Find the recipient's socket ID
+                    const recipientSocketId = Object.keys(onlineUsers).find(
+                        (id) => onlineUsers[id].userId === to
+                    );
+
+                    // Emit the message to the recipient
+                    if (recipientSocketId) {
+                        io.to(recipientSocketId).emit("receive-message", message);
+                    } else {
+                        console.log(`Recipient with user ID ${to} is not online.`);
+                    }
                 });
 
                 // When a user starts a call, mark their availability

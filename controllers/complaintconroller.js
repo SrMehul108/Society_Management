@@ -36,7 +36,7 @@ module.exports.viewComplaint = async (req, res) => {
         const { id } = req.query;
         const { type } = req.query;
         if (!type) {
-            return sendResponse(res, 400, "Type is required", 0)
+            return sendResponse(res, 400, "Type is required", 0);
         }
         if (id) {
             const data = await Complaint.findOne({ _id: id, societyId: req.user.societyId, isActive: true, type: type });
