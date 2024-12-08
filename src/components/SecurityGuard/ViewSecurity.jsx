@@ -17,9 +17,9 @@ function ViewSecurity({ closeModal, item }) {
         </div>
         <div className="mt-4">
           <div className="flex items-center ">
-            <div className="w-20 h-20 border rounded-full mr-5">
+            <div className="w-20 h-20 border rounded-full mr-5 overflow-hidden">
               <div>
-                <img src={item.profile_image} alt="" />
+                <img src={item.profile_image} alt=""  />
               </div>
             </div>
             <div className=" items-center justify-center ">

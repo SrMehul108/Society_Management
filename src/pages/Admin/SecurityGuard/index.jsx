@@ -15,6 +15,7 @@ function SecurityGuard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [securityData, setSecurityData] = useState();
+  const [deleteItemId, setDeleteItemId] = useState(null);
 
   const openModal = (item = null) => {
     setEditingItem(item); // If item is passed, open in edit mode
@@ -29,7 +30,10 @@ function SecurityGuard() {
   // delete
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const openDeleteModal = () => setIsDeleteOpen(true);
+  const openDeleteModal = (id) => {
+    setDeleteItemId(id);
+    setIsDeleteOpen(true);
+  };
   const closeDeleteModal = () => setIsDeleteOpen(false);
 
   // view
@@ -185,12 +189,12 @@ function SecurityGuard() {
                         )}
                         <button
                           className="text-red-500 hover:text-red-700 p-1"
-                          onClick={openDeleteModal}
+                          onClick={()=>openDeleteModal(item._id)}
                         >
                           <i className="fas fa-trash"></i>
                         </button>
                         {isDeleteOpen && (
-                          <DeleteSecurity closeModal={closeDeleteModal} />
+                          <DeleteSecurity closeModal={closeDeleteModal} securityId={deleteItemId} FetchSecurity={handleGuardAdd} />
                         )}
                       </td>
                     </tr>

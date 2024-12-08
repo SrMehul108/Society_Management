@@ -1295,7 +1295,6 @@ export const GetGuard=async()=>{
   }
 }
 
-
 export const addsecurity=async(security)=>{
   try {
     var token = AdminToken();
@@ -1323,6 +1322,73 @@ export const addsecurity=async(security)=>{
   }
 }
 
+export const DeleteSecurityGuard=async(DeleteId)=>{
+  if (!DeleteId) {
+    console.error("Important ID (_id) is undefined");
+    return;
+  }
+  try {
+    var token = AdminToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/admin/deleteSecurity/${DeleteId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Complaint deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete Request:", response.data.message);
+      return { success: false, message: "Failed to delete Request" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting Request:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+    };
+  }
+}
+
+export const EditSecurityGuard=async(data,id)=>{
+  try {
+    const token = AdminToken();
+    const response = await axios.post(
+      `${API_URL}/auth/admin/security/editProtocol/${id}`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to update income.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error(
+      "Error updating income:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+}
 
 //Announcement Admin Side API
 export const GetAnnouncement = async (type) => {
