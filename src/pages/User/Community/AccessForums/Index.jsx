@@ -128,7 +128,7 @@ const AccessForms = () => {
         newMessage={newMessage}
         setNewMessage={setNewMessage}
         sendMessage={sendMessage}
-        socket={socket}  // Pass socket instance here
+        socket={socket} 
         />
       ) : (
         <DesktopChat
@@ -140,7 +140,7 @@ const AccessForms = () => {
           newMessage={newMessage}
           setNewMessage={setNewMessage}
           sendMessage={sendMessage}
-          socket={socket}  // Pass socket instance here
+          socket={socket} 
         />
       )}
     </>

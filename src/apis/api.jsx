@@ -1635,40 +1635,49 @@ export const SendMessage = async (formData) => {
   }
 };
 
-export const UserCall=async(from, to)=>{
+export const UserCall = async ( from, to, roomId ) => {
   try {
     const token = UserToken();
     const decode = jwtDecode(token);
-    console.log("Fetching messages with params:", { from, to });
+    console.log(from,to)
 
-    const response = await axios.post(`${API_URL}/society/call/start`, {
-      params: { from, to },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+
+    const response = await axios.post(
+      `${API_URL}/society/call/start`,
+       from, to, roomId , 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    console.log(error);
+    console.error("Error starting call:", error);
     throw error;
   }
-}
+};
+;
 
-export const EndCall=async(from, to)=>{
+
+export const EndCall = async (roomId) => {
   try {
     const token = UserToken();
     const decode = jwtDecode(token);
-    console.log("Fetching messages with params:", { from, to });
 
-    const response = await axios.post(`${API_URL}/society/call/end`, {
-      params: { from, to },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${API_URL}/society/call/end`,
+       roomId ,  // Only pass roomId to end the call
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    console.error("Error ending call:", error);
     throw error;
   }
-}
+};

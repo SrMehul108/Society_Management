@@ -4,8 +4,9 @@ import axios from "axios";
 import { GetSocketMessages, SendMessage } from "../../../apis/api";
 import { Icons } from "../../../constants";
 import CallComponent from "./CallComponent";
+var API_URL=import.meta.env.VITE_API_URL
 
-const socket = io("https://society-management-4z4w.onrender.com");
+const socket = io(API_URL);
 
 const MobileChat = ({
   users,

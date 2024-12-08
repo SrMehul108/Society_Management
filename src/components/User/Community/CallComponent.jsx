@@ -2,18 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { EndCall, UserCall } from "../../../apis/api";
 
-const socket = io("https://society-management-4z4w.onrender.com"); // Your backend URL
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(API_URL);
 
-const CallComponent = ({
-  currentUserId,
-  calleeId,
-  roomId,
-  callType = "video",
-}) => {
+const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
   const [isCallActive, setIsCallActive] = useState(false);
   const [callStarted, setCallStarted] = useState(false);
   const [remoteStream, setRemoteStream] = useState(null);
   const [localStream, setLocalStream] = useState(null);
+  const [error, setError] = useState(null);
 
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
@@ -32,9 +29,7 @@ const CallComponent = ({
     const initLocalStream = async () => {
       try {
         const constraints =
-          callType === "audio"
-            ? { audio: true, video: false }
-            : { audio: true, video: true };
+          callType === "voice" ? { audio: true, video: false } : { audio: true, video: true };
 
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         setLocalStream(stream);
@@ -42,8 +37,9 @@ const CallComponent = ({
         if (callType === "video") {
           localVideoRef.current.srcObject = stream;
         }
-      } catch (error) {
-        console.error("Error accessing media devices:", error);
+      } catch (err) {
+        setError("Error accessing media devices.");
+        console.error("Error accessing media devices:", err);
       }
     };
 
@@ -74,16 +70,15 @@ const CallComponent = ({
     };
   }, [roomId, callType]);
 
-  const startCall = async (calleeId) => {
+  const startCall = async () => {
     try {
-      console.log("start Call");
       const response = await UserCall({
-        callerId: currentUserId,
+        callerId,
         calleeId,
         roomId,
         callType,
       });
-      console.log(response, "StartCall");
+
       if (response.status === 200) {
         setIsCallActive(true);
         setCallStarted(true);
@@ -97,25 +92,24 @@ const CallComponent = ({
         peerConnectionRef.current.onicecandidate = handleICECandidateEvent;
         peerConnectionRef.current.ontrack = handleTrackEvent;
 
-        peerConnectionRef.current
-          .createOffer()
-          .then((offer) => peerConnectionRef.current.setLocalDescription(offer))
-          .then(() => {
-            socket.emit("offer-call", {
-              to: calleeId,
-              from: currentUserId,
-              roomId,
-              offer: peerConnectionRef.current.localDescription,
-              callType,
-            });
-          });
+        const offer = await peerConnectionRef.current.createOffer();
+        await peerConnectionRef.current.setLocalDescription(offer);
+
+        socket.emit("offer-call", {
+          to: calleeId,
+          from: callerId,
+          roomId,
+          offer: peerConnectionRef.current.localDescription,
+          callType,
+        });
       }
     } catch (error) {
+      setError("Error starting call.");
       console.error("Error starting call:", error);
     }
   };
 
-  const handleOffer = (data) => {
+  const handleOffer = async (data) => {
     peerConnectionRef.current = new RTCPeerConnection(config);
 
     localStream.getTracks().forEach((track) => {
@@ -125,17 +119,15 @@ const CallComponent = ({
     peerConnectionRef.current.onicecandidate = handleICECandidateEvent;
     peerConnectionRef.current.ontrack = handleTrackEvent;
 
-    peerConnectionRef.current
-      .setRemoteDescription(data.offer)
-      .then(() => peerConnectionRef.current.createAnswer())
-      .then((answer) => peerConnectionRef.current.setLocalDescription(answer))
-      .then(() => {
-        socket.emit("answer-call", {
-          to: data.from,
-          roomId,
-          answer: peerConnectionRef.current.localDescription,
-        });
-      });
+    await peerConnectionRef.current.setRemoteDescription(data.offer);
+    const answer = await peerConnectionRef.current.createAnswer();
+    await peerConnectionRef.current.setLocalDescription(answer);
+
+    socket.emit("answer-call", {
+      to: data.from,
+      roomId,
+      answer: peerConnectionRef.current.localDescription,
+    });
   };
 
   const handleAnswer = (data) => {
@@ -170,8 +162,7 @@ const CallComponent = ({
     }
 
     try {
-      // Notify backend to end the call
-      await EndCall(roomId);
+      await EndCall({ callerId, calleeId, roomId });
     } catch (error) {
       console.error("Error ending call:", error);
     }
@@ -183,20 +174,17 @@ const CallComponent = ({
 
   return (
     <div>
+      {error && <p className="error">{error}</p>}
       <div>
-        {callType === "video" && (
-          <video ref={localVideoRef} autoPlay muted></video>
-        )}
-        {isCallActive && callType === "video" && (
-          <video ref={remoteVideoRef} autoPlay></video>
-        )}
-        {isCallActive && callType === "audio" && <p>Call in progress...</p>}
+        {callType === "video" && <video ref={localVideoRef} autoPlay muted></video>}
+        {isCallActive && callType === "video" && <video ref={remoteVideoRef} autoPlay></video>}
+        {isCallActive && callType === "voice" && <p>Call in progress...</p>}
       </div>
       <div>
         {callStarted ? (
           <button onClick={endCall}>End Call</button>
         ) : (
-          <button onClick={() => startCall(calleeId)}>Start Call</button>
+          <button onClick={startCall}>Start Call</button>
         )}
       </div>
     </div>
