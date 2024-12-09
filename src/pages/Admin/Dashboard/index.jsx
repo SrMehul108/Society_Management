@@ -11,7 +11,7 @@ import {
   GetDashBoardBalance,
   GetDashboardMaintainence,
   getImportantnumber,
-  GetUserComplaintDashboard,
+  GetUserComplaint,
   GetUserDashBoardBalance,
   GetUserDashboardMaintainence,
   GetUserImportantNumber,
@@ -319,7 +319,7 @@ export const Dashboard = () => {
     } else if (userToken) {
       try {
         const type = "complaint";
-        const response = await GetUserComplaintDashboard(type);
+        const response = await GetUserComplaint(type);
         console.log("API Response:", response);
     
         // Check if the response is an array and not empty

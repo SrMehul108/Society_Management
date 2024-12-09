@@ -1724,7 +1724,7 @@ export const GetUserImportantNumber=async()=>{
   }
 }
 
-export const GetUserComplaintDashboard=async(type)=>{
+export const GetUserComplaint=async(type)=>{
   const token = UserToken();
 
   if (!token) {
@@ -1756,6 +1756,67 @@ export const GetUserComplaintDashboard=async(type)=>{
       success: false,
       message: error.response ? error.response.data : error.message,
       data: [],
+    };
+  }
+}
+
+export const AddUserComplaint=async(formData)=>{
+  try {
+    var token = UserToken();
+    const response = await axios.post(
+      `${API_URL}/auth/user/addComplaint`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+}
+
+export const DeleteUserComplaint=async(DeleteId)=>{
+  if (!DeleteId) {
+    console.error("Important ID (_id) is undefined");
+    return;
+  }
+  try {
+    var token = UserToken();
+    const response = await axios.delete(
+      `${API_URL}/auth/user/deleteComplaint/${DeleteId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Complaint deleted successfully:", response.data);
+      return response.data;
+    } else {
+      console.error("Failed to delete Complaint:", response.data.message);
+      return { success: false, message: "Failed to delete complaint" };
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error deleting complaint:", error);
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
     };
   }
 }
