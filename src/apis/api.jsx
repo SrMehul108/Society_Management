@@ -1981,3 +1981,42 @@ export const EndCall = async (roomId) => {
     throw error;
   }
 };
+
+
+//Security API
+
+export const GetSecurityVisitor=async()=>{
+  const token = SecurityToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/securitygaurd/getVisitor`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Security",response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
