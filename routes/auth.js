@@ -23,4 +23,10 @@ router.use('/user', (req, res, next) => {
         req.user = user; next();
     })(req, res, next);
 }, require('./user'));
+router.use('/securitygaurd', (req, res, next) => {
+    Passport.authenticate('Security', (err, user, info) => {
+        if (err || !user) { return sendResponse(res, 403, 'Unauthorized', 0); }
+        req.user = user; next();
+    })(req, res, next);
+}, require('./securitygaurd'));
 module.exports = router;
