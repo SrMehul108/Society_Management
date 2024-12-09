@@ -1,0 +1,680 @@
+// User
+        {
+          path: "user",
+          children: [
+            {
+              element: <DashboardLayout items={UserSidebar} />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashBoard />,
+                },
+                {
+                  path: "PersonalDetail",
+                  element: <UserPersonalDetail />,
+                },
+                {
+                  path: "ServiceAndComplaint",
+                  element: <UserComplaintSubmission />,
+                },
+                {
+                  path: "EventsParticipation",
+                  element: "Events Participation",
+                },
+
+                {
+                  path: "PaymentPortal",
+                  children: [
+                    {
+                      path: "MaintenanceInvoices",
+                      element: "Maintenance Invoices",
+                    },
+                    {
+                      path: "OtherIncomeInvoice",
+                      element: "Other Income Invoice",
+                    },
+                  ],
+                },
+                {
+                  path: "SecurityProtocols",
+                  element: "Security Protocols",
+                },
+              ],
+            },
+          ],
+        },
+
+
+
+
+
+
+
+
+        <div className="hidden lg:flex flex-1 flex-col justify-center px-8 sm:px-10 lg:px-20 xl:px-24 bg-gray-200">
+        <div className="w-full max-w-sm lg:w-96 mx-auto">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">
+              <span className="dash">Dash</span>Stack
+            </h2>
+          </div>
+          <div className="relative mb-8">
+            <img
+              src={login}
+              alt="Society Management Illustration"
+              className="w-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+
+      <div className="flex min-h-screen bg-gray-50 relative">
+
+
+      {/* Right Side */}
+      <div className="flex-1 flex flex-col justify-center">
+        <div className="mx-auto w-full max-w-md lg:max-w-lg bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+            Forget Password
+          </h2>
+          <h5 className="text-sm text-center mb-4">
+            Enter your email address and we will send you a link to reset your
+            password.
+          </h5>
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setShowError(true);
+            }}
+          >
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email or Phone*
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="text"
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                placeholder="+91 92019 32452"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <button
+                onClick={handleClick}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
+                  isFormValid
+                    ? "bg-orange-500 hover:bg-orange-600"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                disabled={!isFormValid}
+              >
+                Get OTP
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-4 text-center text-sm text-gray-600">
+            <Link
+              to="/"
+              className="font-medium text-orange-600 hover:text-orange-500"
+            >
+              Back To Login
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      {/* Background Gradient Decorations */}
+      <div className="absolute top-0 right-1/2 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent hidden lg:block"></div>
+      <div
+        className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-orange-100/20 to-transparent hidden lg:block"
+        style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
+      ></div>
+    </div>
+
+
+    //Create comPlaint 
+
+    // ComplaintTable.js
+// import React, { useState } from 'react';
+// import ComplaintForm from '../../../../components/ComplaintTraking/ComplaintFormPopup';
+// import EditRequestForm from '../../../../components/ComplaintTraking/EditRequestForm';
+// import ViewRequestPopup from '../../../../components/ComplaintTraking/ViewRequestPopup';
+// import DeleteConfirmationPopup from '../../../../components/ComplaintTraking/DeleteRequestPopup';
+
+// export const CreactComplaint = () => {
+
+
+//   const [complaints, setComplaints] = useState([
+//     {
+//       id: 1,
+//       complainerName: "Evelyn Harper",
+//       complaintName: "Unethical Behavior",
+//       description: "Providing false information or deliberately.",
+//       unit: "A ",
+//       unitNumber: " 1001",
+//       priority: "Medium",
+//       status: "Pending",
+//     },
+//     {
+//       id: 2,
+//       complainerName: "Esther Howard",
+//       complaintName: "Preventive Measures",
+//       description: "Regular waste collection services.",
+//       unit: "B ",
+//       unitNumber: " 1002",
+//       priority: "Low",
+//       status: "Open",
+//     },
+//     // Add more complaint data as needed...
+//   ]);
+
+//   const getStatusBadge = (status) => {
+//     switch (status) {
+//       case 'Pending':
+//         return 'bg-yellow-100 text-yellow-800';
+//       case 'Open':
+//         return 'bg-blue-100 text-blue-800';
+//       case 'Solve':
+//         return 'bg-green-100 text-green-800';
+//       default:
+//         return '';
+//     }
+//   };
+
+//   const getPriorityBadge = (priority) => {
+//     switch (priority) {
+//       case 'High':
+//         return 'bg-red-200 text-White-800';
+//       case 'Medium':
+//         return 'bg-blue-500 text-White-800';
+//       case 'Low':
+//         return 'bg-green-500  text-white-800';
+//       default:
+//         return '';
+//     }
+//   };
+
+//   //ComplaintForm popup
+
+//   const [isOpen, setIsOpen] = useState(false);
+
+//   const openModal = () => setIsOpen(true);
+//   const closeModal = () => setIsOpen(false);
+
+//   //Edit ComplaintForm popup
+//   const [isEditOpen, setIsEditOpen] = useState(false);
+
+//   const openEditModal = () => setIsEditOpen(true);
+//   const closeEditModal = () => setIsEditOpen(false);
+
+
+// //View ComplaintForm popup
+// const [isViewOpen, setIsViewOpen] = useState(false);
+
+//   // Sample data for the request
+//   const requestData = {
+//     name: 'Evelyn Harper',
+//     date: 'Aug 5, 2024',
+//     requestName: 'Unethical Behavior',
+//     description: 'Offering, giving, receiving, or soliciting of value to influence the actions of an.',
+//     wing: 'A',
+//     unit: '1002',
+//     priority: 'Medium',
+//     status: 'Open',
+//     avatarUrl: 'https://via.placeholder.com/50', // Placeholder avatar image
+//   };
+
+//   const openViewModal = () => setIsViewOpen(true);
+//   const closeViewModal = () => setIsViewOpen(false);
+
+//   // delete 
+//   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+//   const openDeleteModal = () => setIsDeleteOpen(true);
+//   const closeDeleteModal = () => setIsDeleteOpen(false);
+
+
+//   return (
+//     <div className="container mx-auto p-4 bg-white">
+//       <div className="flex justify-between items-center mb-4 rounded-md">
+//         <h1 className="text-xl font-bold">Create Complaint</h1>
+//         <button className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-xl" onClick={openModal}>
+//           Create Complaint
+//         </button>
+//         {isOpen && <ComplaintForm closeModal={closeModal} />}
+//       </div>
+//       <div className="overflow-x-auto border rounded-t-2xl">
+//         <table className="min-w-full bg-white  shadow">
+//           <thead>
+//             <tr className="bg-gray-100 border-b">
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Complainer Name</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Complaint Name</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Description</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Unit Number</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Priority</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Status</th>
+//               <th className="p-3 text-left font-semibold text-sm text-gray-600">Action</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {complaints.map((complaint) => (
+//               <tr key={complaint.id} className="border-b hover:bg-gray-50">
+//                 <td className="p-3 text-sm text-gray-700">{complaint.complainerName}</td>
+//                 <td className="p-3 text-sm text-gray-700">{complaint.complaintName}</td>
+//                 <td className="p-3 text-sm text-gray-700">{complaint.description}</td>
+//                 <td className="p-3 text-sm text-gray-700"><span className='text-green-600 font-bold'>{complaint.unit }</span>{complaint.unitNumber}</td>
+//                 <td className="p-3 text-sm">
+//                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityBadge(complaint.priority)}`}>
+//                     {complaint.priority}
+//                   </span>
+//                 </td>
+//                 <td className="p-3 text-sm">
+//                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusBadge(complaint.status)}`}>
+//                     {complaint.status}
+//                   </span>
+//                 </td>
+//                 <td className="p-3 text-sm flex gap-2">
+//                   <button className="text-green-500 hover:text-green-700"
+//                    onClick={openEditModal}>
+//                   <i class="fa-regular fa-pen-to-square"></i>
+//                   </button>
+//                   {isEditOpen && <EditRequestForm closeModal={closeEditModal} />}
+//                   <button className="text-blue-500 hover:text-blue-700"  onClick={openViewModal}>
+//                     <i className="fas fa-eye"></i>
+//                   </button>
+//                   {isViewOpen && <ViewRequestPopup data={requestData} closeModal={closeViewModal} />}
+//                   <button className="text-red-500 hover:text-red-700"  onClick={openDeleteModal}>
+//                     <i className="fas fa-trash"></i>
+//                   </button>
+//                   {isDeleteOpen && <DeleteConfirmationPopup closeModal={closeDeleteModal} />}
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };.
+
+
+
+
+// HEADDER
+
+
+{/* <header className="bg-white shadow-md p-4 flex items-center justify-between md:justify-between flex-[0_0_auto]">
+          
+
+          {/* Search Bar */}
+          // <div className="flex-1 px-4">
+          //   <label className="flex items-center gap-2 bg-gray-300 w-52  md:w-80 rounded-lg p-2">
+          //     <svg
+          //       xmlns="http://www.w3.org/2000/svg"
+          //       viewBox="0 0 16 16"
+          //       fill="currentColor"
+          //       className="h-4 w-4 opacity-70"
+          //     >
+          //       <path
+          //         fillRule="evenodd"
+          //         d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+          //         clipRule="evenodd"
+          //       />
+          //     </svg>
+          //     <input
+          //       type="text"
+          //       className="grow bg-gray-300 focus:outline-none"
+          //       placeholder="Search"
+          //     />
+          //   </label>
+          // </div>
+
+          {/* Notifications and User Profile */}
+          // <div className="flex items-center gap-4">
+          //   <button
+          //     onClick={handleButtonClick}
+          //     className="p-2 border rounded-lg hover:bg-gray-100"
+          //   >
+          //     {Icons.Bell}
+          //   </button>
+          //   <Notification
+          //     isVisible={isNotificationVisible}
+          //     message={notificationMessage}
+          //     type={notificationType}
+          //     onClose={handleCloseNotification}
+          //   />
+
+          //   <div className="flex items-center gap-2 cursor-pointer" onClick={handleOpen}>
+          //     <img
+          //       src="/placeholder.svg"
+          //       alt="User"
+          //       className="w-8 h-8 rounded-full border"
+          //     />
+          //     <span className="sm:block" >Moni Roy</span>
+          //   </div>
+          //   {isOpen && <ProfilePopup onClose={handleClose} />}
+          // </div>
+        // </header> */}
+
+
+        //      message: error.response?.data?.messmaintenanceled to
+//   try {
+//     const response = await fetch(`${API_URL}/auth/user/maintenance/insert`, {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({ maintenance }),
+//     });
+
+//     if (!token.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.message || "Failed to submit maintenance");
+//     }
+
+//     // Return the parsed JSON response
+//     return await response.json();
+//   } catch (error) {
+//     // Ensure consistent error response
+//     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }ns// e/     return {
+//       success: false,
+//       message: error.message || "An unexpected error occurred. Please try again.",
+//     };
+//   }
+// };
+
+// owner form
+
+    {/* <div className='flex w-full m-0'>
+                                <div>
+                                    <img src={owner} alt="" />
+                                </div>
+                                <div className="w-full">
+                                    <form className="w-full">
+                                        <div className="flex  gap-6">
+                                            <div className='w-1/3'>
+                                                <label className="block text-sm font-medium text-gray-700">Full Name*</label>
+                                                <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                            <div className='w-1/3'>
+                                                <label className="block text-sm font-medium text-gray-700">Phone Number*</label>
+                                                <input type="tel" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                            <div className='w-1/3'>
+                                                <label className="block text-sm font-medium text-gray-700">Email Address</label>
+                                                <input type="email" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-5 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Age*</label>
+                                                <input type="number" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Gender*</label>
+                                                <select className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                                    <option>Male</option>
+                                                    <option>Female</option>
+                                                    <option>Other</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Wing*</label>
+                                                <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Unit*</label>
+                                                <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Relation*</label>
+                                                <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                                            </div>
+                                        </div>
+
+
+
+                                    </form>
+                                </div>
+
+                            </div> */}
+// view owner 
+
+import owner from '../../assets/image/owner.jpg'
+import { EyeOffIcon } from 'lucide-react';
+import { userRegistration } from '../../apis/api';
+
+export const ViewOwner = ({ isOpen, onClose, residentDetails }) => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [ownerDetails, setOwnerDetails] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // Function to fetch owner details from API
+    const fetchOwnerDetails = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const result = await userRegistration(); // Call API
+            if (result.success) {
+                setOwnerDetails(result.data); // Update owner details on success
+            } else {
+                setError(result.message); // Handle API error
+            }
+        } catch (err) {
+            setError('Failed to fetch owner details. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Trigger fetchOwnerDetails when sidebar is opened
+    useEffect(() => {
+        if (isSidebarOpen) {
+            fetchOwnerDetails();
+        }
+    }, [isSidebarOpen]);
+
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+    return (
+        <>
+            <div className="flex bg-gray-100">
+                {/* Button to open sidebar */}
+                <button
+                    onClick={toggleSidebar}
+                    className="m-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                    View Owner Details
+                </button>
+
+                {/* Sidebar Overlay */}
+                {isSidebarOpen && (
+                    <div
+                        onClick={toggleSidebar}
+                        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                    ></div>
+                )}
+
+                {/* Sidebar */}
+                <div
+                    className={`fixed top-0 right-0 h-full w-96 bg-white shadow-lg transition-transform transform ${
+                        isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+                    } z-50`}
+                >
+                    <div className="p-6">
+                        {/* Close button */}
+                        <button
+                            onClick={toggleSidebar}
+                            className="text-gray-600 hover:text-gray-800 font-bold mb-4"
+                        >
+                            &larr; View Owner Details
+                        </button>
+
+                        {/* Conditional rendering for loading, error, and owner details */}
+                        {loading && <p className="text-center text-gray-500">Loading...</p>}
+                        {error && <p className="text-center text-red-500">{error}</p>}
+                        {ownerDetails && (
+                            <>
+                                {/* Profile Information */}
+                                <div className="flex flex-col items-center text-center mb-6">
+                                    <img
+                                        src={owner}
+                                        alt="Profile"
+                                        className="w-20 h-20 rounded-full mb-2"
+                                    />
+                                    <h2 className="text-lg font-semibold">{ownerDetails.name}</h2>
+                                    <p className="text-gray-500">{ownerDetails.email}</p>
+                                </div>
+
+                                {/* Owner Details */}
+                                <div className="bg-white shadow-md p-4 rounded-lg mb-6">
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span>Wing</span>
+                                        <span>{ownerDetails.wing}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span>Unit</span>
+                                        <span>{ownerDetails.unit}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2 border-b-2 p-2">
+                                        <span>Age</span>
+                                        <span>{ownerDetails.age}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                                        <span>Gender</span>
+                                        <span>{ownerDetails.gender}</span>
+                                    </div>
+                                </div>
+
+                                {/* Document Section */}
+                                <div className="mb-6">
+                                    <h3 className="text-gray-800 font-semibold mb-2">Documents</h3>
+                                    {ownerDetails.documents.map((doc, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex items-center bg-white p-1 border rounded-lg mb-2"
+                                        >
+                                            <span className="text-blue-500 text-2xl mr-2">📄</span>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-semibold">{doc.name}</p>
+                                                <p className="text-xs text-gray-500">{doc.size} MB</p>
+                                            </div>
+                                            <button className="text-gray-500 hover:text-gray-700">
+                                                <EyeOffIcon className="h-5 w-5 text-gray-400" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Member Counting Section */}
+                                <div className="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center">
+                                    <h3 className="font-semibold">Member Counting</h3>
+                                    <span className="text-lg font-semibold">
+                                        {ownerDetails.members?.length || 0}
+                                    </span>
+                                </div>
+                                {ownerDetails.members?.map((member, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white shadow-lg p-4 rounded-b-lg mb-4"
+                                    >
+                                        <div className="mb-4 flex border-b-2 pb-1">
+                                            <p className="text-gray-600 text-sm font-medium w-1/2">
+                                                First Name
+                                            </p>
+                                            <p className="text-gray-800 w-1/2 text-right">
+                                                {member.name}
+                                            </p>
+                                        </div>
+                                        <div className="mb-4 flex border-b-2 pb-1">
+                                            <p className="text-gray-600 text-sm font-medium w-1/2">
+                                                Phone No
+                                            </p>
+                                            <p className="text-gray-800 w-1/2 text-right">
+                                                {member.phone}
+                                            </p>
+                                        </div>
+                                        <div className="mb-4 flex border-b-2 pb-1">
+                                            <p className="text-gray-600 text-sm font-medium w-1/2">
+                                                Age
+                                            </p>
+                                            <p className="text-gray-800 w-1/2 text-right">{member.age}</p>
+                                        </div>
+                                        <div className="mb-4 flex">
+                                            <p className="text-gray-600 text-sm font-medium w-1/2">
+                                                Relation
+                                            </p>
+                                            <p className="text-gray-800 w-1/2 text-right">
+                                                {member.relation}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+
+
+
+
+
+ // const [wingCount, setWingCount] = useState(1);
+  // const [wings, setWings] = useState(
+  //   Array.from({ length: 1 }, () => ({
+  //     floor: '',
+  //     flats: '',
+
+  //   }))
+  // );
+
+  // const handleWingCountChange = (event) => {
+  //   const count = Number(event.target.value);
+  //   setWingCount(count);
+
+  //   // Adjust the number of members in the array
+  //   setWings((prevWings) => {
+  //     if (count > prevWings.length) {
+  //       return [
+  //         ...prevWings,
+  //         ...Array.from({ length: count - prevWings.length }, () => ({
+  //           floor: '',
+  //           flats: '',
+
+  //         }))
+  //       ];
+  //     } else {
+  //       return prevWings.slice(0, count);
+  //     }
+  //   });
+  // };
+
+  // const handleInputChange = (index, field, value) => {
+  //   setWings((prevWings) => {
+  //     const updatedWings = [...prevWings];
+  //     updatedWings[index][field] = value;
+  //     return updatedWings;
+  //   });
+  // };
