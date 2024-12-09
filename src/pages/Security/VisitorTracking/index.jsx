@@ -33,7 +33,7 @@ export default function VisitorTracking() {
   const FetchVisitor=async()=>{
     try {
       const data=await GetSecurityVisitor()
-      setVisitors(data.data)
+      setVisitors(data)
     } catch (error) {
       console.log(error)
     }
@@ -106,17 +106,21 @@ export default function VisitorTracking() {
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10">
                         <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
-                          {visitor.name.split(' ').map(n => n[0]).join('')}
+                          {visitor.visitorName.split(' ').map(n => n[0]).join('')}
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{visitor.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{visitor.visitorName}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.phone}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.phoneNo}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.date}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.unit}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className='flex gap-2'>
+                      <span>{visitor.wing}</span>{visitor.unit}
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.time}</td>
                 </tr>
               ))}
