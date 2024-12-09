@@ -4,7 +4,7 @@ import EditProfilePopup from "./EditProfilePopup";
 
 const ProfilePage = () => {
   const location = useLocation(); // Access location state
-  const { profileData } = location.state || {}; // Destructure profileData
+  const { profileData } = location.state || {};
 
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState(profileData);

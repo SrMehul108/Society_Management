@@ -27,7 +27,8 @@ const EditProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await userUpdate(updatedProfile); // Call API to update user profile
+      await userUpdate(updatedProfile);
+      
       navigate(-1, { state: { profileData: updatedProfile } }); // Navigate back with updated profile
     } catch (error) {
       console.error("Error updating profile:", error);
