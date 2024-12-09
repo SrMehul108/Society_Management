@@ -319,7 +319,7 @@ const DashStackRoute = createBrowserRouter(
   ],
   {
     /* Base URL */
-    basename: "/",
+    basename: "/society-management-system",
   }
 );
 
