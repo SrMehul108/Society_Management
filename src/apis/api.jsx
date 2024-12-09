@@ -2020,3 +2020,58 @@ export const GetSecurityVisitor=async()=>{
     };
   }
 }
+
+export const AddSecurityVisitor=async(formData)=>{
+ 
+  try {
+    const token=SecurityToken()
+    const response = await axios.post(
+      `${API_URL}/auth/securitygaurd/visitorentry`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+}
+
+export const AddSecurityEmergency=async(formData)=>{
+  try {
+    const token=SecurityToken()
+    const response = await axios.post(
+      `${API_URL}/auth/securitygaurd/insertemergency`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200 && response.data.status === 1) {
+      return { success: true, data: response.data.data };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || "Failed to add Request.",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+}

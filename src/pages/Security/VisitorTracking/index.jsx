@@ -39,7 +39,10 @@ export default function VisitorTracking() {
     }
   }
   
-  console.log("Vis",visitors)
+  const AddVis=()=>{
+    FetchVisitor()
+  }
+
   useEffect(()=>{
     FetchVisitor()
   },[])
@@ -85,18 +88,18 @@ export default function VisitorTracking() {
               <PlusIcon className="mr-2 h-4 w-4" />
               Add Visitor details
             </button>
-            {isSecurityOpen && <SecurityPopup closeModal={closeModal} />}
+            {isSecurityOpen && <SecurityPopup add={AddVis} closeModal={closeModal} />}
           </div>
         </div>
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead style={{backgroundColor:"#eef1fd"}}>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visitor Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Number</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                <th className="px-6 py-3 text-left font-medium text-black uppercase tracking-wider">Visitor Name</th>
+                <th className="px-6 py-3 text-left font-medium text-black uppercase tracking-wider">Phone Number</th>
+                <th className="px-6 py-3 text-left font-medium text-black uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-left font-medium text-black uppercase tracking-wider">Unit Number</th>
+                <th className="px-6 py-3 text-left font-medium text-black uppercase tracking-wider">Time</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -110,18 +113,18 @@ export default function VisitorTracking() {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{visitor.visitorName}</div>
+                        <div className="text-sm font-medium text-black">{visitor.visitorName}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.phoneNo}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.date}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div className='flex gap-2'>
-                      <span>{visitor.wing}</span>{visitor.unit}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{visitor.phoneNo}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{visitor.date}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className='flex gap-2 items-center'>
+                      <span className='rounded-full h-1 w-1 p-4 flex justify-center items-center font-bold' style={{backgroundColor:"#eef1fd",color:"#92a8f0"}}>{visitor.wing}</span>{visitor.unit}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{visitor.time}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{visitor.time}</td>
                 </tr>
               ))}
             </tbody>
