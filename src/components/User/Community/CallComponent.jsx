@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { EndCall, UserCall } from "../../../apis/api";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // Replace with your API base URL
 const socket = io(API_URL);
 
 const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
