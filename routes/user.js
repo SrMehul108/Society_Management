@@ -5,11 +5,15 @@ const { SocietyFinanceDetail, PendingMaintenanceList } = require('../controllers
 const { viewComplaint, insertComplaint } = require('../controllers/complaintconroller');
 const { viewImportnat } = require('../controllers/importantcontroller');
 const { viewAnnouncement } = require('../controllers/announcementcontroller');
+const { viewProtocol } = require('../controllers/protocolcontroller');
+const { dueMaintenance } = require('../controllers/maintanacecontroller');
 router.get('/userdetail', userDetail);
 router.get('/SocietyBalance', SocietyFinanceDetail);
 router.get('/pendingMaintenanceList', PendingMaintenanceList);
 router.get('/getcomplaint', viewComplaint);
 router.post('/addComplaint', insertComplaint);
 router.get('/getImportantNumber', viewImportnat);
-router.get('/getAnnouncement',viewAnnouncement);
+router.get('/getAnnouncement', viewAnnouncement);
+router.get('/getprotocol', viewProtocol);
+router.get('/duemaintenance', dueMaintenance);
 module.exports = router;
