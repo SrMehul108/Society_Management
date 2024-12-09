@@ -11,6 +11,10 @@ import {
   GetDashBoardBalance,
   GetDashboardMaintainence,
   getImportantnumber,
+  GetUserComplaintDashboard,
+  GetUserDashBoardBalance,
+  GetUserDashboardMaintainence,
+  GetUserImportantNumber,
 } from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 import BalanceChart from "../../../components/Dashboard/Chart/Chart";
@@ -22,6 +26,7 @@ import {
   PendingButton,
   SolveButton,
 } from "../../../components/Button/Button";
+import { useLocation } from "react-router";
 
 export const Dashboard = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
@@ -35,6 +40,8 @@ export const Dashboard = () => {
     setIsDeleteData(null);
   };
 
+  const location = useLocation();
+
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
 
@@ -42,11 +49,24 @@ export const Dashboard = () => {
   const [selectedNumberData, setSelectedNumberData] = useState(null);
 
   const fetchImportantNumber = async () => {
-    try {
-      const data = await getImportantnumber();
-      setImportantnumber(data);
-    } catch (error) {
-      console.log(error);
+    const adminToken = sessionStorage.getItem("admintoken");
+    const userToken = sessionStorage.getItem("usertoken");
+    if (adminToken) {
+      try {
+        const data = await getImportantnumber();
+        setImportantnumber(data);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (userToken) {
+      try {
+        const data = await GetUserImportantNumber();
+        setImportantnumber(data);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("UnAuthorized");
     }
   };
 
@@ -61,12 +81,26 @@ export const Dashboard = () => {
   };
   const [dashboardBalanceData, setDashboardBalanceData] = useState({});
   const FetchDashboardBalance = async () => {
-    try {
-      const response = await GetDashBoardBalance();
-      setDashboardBalanceData(response);
-      console.log(dashboardBalanceData);
-    } catch (error) {
-      console.log(error);
+    const adminToken = sessionStorage.getItem("admintoken");
+    const userToken = sessionStorage.getItem("usertoken");
+    if (adminToken) {
+      try {
+        const response = await GetDashBoardBalance();
+        setDashboardBalanceData(response);
+        console.log(dashboardBalanceData);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (userToken) {
+      try {
+        const response = await GetUserDashBoardBalance();
+        setDashboardBalanceData(response);
+        console.log(dashboardBalanceData);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Unauthorized");
     }
   };
 
@@ -104,12 +138,26 @@ export const Dashboard = () => {
   const [pendingMaintenance, setPendingMaintenance] = useState([]);
 
   const FetchPendingMaintenance = async () => {
-    try {
-      const response = await GetDashboardMaintainence();
-      setPendingMaintenance(response); // Set the entire array
-      console.log(response); // Log the data received
-    } catch (error) {
-      console.error(error);
+    const adminToken = sessionStorage.getItem("admintoken");
+    const userToken = sessionStorage.getItem("usertoken");
+    if (adminToken) {
+      try {
+        const response = await GetDashboardMaintainence();
+        setPendingMaintenance(response); // Set the entire array
+        console.log(response); // Log the data received
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (userToken) {
+      try {
+        const response = await GetUserDashboardMaintainence();
+        setPendingMaintenance(response); // Set the entire array
+        console.log(response); // Log the data received
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log("unauthorized");
     }
   };
 
@@ -254,16 +302,38 @@ export const Dashboard = () => {
 
   const [complaintsTable, setcomplaintsTable] = useState([]);
   const fetchComplaint = async () => {
-    try {
-      const params = "complaint";
-      const response = await GetComplaint(params);
-      if (response.success) {
-        setcomplaintsTable(response.data);
-      } else {
-        console.error("Error fetching complaints:", response.message);
+    const adminToken = sessionStorage.getItem("admintoken");
+    const userToken = sessionStorage.getItem("usertoken");
+    if (adminToken) {
+      try {
+        const params = "complaint";
+        const response = await GetComplaint(params);
+        if (response.success) {
+          setcomplaintsTable(response.data);
+        } else {
+          console.error("Error fetching complaints:", response.message);
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
       }
-    } catch (error) {
-      console.error("Error:", error.message);
+    } else if (userToken) {
+      try {
+        const type = "complaint";
+        const response = await GetUserComplaintDashboard(type);
+        console.log("API Response:", response);
+    
+        // Check if the response is an array and not empty
+        if (Array.isArray(response) && response.length > 0) {
+          setcomplaintsTable(response);
+          console.log("Complaints Table Updated:", response);
+        } else {
+          console.log("No complaints found or invalid response format.");
+        }
+      } catch (error) {
+        console.error("Error occurred:", error.message);
+      }
+    } else {
+      console.log("UnAuthorized");
     }
   };
 
@@ -384,13 +454,15 @@ export const Dashboard = () => {
             <div className="bg-white rounded-lg shadow-md p-4 flex flex-col">
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold">Important Numbers</h2>
-                <button
-                  className="p-1 bg-gradient-to-r from-orange-600 to-yellow-500 hover:from-orange-500 hover:to-yellow-500 text-white flex rounded-sm items-center"
-                  onClick={handleAddClick}
-                >
-                  <FaPlus className="mr-2 text-white" />
-                  Add
-                </button>
+                {location.pathname !== "/" && (
+                  <button
+                    className="p-1 bg-gradient-to-r from-orange-600 to-yellow-500 hover:from-orange-500 hover:to-yellow-500 text-white flex rounded-sm items-center"
+                    onClick={handleAddClick}
+                  >
+                    <FaPlus className="mr-2 text-white" />
+                    Add
+                  </button>
+                )}
               </div>
 
               {/* Popup for Adding or Editing Numbers */}
@@ -431,30 +503,34 @@ export const Dashboard = () => {
                           </span>
                         </p>
                       </div>
-                      <div className="flex space-x-3">
-                        <button
-                          className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() => handleDeleteClick(important._id)}
-                        >
-                          {Icons.Delete}
-                        </button>
-                        {isDeletePopupOpen && (
-                          <DeletePopup
-                            onClick={() => setIsDeletePopupOpen(false)}
-                            deleteid={isDeleteData}
-                            onClose={closeDeletePopup}
-                            onImportantNumberAdded={handleImportantNumberAdded}
-                          />
-                        )}
-                        <button
-                          className="bg-gray-100 p-1 rounded-lg"
-                          onClick={() =>
-                            handleEditClick(important, important._id)
-                          }
-                        >
-                          {Icons.Pen}
-                        </button>
-                      </div>
+                      {location.pathname !== "/" && (
+                        <div className="flex space-x-3">
+                          <button
+                            className="bg-gray-100 p-1 rounded-lg"
+                            onClick={() => handleDeleteClick(important._id)}
+                          >
+                            {Icons.Delete}
+                          </button>
+                          {isDeletePopupOpen && (
+                            <DeletePopup
+                              onClick={() => setIsDeletePopupOpen(false)}
+                              deleteid={isDeleteData}
+                              onClose={closeDeletePopup}
+                              onImportantNumberAdded={
+                                handleImportantNumberAdded
+                              }
+                            />
+                          )}
+                          <button
+                            className="bg-gray-100 p-1 rounded-lg"
+                            onClick={() =>
+                              handleEditClick(important, important._id)
+                            }
+                          >
+                            {Icons.Pen}
+                          </button>
+                        </div>
+                      )}
                     </li>
                   ))
                 ) : (

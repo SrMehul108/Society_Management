@@ -168,7 +168,6 @@ export const GetDashBoardBalance = async () => {
       },
     });
 
-    
     if (response.status === 200 && response.data.status === 1) {
       console.log(response.data.data);
       return response.data.data;
@@ -188,7 +187,7 @@ export const GetDashBoardBalance = async () => {
   }
 };
 
-export const GetDashboardMaintainence=async()=>{
+export const GetDashboardMaintainence = async () => {
   const token = AdminToken();
 
   if (!token) {
@@ -196,13 +195,15 @@ export const GetDashboardMaintainence=async()=>{
   }
 
   try {
-    const response = await axios.get(`${API_URL}/auth/admin/pendingMaintenanceList`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/auth/admin/pendingMaintenanceList`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    
     if (response.status === 200 && response.data.status === 1) {
       console.log(response.data.data);
       return response.data.data;
@@ -220,7 +221,7 @@ export const GetDashboardMaintainence=async()=>{
       data: [],
     };
   }
-}
+};
 
 //User API
 
@@ -1615,6 +1616,149 @@ export const DeleteAnnouncement = async (DeleteId) => {
     };
   }
 };
+
+//UserSide API
+
+//Dashboard API
+export const GetUserDashBoardBalance = async () => {
+  const token = UserToken();
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/auth/user/SocietyBalance`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log(response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+export const GetUserDashboardMaintainence = async () => {
+  const token = UserToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/user/pendingMaintenanceList`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log(response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+export const GetUserImportantNumber=async()=>{
+  const token = UserToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/user/getImportantNumber`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log(response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
+
+export const GetUserComplaintDashboard=async(type)=>{
+  const token = UserToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/user/getcomplaint?type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("USER",response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
 
 //Socket IO Get User
 export const GetSocketUser = async () => {
