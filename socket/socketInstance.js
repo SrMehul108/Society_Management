@@ -25,16 +25,6 @@ module.exports = {
                     io.emit("update-online-users", onlineUsers);
                 });
 
-                // Join society rooms
-                socket.on("join-society", (societyId) => {
-                    if (!societyId) {
-                        console.warn(`Socket ${socket.id} tried to join a society without societyId`);
-                        return;
-                    }
-                    socket.join(`society-${societyId}`);
-                    console.log(`Socket ${socket.id} joined society ${societyId}`);
-                });
-
                 // Join chat rooms
                 socket.on("join-chat", (roomId) => {
                     if (!roomId) {
@@ -45,22 +35,87 @@ module.exports = {
                     console.log(`Socket ${socket.id} joined chat room ${roomId}`);
                 });
 
-                // Send messages
-                socket.on("send-message", (message) => {
-                    const { to, from, message: text, type } = message;
-                    if (!to || !from || !text) {
+                // Handle sending messages
+                socket.on("send-message", (data) => {
+                    const { to, from, message: text, roomId } = data;
+
+                    if (!to || !from || !text || !roomId) {
                         console.warn(`Invalid message data received from socket ${socket.id}`);
                         return;
                     }
+
+                    // Send message to the specific user in the room
+                    const recipientSocketId = Object.keys(onlineUsers).find(
+                        (id) => onlineUsers[id].userId === to
+                    );
+
+                    if (recipientSocketId) {
+                        io.to(recipientSocketId).emit("receive-message", {
+                            from,
+                            to,
+                            message: text,
+                            roomId,
+                        });
+                        console.log(`Message sent from ${from} to ${to} in room ${roomId}`);
+                    } else {
+                        console.log(`User ${to} is not online. Message not delivered.`);
+                    }
+                });
+
+                // Handle receiving messages
+                socket.on("receive-message", (data) => {
+                    console.log(`Message received by user:`, data);
+                });
+
+                // Handle call initiation
+                socket.on("call-user", (data) => {
+                    const { roomId, to, from } = data;
 
                     const recipientSocketId = Object.keys(onlineUsers).find(
                         (id) => onlineUsers[id].userId === to
                     );
 
                     if (recipientSocketId) {
-                        io.to(recipientSocketId).emit("receive-message", message);
+                        io.to(recipientSocketId).emit("incoming-call", { from, roomId });
                     } else {
-                        console.log(`Recipient with user ID ${to} is not online.`);
+                        console.warn(`Cannot call user ${to}: user not online.`);
+                    }
+                });
+
+                // Handle call offer/answer exchange
+                socket.on("offer-call", (data) => {
+                    const recipientSocketId = Object.keys(onlineUsers).find(
+                        (id) => onlineUsers[id].userId === data.to
+                    );
+
+                    if (recipientSocketId) {
+                        io.to(recipientSocketId).emit("receive-offer", data);
+                    } else {
+                        console.warn(`Cannot send offer to user ${data.to}: user not online.`);
+                    }
+                });
+
+                socket.on("answer-call", (data) => {
+                    const recipientSocketId = Object.keys(onlineUsers).find(
+                        (id) => onlineUsers[id].userId === data.to
+                    );
+
+                    if (recipientSocketId) {
+                        io.to(recipientSocketId).emit("receive-answer", data);
+                    } else {
+                        console.warn(`Cannot send answer to user ${data.to}: user not online.`);
+                    }
+                });
+
+                socket.on("ice-candidate", (data) => {
+                    const recipientSocketId = Object.keys(onlineUsers).find(
+                        (id) => onlineUsers[id].userId === data.to
+                    );
+
+                    if (recipientSocketId) {
+                        io.to(recipientSocketId).emit("receive-ice-candidate", data);
+                    } else {
+                        console.warn(`Cannot send ICE candidate to user ${data.to}: user not online.`);
                     }
                 });
 
