@@ -46,10 +46,11 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
 
     initLocalStream();
 
+    // Listen for incoming calls (offer) via socket.io
     socket.on("receive-offer", async (data) => {
+      console.log("Incoming call offer:", data);
       if (data.to === calleeId) {
-        console.log("Incoming call offer:", data);
-        setIncomingCall(data);
+        setIncomingCall(data); // Show the incoming call notification
       }
     });
 
