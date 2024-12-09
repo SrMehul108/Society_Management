@@ -143,8 +143,8 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
 
           <div>
             <label className="block text-sm font-medium">Priority*</label>
-            <div className="flex gap-2 sm:gap-6 pt-2 flex-wrap">
-              <label className="border px-4 py-2 rounded-lg text-sm">
+            <div className="flex gap-2 sm:gap-4 pt-2 flex-wrap">
+              <label className="border px-9 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="priority"
@@ -155,7 +155,7 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
                 />
                 High
               </label>
-              <label className="border px-4 py-2 rounded-lg text-sm">
+              <label className="border px-5 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="priority"
@@ -166,7 +166,7 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
                 />
                 Medium
               </label>
-              <label className="border px-4 py-2 rounded-lg text-sm">
+              <label className="border px-9 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="priority"
@@ -182,8 +182,8 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
 
           <div>
             <label className="block text-sm font-medium">Status*</label>
-            <div className="flex gap-2 sm:gap-6 pt-2 flex-wrap">
-              <label className="border px-4 py-2 rounded-lg text-sm">
+            <div className="flex gap-2 sm:gap-3 pt-2 flex-wrap">
+              <label className="border px-9 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="status"
@@ -194,7 +194,7 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
                 />
                 Open
               </label>
-              <label className="border px-4 py-2 rounded-lg text-sm">
+              <label className="border px-5 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="status"
@@ -205,7 +205,7 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
                 />
                 Pending
               </label>
-              <label className="border px-4 py-2 rounded-lg text-sm">
+              <label className="border px-9 py-2 rounded-lg text-sm">
                 <input
                   type="radio"
                   name="status"
@@ -220,20 +220,25 @@ function ComplaintCreate({ closeModal, type, HandleAdd }) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 mt-4">
-            <button
+           <div className="w-1/2">
+           <button
               type="button"
               onClick={closeModal}
-              className="w-full sm:w-1/2 px-4 py-2 border rounded-md text-sm"
+              className="w-full  px-4 py-2 border rounded-md text-sm"
             >
               Cancel
             </button>
-            <button
+            
+           </div>
+           <div className="w-1/2">
+           <button
               type="submit"
               className="bg-gradient-to-r from-orange-600 to-yellow-500  hover:from-orange-500 hover:to-yellow-500 text-white py-2 px-4 rounded-xl w-full"
               disabled={isSaving}
             >
               {isSaving ? "Saving..." : "Create"}
             </button>
+           </div>
           </div>
         </form>
       </div>
