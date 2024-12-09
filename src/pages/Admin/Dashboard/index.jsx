@@ -6,7 +6,12 @@ import DeleteConfirmationPopup from "../../../components/ComplaintTraking/Delete
 import { FaPlus, FaUser } from "react-icons/fa";
 import AddNumberPopup from "../../../components/Dashboard/AddNumberPopup/AddNumberPopup";
 import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
-import { GetComplaint, getImportantnumber } from "../../../apis/api";
+import {
+  GetComplaint,
+  GetDashBoardBalance,
+  GetDashboardMaintainence,
+  getImportantnumber,
+} from "../../../apis/api";
 import { Icons } from "../../../constants/icons";
 import BalanceChart from "../../../components/Dashboard/Chart/Chart";
 import {
@@ -29,7 +34,6 @@ export const Dashboard = () => {
     setIsDeletePopupOpen(false);
     setIsDeleteData(null);
   };
- 
 
   const [ComplaintselectedMonth, setComplaintSelectedMonth] =
     useState("Last month");
@@ -45,6 +49,7 @@ export const Dashboard = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchImportantNumber();
   }, []);
@@ -54,37 +59,68 @@ export const Dashboard = () => {
     fetchImportantNumber();
     closePopup();
   };
+  const [dashboardBalanceData, setDashboardBalanceData] = useState({});
+  const FetchDashboardBalance = async () => {
+    try {
+      const response = await GetDashBoardBalance();
+      setDashboardBalanceData(response);
+      console.log(dashboardBalanceData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    FetchDashboardBalance();
+  }, []);
 
   const balanceData = [
     {
       title: "Total Balance",
-      amount: "₹ 2,22,520",
+      amount: `₹${dashboardBalanceData?.balance || 0}`,
       icon: Icons.Page,
       color: "#fccba9",
     },
     {
       title: "Total Income",
-      amount: "₹ 55,000",
+      amount: `₹${dashboardBalanceData?.totalIncomeAmount || 0}`,
       icon: Icons.MarketDown,
       color: "#9ccb9e",
     },
     {
       title: "Total Expense",
-      amount: "₹ 20,550",
+      amount: `₹${dashboardBalanceData?.totalExpenAmount || 0}`,
       icon: Icons.MarketUp,
       color: "#c3cff9",
     },
     {
       title: "Total Unit",
-      amount: "₹ 20,550",
+      amount: `${dashboardBalanceData?.unitCount || 0}`,
       icon: Icons.Units,
       color: "#f59be1",
     },
   ];
 
-  const maintenances = [
-    { name: "Roger Lubin", status: "2 Month Pending", amount: "₹ 5,000" },
-  ];
+  const [pendingMaintenance, setPendingMaintenance] = useState([]);
+
+  const FetchPendingMaintenance = async () => {
+    try {
+      const response = await GetDashboardMaintainence();
+      setPendingMaintenance(response); // Set the entire array
+      console.log(response); // Log the data received
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    FetchPendingMaintenance();
+  }, []);
+
+  const maintenances = pendingMaintenance.map((item) => ({
+    name: item.user,
+    amount: item.amount,
+  }));
 
   // activities
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
@@ -263,8 +299,6 @@ export const Dashboard = () => {
   const openPopup = () => {
     setIsPopupOpen(true);
   };
-
-  
 
   const closePopup = () => {
     setIsPopupOpen(false);
@@ -451,7 +485,6 @@ export const Dashboard = () => {
                     >
                       <div>
                         <p className="font-medium">{item.name}</p>
-                        <p className="text-sm text-gray-500">{item.status}</p>
                       </div>
                       <p className="text-red-500 font-semibold">
                         {item.amount}

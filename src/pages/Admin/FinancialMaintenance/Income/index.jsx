@@ -19,7 +19,7 @@ function FinancialManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showOtherIncome, setShowOtherIncome] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [itemDetails, setItemDetails] = useState();
+  const [itemDetails, setItemDetails] = useState({});
   const [maintenanceData, setMaintenanceData] = useState([]);
   const [maintenanceAmount, setMaintenanceAmount] = useState(0);
   const [penaltyAmount, setPenaltyAmount] = useState(0);
@@ -36,7 +36,7 @@ function FinancialManagement() {
   const openViewPopup = () => {
     const getdata = async () => {
       const item = await viewmaintenance();
-      setItemDetails(item);
+      setItemDetails(item.data);
       console.log(item);
     };
     getdata()

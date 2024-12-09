@@ -154,6 +154,74 @@ export const resetPassword = async (rpass) => {
   }
 };
 
+//Dashboard API
+export const GetDashBoardBalance = async () => {
+  const token = AdminToken();
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/auth/admin/SocietyBalance`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    
+    if (response.status === 200 && response.data.status === 1) {
+      console.log(response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+};
+
+export const GetDashboardMaintainence=async()=>{
+  const token = AdminToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(`${API_URL}/auth/admin/pendingMaintenanceList`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    
+    if (response.status === 200 && response.data.status === 1) {
+      console.log(response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
+    };
+  }
+}
+
 //User API
 
 export const userRegistration = async (formdata) => {
@@ -1589,7 +1657,6 @@ export const GetSocketUser = async () => {
   }
 };
 
-
 export const GetSocketMessages = async (from, to) => {
   try {
     const token = UserToken();
@@ -1635,22 +1702,17 @@ export const SendMessage = async (formData) => {
   }
 };
 
-export const UserCall = async ( data ) => {
+export const UserCall = async (data) => {
   try {
     const token = UserToken();
     const decode = jwtDecode(token);
-    console.log(data)
+    console.log(data);
 
-
-    const response = await axios.post(
-      `${API_URL}/society/call/start`,
-      data ,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(`${API_URL}/society/call/start`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -1658,9 +1720,6 @@ export const UserCall = async ( data ) => {
     throw error;
   }
 };
-;
-
-
 export const EndCall = async (roomId) => {
   try {
     const token = UserToken();
@@ -1668,7 +1727,7 @@ export const EndCall = async (roomId) => {
 
     const response = await axios.post(
       `${API_URL}/society/call/end`,
-       roomId ,  // Only pass roomId to end the call
+      roomId, // Only pass roomId to end the call
       {
         headers: {
           Authorization: `Bearer ${token}`,
