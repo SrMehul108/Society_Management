@@ -7,7 +7,7 @@ const emeregencySchema = new mongoose.Schema({
 
     },
     description: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "User"
 
     }],
