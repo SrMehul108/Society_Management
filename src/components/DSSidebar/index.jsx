@@ -36,7 +36,7 @@ export const DSSidebar = ({ items }) => {
     sessionStorage.removeItem('adminToken');
     sessionStorage.removeItem('role');
     sessionStorage.clear();
-    navigate('/');
+    navigate('/login');
   }
 
   return (

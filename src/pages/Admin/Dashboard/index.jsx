@@ -7,6 +7,7 @@ import { FaPlus, FaUser } from "react-icons/fa";
 import AddNumberPopup from "../../../components/Dashboard/AddNumberPopup/AddNumberPopup";
 import DeletePopup from "../../../components/Dashboard/DeletePopup/DeletePopup";
 import {
+  GetAnnouncement,
   GetComplaint,
   GetDashBoardBalance,
   GetDashboardMaintainence,
@@ -174,38 +175,26 @@ export const Dashboard = () => {
   const [UpcomingselectedMonth, setUpcomingSelectedMonth] =
     useState("Last week");
 
+  const [active, setActive] = useState();
+
+  const FetchActivity = async () => {
+    try {
+      const response = await GetAnnouncement();
+      setActive(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log("Act", active);
+
+  useEffect(() => {
+    FetchActivity();
+  }, []);
+
   // Example activities data
-  const allActivities = [
-    {
-      event: "Yoga Session",
-      time: "10:00 AM",
-      date: "2023-12-01",
-      category: "Last week",
-    },
-    {
-      event: "Board Meeting",
-      time: "02:00 PM",
-      date: "2023-11-15",
-      category: "Last month",
-    },
-    {
-      event: "Annual Gala",
-      time: "06:00 PM",
-      date: "2023-01-01",
-      category: "Last year",
-    },
-    {
-      event: "Community Cleanup",
-      time: "09:00 AM",
-      date: "2023-12-05",
-      category: "Last week",
-    },
-  ];
 
   // Filter activities based on selected category
-  const filteredActivities = allActivities.filter(
-    (activity) => activity.category === UpcomingselectedMonth
-  );
 
   const columns = [
     { header: "Complainer Name", accessor: "complainerName" },
@@ -321,7 +310,7 @@ export const Dashboard = () => {
         const type = "complaint";
         const response = await GetUserComplaint(type);
         console.log("API Response:", response);
-    
+
         // Check if the response is an array and not empty
         if (Array.isArray(response) && response.length > 0) {
           setcomplaintsTable(response);
@@ -655,21 +644,15 @@ export const Dashboard = () => {
               </select>
             </div>
             <ul className="space-y-3">
-              {filteredActivities.length > 0 ? (
-                filteredActivities.map((activity, index) => (
-                  <li key={index} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{activity.event}</p>
-                      <p className="text-sm text-gray-500">{activity.time}</p>
-                    </div>
-                    <p className="text-gray-500">{activity.date}</p>
-                  </li>
-                ))
-              ) : (
-                <p className="text-gray-500">
-                  No activities found for {UpcomingselectedMonth}.
-                </p>
-              )}
+              {active?.map((activity, index) => (
+                <li key={index} className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium">{activity.title}</p>
+                    <p className="text-sm text-gray-500">{activity.time}</p>
+                  </div>
+                  <p className="text-gray-500">{activity.date}</p>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

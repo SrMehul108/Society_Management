@@ -1254,7 +1254,7 @@ export const GetProtocolUser = async () => {
   try {
     var token = UserToken();
     const response = await axios.get(
-      `${API_URL}/auth/admin/security/getProtocol`,
+      `${API_URL}/auth/user/getProtocol`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -1817,6 +1817,42 @@ export const DeleteUserComplaint=async(DeleteId)=>{
     return {
       success: false,
       message: error.response ? error.response.data : error.message,
+    };
+  }
+}
+
+export const GetAnnouncementUser=async(type)=>{
+  const token = UserToken();
+
+  if (!token) {
+    return { success: false, message: "Authorization token is missing" };
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/user/getAnnouncement?type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 && response.data.status === 1) {
+      console.log("Activity",response.data.data);
+      return response.data.data;
+    } else {
+      return { success: false, message: "Failed to fetch user data", data: [] };
+    }
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response ? error.response.data : error.message
+    );
+    return {
+      success: false,
+      message: error.response ? error.response.data : error.message,
+      data: [],
     };
   }
 }

@@ -21,7 +21,7 @@ function SecurityProtocolsTable() {
       <h2 className="text-xl font-semibold mb-4">Security Protocols</h2>
       <div className="overflow-x-auto rounded-xl">
         <table className="min-w-full bg-white border border-gray-200 shadow-md ">
-          <thead className="bg-gray-300">
+          <thead style={{backgroundColor:"#eef1fd"}}>
             <tr>
               <th className="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase">
                 Title
