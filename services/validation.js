@@ -1,5 +1,5 @@
+const { sendResponse } = require("../services/responseHandler")
 module.exports.validateRequest = (req, res) => {
-    const { sendResponse } = require("../services/responseHandler")
     if (!req.body || Object.keys(req.body).length === 0) {
         return sendResponse(res, 400, "Invalid request body", 0);
     }
