@@ -10,6 +10,8 @@ const Income = require("../models/OtherIncome");
 const User = require('../models/UserData');
 const Payment = require("../models/Payment");
 const Maintenance = require("../models/Maintenance");
+const Emergency = require('../models/Emeregency');
+const notificationService = require('../services/notificationService');
 this.OTP = "";
 
 module.exports.registerUser = async (req, res) => {
@@ -70,7 +72,6 @@ module.exports.loginUser = async (req, res) => {
             checkmail.role === 'admin' ? process.env.JWT_SECRET_ADMIN : checkmail.role === 'security' ? process.env.JWT_SECRET_SECURITY : process.env.JWT_SECRET_USER,
             { expiresIn: "1d" }
           );
-
           return res.status(200).json({ message: "You're Logged In Successfully 🎉", status: 1, data: token, role: checkmail.role, });
         } else {
           return sendResponse(res, 400, "Invalid Password", 0);
@@ -268,9 +269,32 @@ module.exports.PendingMaintenanceList = async (req, res) => {
         }
       }
     }
-
     return sendResponse(res, 200, "Pending Maintenance List Retrieved Successfully", 1, updatedPayments);
   } catch (error) {
+    return sendResponse(res, 500, "Internal Server Error", 0);
+  }
+}
+
+module.exports.createEmergency = async (req, res) => {
+  try {
+    validateRequest(req, res);
+    req.body.societyId = req.user.societyId;
+    const newData = new Emergency(req.body);
+    await newData.save();
+    if (newData) {
+      const usersInSociety = await UserModel.find({ societyId: req.user.societyId, isActive: true }).select('_id');
+      const targetUserIds = usersInSociety.map(user => user._id);
+      await notificationService.sendNotification({
+        type: 'announcement',
+        message: `New announcement created: ${newData.title}`,
+        societyId: req.user.societyId,
+        targetUsers: targetUserIds,
+      });
+      return sendResponse(res, 200, "Emergency Created Successfully", 1, newData);
+    }
+    return sendResponse(res, 400, "Failed to Create Emergency", 0);
+  } catch (error) {
+    console.log(error);
     return sendResponse(res, 500, "Internal Server Error", 0);
   }
 }

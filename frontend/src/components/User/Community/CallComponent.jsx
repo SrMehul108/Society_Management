@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { EndCall, UserCall } from "../../../apis/api";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // Replace with your API base URL
 const socket = io(API_URL);
 
 const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
@@ -46,10 +46,11 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
 
     initLocalStream();
 
+    // Listen for incoming calls (offer) via socket.io
     socket.on("receive-offer", async (data) => {
+      console.log("Incoming call offer:", data);
       if (data.to === calleeId) {
-        console.log("Incoming call offer:", data);
-        setIncomingCall(data);
+        setIncomingCall(data); // Show the incoming call notification
       }
     });
 

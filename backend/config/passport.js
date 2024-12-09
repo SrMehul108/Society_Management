@@ -46,7 +46,7 @@ Passport.use("User", new jwtStrategy(usersOpts, async (record, done) => {
     }
 }));
 
-Passport.use("Security", new jwtStrategy(usersOpts, async (record, done) => {
+Passport.use("Security", new jwtStrategy(securityOpts, async (record, done) => {
     try {
         let data = await UserModel.findById(record.userData._id);
         if (data && data.role === 'security') {

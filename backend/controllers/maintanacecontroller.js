@@ -38,7 +38,7 @@ module.exports.viewMaintance = async (req, res) => {
     try {
         const societyId = req.user.societyId;
         if (societyId) {
-            let maintance = await Maintenance.find({ societyId: societyId, isActive: true });
+            let maintance = await Maintenance.findOne({ societyId: societyId, isActive: true });
             if (maintance) {
                 return sendResponse(res, 200, "Maintenance Details", 1, maintance);
             }
@@ -50,7 +50,6 @@ module.exports.viewMaintance = async (req, res) => {
         return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
-
 
 module.exports.maintenanceDetail = async (req, res) => {
     try {
@@ -148,6 +147,68 @@ module.exports.deleteMaintenance = async (req, res) => {
             return sendResponse(res, 400, "No data found", 0);
         }
         return sendResponse(res, 400, "Parameter (ID) is missing", 0, []);
+    } catch (error) {
+        console.log(error);
+        return sendResponse(res, 500, "Internal Server Error", 0);
+    }
+}
+
+module.exports.dueMaintenance = async (req, res) => {
+    try {
+        const currentDate = new Date();
+        
+        if (req.user.societyId) {
+            const isMaintenance = await Maintenance.find({ societyId: req.user.societyId });
+            if (!isMaintenance || isMaintenance.length === 0) {
+                return sendResponse(res, 400, "No Maintenance found", 0);
+            }
+
+            const user = await UserModel.findOne({ _id: req.user._id, societyId: req.user.societyId, role: 'user', isActive: true });
+            if (!user) {
+                return sendResponse(res, 400, "User not found", 0);
+            }
+
+            const paymentData = await Payment.find({ UserId: req.user._id, type: "maintenance" });
+
+            const penaltyMap = isMaintenance.reduce((acc, maintenance) => {
+                if (maintenance.dueDate && maintenance.dueDate < currentDate) {
+                    const extendedDueDate = new Date(maintenance.dueDate);
+                    extendedDueDate.setDate(extendedDueDate.getDate() + maintenance.penaltyDay);
+
+                    if (extendedDueDate < currentDate) {
+                        acc[maintenance.UserId] = maintenance.penaltyAmount;
+                    }
+                }
+                return acc;
+            }, {});
+
+            const maintenance = isMaintenance[0];
+
+            let status = "pending";
+
+            if (maintenance && maintenance.dueDate) {
+                const extendedDueDate = new Date(maintenance.dueDate);
+                extendedDueDate.setDate(extendedDueDate.getDate() + maintenance.penaltyDay);
+
+                if (extendedDueDate < currentDate) {
+                    status = "due";
+                }
+            }
+
+            const paymentWithPenalty = paymentData.length > 0 ? {
+                ...paymentData[0].toObject(),
+                penalty: penaltyMap[maintenance.UserId] || 0,  
+                dueDate: maintenance.dueDate
+            } : {};
+
+            return sendResponse(res, 200, "Maintenance Detail fetched successfully", 1, {
+                user: user.toObject(),
+                payments: paymentWithPenalty,
+                status: status 
+            });
+        } else {
+            return sendResponse(res, 400, "No Maintenance found", 0);
+        }
     } catch (error) {
         console.log(error);
         return sendResponse(res, 500, "Internal Server Error", 0);

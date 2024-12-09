@@ -5,6 +5,7 @@ const { validateRequest } = require('../services/validation');
 module.exports.vistorLog = async (req, res) => {
     try {
         validateRequest(req, res);
+        req.body.societyId = req.user.societyId;
         const newData = new Visitor(req.body);
         await newData.save();
         if (newData) {

@@ -33,16 +33,18 @@ function FinancialManagement() {
   const handleOtherIncomeClick = () => setShowOtherIncome(true);
 
   // View Popup Handlers
-  const openViewPopup = () => {
-    const getdata = async () => {
-      const item = await viewmaintenance();
-      setItemDetails(item.data);
-      console.log(item);
-    };
-    getdata()
+  const openViewPopup = (item) => {
+    setItemDetails(item);
     setIsViewOpen(true);
   };
+  // const getdata = async () => {
+  //   const item = await viewmaintenance();
+  //   setItemDetails(item);
+  // };
+  // getdata()
   const closeViewPopup = () => setIsViewOpen(false);
+
+  console.log("itme",itemDetails)
 
   // Fetch Maintenance Data
   useEffect(() => {
@@ -50,14 +52,14 @@ function FinancialManagement() {
       try {
         const data = await getMaintenance();
         setMaintenanceData(data);
-        console.log("Maintenance",maintenanceData)
       } catch (error) {
         console.error("Error fetching maintenance data:", error);
       }
     };
     fetchData();
   }, []);
-
+  
+  console.log("Maintenance",maintenanceData)
   
 
   return (
@@ -221,7 +223,7 @@ function FinancialManagement() {
                       </td>
                       <td className="px-4 py-3 text-blue-500 cursor-pointer hover:text-blue-700">
                         <button
-                          onClick={openViewPopup}
+                          onClick={()=>openViewPopup(item)}
                           className="bg-gray-300 p-1 rounded-lg"
                         >
                           <i className="fas fa-eye"></i>
