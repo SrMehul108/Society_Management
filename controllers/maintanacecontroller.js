@@ -38,7 +38,7 @@ module.exports.viewMaintance = async (req, res) => {
     try {
         const societyId = req.user.societyId;
         if (societyId) {
-            let maintance = await Maintenance.find({ societyId: societyId, isActive: true });
+            let maintance = await Maintenance.findOne({ societyId: societyId, isActive: true });
             if (maintance) {
                 return sendResponse(res, 200, "Maintenance Details", 1, maintance);
             }
@@ -50,7 +50,6 @@ module.exports.viewMaintance = async (req, res) => {
         return sendResponse(res, 500, "Internal Server Error", 0);
     }
 }
-
 
 module.exports.maintenanceDetail = async (req, res) => {
     try {
