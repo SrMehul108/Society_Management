@@ -127,7 +127,7 @@ const CallComponent = ({ callerId, calleeId, roomId, callType }) => {
     await peerConnectionRef.current.setLocalDescription(answer);
 
     socket.emit("answer-call", {
-      to: data.from,
+      to: data.to,
       roomId,
       answer: peerConnectionRef.current.localDescription,
     });
