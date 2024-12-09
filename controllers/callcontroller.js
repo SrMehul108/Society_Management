@@ -1,49 +1,51 @@
 const { sendResponse } = require("../services/responseHandler");
 const callService = require("../services/callservice");
 const socketInstance = require('../socket/socketInstance');
-const onlineUsers = socketInstance.getUserAvailability();
 
 module.exports.startCall = async (req, res) => {
     const { roomId, callerId, calleeId } = req.body;
-    // Validate inputs
     if (!roomId || !callerId || !calleeId) {
-        return res.status(400).json({ message: "Missing required fields: roomId, callerId, or calleeId." });
+        return sendResponse(res, 400, "Missing required fields: roomId, callerId, or calleeId.", 0);
     }
     try {
-        const onlineUsers = socketInstance.getOnlineUsers(); 
-        const io = socketInstance.getIO(); 
+        const onlineUsers = socketInstance.getOnlineUsers();
+        const io = socketInstance.getIO();
         if (!onlineUsers) {
-            console.error("onlineUsers object is undefined. Socket instance may not be initialized properly.");
-            return res.status(500).json({ message: "Socket instance is not properly initialized." });
+            console.error("Socket instance is not initialized properly.");
+            return sendResponse(res, 500, "Socket instance is not properly initialized.", 0);
         }
         const calleeSocketId = Object.keys(onlineUsers).find(
             (socketId) => onlineUsers[socketId].userId === calleeId
         );
         if (!calleeSocketId) {
-            return res.status(400).json({ message: "The callee is not online or registered." });
+            return sendResponse(res, 404, "The callee is either offline or not registered.", 0);
         }
-        const isAvailable = socketInstance.getUserAvailability(calleeSocketId); 
+        const isAvailable = socketInstance.getUserAvailability(calleeSocketId);
         if (!isAvailable) {
-            return res.status(400).json({ message: "The callee is not available for a call." });
+            return sendResponse(res, 400, "The callee is not available for a call.", 0);
         }
         const newCall = await callService.logCall({ roomId, participants: [callerId, calleeId] });
         io.to(calleeSocketId).emit("incoming-call", { roomId, callerId });
-
-        return res.status(200).json({ message: "Call initiated successfully.", data: newCall });
+        return sendResponse(res, 200, "Call initiated successfully.", 1, newCall);
     } catch (error) {
         console.error("Error starting call:", error);
-        return res.status(500).json({ message: "Failed to initiate call." });
+        return sendResponse(res, 500, "Failed to initiate call.", 0, error.message);
     }
 };
 
-
-
 module.exports.endCall = async (req, res) => {
+    const { roomId } = req.body;
+    if (!roomId) {
+        return sendResponse(res, 400, "Missing required field: roomId.", 0);
+    }
     try {
-        const { roomId } = req.body;
         const endedCall = await callService.endCall(roomId);
+        if (!endedCall) {
+            return sendResponse(res, 404, "Call not found or already ended.", 0);
+        }
         return sendResponse(res, 200, "Call ended successfully.", 1, endedCall);
     } catch (error) {
-        return sendResponse(res, 500, "Failed to end call.", 0);
+        console.error("Error ending call:", error);
+        return sendResponse(res, 500, "Failed to end call.", 0, error.message);
     }
 };
