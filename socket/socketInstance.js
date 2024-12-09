@@ -65,21 +65,17 @@ module.exports = {
                 });
 
                 // Handle call availability
-                socket.on("start-call", (roomId) => {
+                socket.on("start-call", () => {
                     if (onlineUsers[socket.id]) {
                         onlineUsers[socket.id].isAvailable = false;
                         io.emit("update-online-users", onlineUsers);
-                    } else {
-                        console.warn(`Socket ${socket.id} tried to start a call without being registered`);
                     }
                 });
 
-                socket.on("end-call", (roomId) => {
+                socket.on("end-call", () => {
                     if (onlineUsers[socket.id]) {
                         onlineUsers[socket.id].isAvailable = true;
                         io.emit("update-online-users", onlineUsers);
-                    } else {
-                        console.warn(`Socket ${socket.id} tried to end a call without being registered`);
                     }
                 });
 
@@ -105,11 +101,9 @@ module.exports = {
 
     // Get the status of a user (if they are available)
     getUserAvailability: (socketId) => {
-        if (!onlineUsers[socketId]) {
-            console.warn(`Socket ID ${socketId} not found in onlineUsers.`);
-        }
         return onlineUsers[socketId]?.isAvailable || false;
     },
 
+    // Expose onlineUsers for external use
     getOnlineUsers: () => onlineUsers,
 };

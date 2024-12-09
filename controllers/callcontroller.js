@@ -1,5 +1,5 @@
-const callService = require("../services/callservice");
 const { sendResponse } = require("../services/responseHandler");
+const callService = require("../services/callservice");
 const socketInstance = require('../socket/socketInstance');
 const onlineUsers = socketInstance.getUserAvailability();
 
@@ -9,31 +9,24 @@ module.exports.startCall = async (req, res) => {
     if (!roomId || !callerId || !calleeId) {
         return res.status(400).json({ message: "Missing required fields: roomId, callerId, or calleeId." });
     }
-    // Validate the existence of onlineUsers
-    if (!onlineUsers) {
-        console.error("onlineUsers object is undefined. Socket instance may not be initialized properly.");
-        return res.status(500).json({ message: "Socket instance is not properly initialized." });
-    }
-    // Find callee's socket ID
-    const calleeSocketId = Object.keys(onlineUsers).find(
-        (socketId) => onlineUsers[socketId].userId === calleeId
-    );
-    // Check if the callee is available for a call
-    if (!calleeSocketId) {
-        return res.status(400).json({ message: "The callee is not online or registered." });
-    }
-    const isAvailable =
-        typeof onlineUsers === "function" &&
-        onlineUsers(calleeSocketId);
-
-    if (!isAvailable) {
-        return res.status(400).json({ message: "The callee is not available for a call." });
-    }
     try {
-        // Log the call details
+        const onlineUsers = socketInstance.getOnlineUsers(); 
+        const io = socketInstance.getIO(); 
+        if (!onlineUsers) {
+            console.error("onlineUsers object is undefined. Socket instance may not be initialized properly.");
+            return res.status(500).json({ message: "Socket instance is not properly initialized." });
+        }
+        const calleeSocketId = Object.keys(onlineUsers).find(
+            (socketId) => onlineUsers[socketId].userId === calleeId
+        );
+        if (!calleeSocketId) {
+            return res.status(400).json({ message: "The callee is not online or registered." });
+        }
+        const isAvailable = socketInstance.getUserAvailability(calleeSocketId); 
+        if (!isAvailable) {
+            return res.status(400).json({ message: "The callee is not available for a call." });
+        }
         const newCall = await callService.logCall({ roomId, participants: [callerId, calleeId] });
-        // Emit a socket event to notify the callee about the incoming call
-        const io = socketInstance.getIO();
         io.to(calleeSocketId).emit("incoming-call", { roomId, callerId });
 
         return res.status(200).json({ message: "Call initiated successfully.", data: newCall });
